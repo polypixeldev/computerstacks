@@ -1,0 +1,32 @@
+.eventCard {
+	background: rgba(120, 140, 206, 0.5);
+	border: 5px solid #788CCE;
+	box-sizing: border-box;
+	border-radius: 30px;
+	margin-left: 20vw;
+	margin-right: 20vw;
+}
+
+.eventCard div {
+	background: rgba(120, 140, 206, 0.5);
+	border: 5px solid #788CCE;
+	box-sizing: border-box;
+	border-radius: 30px;
+	margin: 1vh 4vw;
+}
+
+.card {
+	background: #58587E;
+	border-radius: 20px;
+	width: 40vmin;
+	height: 40vmin;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.card p {
+	font-family: "Dosis", sans-serif;
+	font-size: calc(2vmin + 20px);
+}

@@ -1,4 +1,118 @@
+:root {
+	--grey-1: #4C4C63;
+	--grey-2: #454554;
+	--grey-3: #3B3B4F;
+	--grey-4: #23272A;
+}
+
+.top {
+	position: relative;
+	height: 84vh;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
 html,
 body {
+	margin: 0px;
+	padding: 0px;
+	color: #FFFFFF;
+	text-align: center;
+}
+
+h1, h2, h3, p {
+	margin: 0px;
+	padding: 0px;
+}
+
+h1 {
+	font-family: "Zilla Slab", monospace;
+}
+
+h2, h3 {
+	font-family: "Dosis", sans-serif;
+	font-size: calc(3vmin + 10px);
+	padding: 1.5vh 5vw;
+}
+
+h3 {
+	font-size: calc(3vmin + 8px);
+}
+
+p {
+	z-index: 1;
+	font-family: "Open Sans", sans-serif;
+	font-size: calc(2vmin + 10px);
+	padding: 1.5vh 7vw;
+}
+
+.button {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding: 1vmin 3vmin;
+
+	width: 26vw;
+	height: 6vh;
+
+	background: rgba(120, 140, 206, 0.5);
+	border: 5px solid #788CCE;
+	box-sizing: border-box;
+	border-radius: 20px;
+
+	color: #FFFFFF;
+	font-family: "Zilla Slab", monospace;
+	font-size: 25px;
+}
+
+.imageWrap {
+	width: 7.5vw;
+	height: 7.5vw;
 	position: relative;
+}
+
+.bigCode {
+	font-size: 50px;
+}
+
+nav {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+	align-items: center;
+	position: sticky;
+	width: 100vw;
+	height: 8vh;
+	top: 0px;
+	z-index: 2;
+	background: var(--grey-4);
+}
+
+section {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding-bottom: 1.5vh;
+	padding-top: 1.5vh;
+}
+
+.section1 {
+	background: var(--grey-1);
+}
+
+.section2 {
+	background: var(--grey-2);
+}
+
+.section3 {
+	background: var(--grey-3);
+}
+
+footer {
+	background: var(--grey-4)
 }
