@@ -30,6 +30,7 @@ export default function Home() {
 				<div className={styles.card}>
 					<p>Lorem ipsum dolor sit amet, consectetur</p>
 				</div>
+				{/* Card Carousel? */}
 			</section>
 		</main>
 	);

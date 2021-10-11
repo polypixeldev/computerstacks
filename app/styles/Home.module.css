@@ -18,8 +18,8 @@
 .card {
 	background: #58587E;
 	border-radius: 20px;
-	width: 40vmin;
-	height: 40vmin;
+	width: 50vmin;
+	min-height: 40vmin;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;

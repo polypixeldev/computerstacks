@@ -56,8 +56,8 @@ p {
 	align-items: center;
 	padding: 1vmin 3vmin;
 
-	width: 26vw;
-	height: 6vh;
+	min-width: 26vw;
+	min-height: 6vh;
 
 	background: rgba(120, 140, 206, 0.5);
 	border: 5px solid #788CCE;
@@ -70,8 +70,10 @@ p {
 }
 
 .imageWrap {
-	width: 7.5vw;
-	height: 7.5vw;
+	min-width: 10vw;
+	min-height: 10vw;
+	max-width: 15vw;
+	max-height: 15vw;
 	position: relative;
 }
 
