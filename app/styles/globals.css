@@ -23,7 +23,7 @@ body {
 	text-align: center;
 }
 
-h1, h2, h3, p {
+h1, h2, h3, h4, p {
 	margin: 0px;
 	padding: 0px;
 }
@@ -32,14 +32,21 @@ h1 {
 	font-family: "Zilla Slab", monospace;
 }
 
-h2, h3 {
+h2, h3, h4 {
 	font-family: "Dosis", sans-serif;
-	font-size: calc(3vmin + 10px);
 	padding: 1.5vh 5vw;
+}
+
+h2 {
+	font-size: calc(3vmin + 10px);
 }
 
 h3 {
 	font-size: calc(3vmin + 8px);
+}
+
+h4 {
+	font-size: calc(3vmin + 6px);
 }
 
 p {
