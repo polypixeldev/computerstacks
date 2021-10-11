@@ -1,0 +1,8 @@
+.head {
+	background: #0259A0;
+	font-family: "Dosis", sans-serif;
+}
+
+.head h2 {
+	font-size: calc(5vmin + 15px);
+}
