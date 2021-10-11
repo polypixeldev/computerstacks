@@ -1,6 +1,6 @@
 import HeadStyle from '../styles/Head.module.css';
 
-function library() {
+function Library() {
 	return (
 		<main>
 			<section className={HeadStyle.head} id="head">
@@ -26,4 +26,4 @@ function library() {
 	)
 }
 
-export default library;
+export default Library;
