@@ -6,3 +6,10 @@
 .head h2 {
 	font-size: calc(5vmin + 15px);
 }
+
+.actionDiv {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
