@@ -1,0 +1,26 @@
+.form {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.label {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+	font-family: "Dosis", sans-serif;
+}
+
+.label input {
+	background: #788CCE;
+	border-radius: 10px;
+	border: none;
+	height: 3.5vh;
+	padding: 1vh 1vw;
+}
+
+.submit {
+	align-self: center;
+}
