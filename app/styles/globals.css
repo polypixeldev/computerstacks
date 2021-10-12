@@ -88,6 +88,11 @@ p {
 	font-size: 50px;
 }
 
+.link {
+	color: #FFFFFF;
+	text-decoration: none;
+}
+
 nav {
 	display: flex;
 	flex-direction: row;
