@@ -24,7 +24,7 @@ function MyApp({ Component, pageProps }) {
 				</div>
 				<h1>Community Project</h1>
 			</nav>
-			{menuOpen ? <MenuScreen /> : <Component {...pageProps} />}
+			{menuOpen ? <MenuScreen onLink={() => toggleMenu()} /> : <Component {...pageProps} />}
 			<footer>
 				<h2>Community Project</h2>
 				<p><strong>© 2021, Samuel Fernandez</strong></p>
