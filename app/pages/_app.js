@@ -5,6 +5,7 @@ import CloseMenu from "../public/closeMenu.png";
 import Image from "next/image";
 import { useState } from 'react'; 
 import MenuScreen from "../components/menu.js";
+import { SessionProvider } from "next-auth/react";
 
 function MyApp({ Component, pageProps }) {
 	let [ menuOpen, setMenuOpen ] = useState(false);
@@ -13,7 +14,7 @@ function MyApp({ Component, pageProps }) {
 	}
 
 	return (
-		<>
+		<SessionProvider session={pageProps.session}>
 			<Head>
 				<title>Community Project</title>
 				<link rel="icon" href="/favicon.ico" />
@@ -37,7 +38,7 @@ function MyApp({ Component, pageProps }) {
 					</div>
 				</div>
 			</footer>
-		</>
+		</SessionProvider>
 	);
 }
 

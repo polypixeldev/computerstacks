@@ -1,6 +1,11 @@
 import styles from "../styles/Dashboard.module.css";
+import { useSession } from "next-auth/react";
 
 function Dashboard() {
+	const { data: session, status } = useSession();
+
+	console.log(status);
+	
 	return (
 		<main>
 			<section className="section1">
