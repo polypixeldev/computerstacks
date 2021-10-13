@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import styles from "../styles/Home.module.css";
 import Background  from "../public/tech.png";
 import Icons from "../public/icons.png";
@@ -14,7 +15,7 @@ export default function Home() {
 			<section className="section1" id="main-desc">
 				<h2>The world&apos;s largest collection of computer resources</h2>
 				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
-				<button className="button">Browse now</button>
+				<button className="button"><Link href="/library"><a className="link">Browse now</a></Link></button>
 			</section>
 			<section className="section2" id="events">
 				<h2>Events</h2>
@@ -24,7 +25,7 @@ export default function Home() {
 						<p>Lorem ipsum dolor sit amet, consectetur</p>
 					</div>
 				</div>
-				<p>View the entire event calendar</p>
+				<p><Link href="/events"><a className="link">View the entire event calendar</a></Link></p>
 			</section>
 			<section className="section3" id="cards">
 				<div className={styles.card}>
