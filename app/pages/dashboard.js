@@ -1,11 +1,19 @@
 import styles from "../styles/Dashboard.module.css";
 import { useSession } from "next-auth/react";
+import Loading from "../components/loading";
+import { useRouter } from "next/router";
 
 function Dashboard() {
-	const { data: session, status } = useSession();
+	const router = useRouter();
+	const { data: session, status } = useSession({
+		required: true,
+		onUnauthenticated(){
+			router.push('/login');
+		}
+	});
 
-	console.log(status);
-	
+	if(typeof window !== 'undefined' && status === 'loading') return <Loading />;
+
 	return (
 		<main>
 			<section className="section1">
