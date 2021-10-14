@@ -73,7 +73,7 @@ p {
 
 	color: #FFFFFF;
 	font-family: "Zilla Slab", monospace;
-	font-size: 25px;
+	font-size: calc(2vmin + 15px);
 }
 
 .imageWrap {
