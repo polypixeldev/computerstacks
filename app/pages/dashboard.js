@@ -2,6 +2,7 @@ import styles from "../styles/Dashboard.module.css";
 import { useSession } from "next-auth/react";
 import Loading from "../components/loading";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 function Dashboard() {
 	const router = useRouter();
@@ -12,13 +13,15 @@ function Dashboard() {
 		}
 	});
 
-	if(typeof window !== 'undefined' && status === 'loading') return <Loading />;
+	if(status === 'loading') return <Loading />;
+
+	console.log(session);
 
 	return (
 		<main>
 			<section className="section1">
-				<h2>Username</h2>
-				<span className={styles.pfp}></span>
+				<h2>{session.user.name}</h2>
+				<Image className={styles.pfp} src={session.user.image} alt="User Profile Picture" width={200} height={200}/>
 			</section>
 			<section className="section2">
 				<h2>Roadmaps</h2>
