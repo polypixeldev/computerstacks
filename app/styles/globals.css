@@ -130,3 +130,7 @@ section {
 footer {
 	background: var(--grey-4)
 }
+
+hr {
+	width: 20vw;
+}
