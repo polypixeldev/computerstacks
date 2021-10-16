@@ -21,7 +21,7 @@ function Dashboard() {
 	return (
 		<main>
 			<section className="section1">
-				<h2>{session.user.name}</h2>
+				<h2>{session.user.name ?? session.user.email}</h2>
 				<Image className={styles.pfp} src={session.user.image || profile} alt="User Profile Picture" width={200} height={200}/>
 			</section>
 			<section className="section2">

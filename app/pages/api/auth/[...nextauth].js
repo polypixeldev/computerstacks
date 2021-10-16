@@ -1,6 +1,7 @@
 import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import GitHubProvider from 'next-auth/providers/github';
+import EmailProvider from 'next-auth/providers/email';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 import clientPromise from "../../../lib/mongodb";
@@ -40,6 +41,10 @@ async function handler(req, res) {
       GitHubProvider({
         clientId: process.env.GITHUB_ID,
         clientSecret: process.env.GITHUB_SECRET
+      }),
+      EmailProvider({
+        server: process.env.EMAIL_SERVER,
+        from: process.env.EMAIL_FROM
       })
     ],
     adapter: MongoDBAdapter({
