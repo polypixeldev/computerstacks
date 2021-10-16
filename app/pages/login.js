@@ -3,13 +3,19 @@ import HeadStyles from "../styles/Head.module.css";
 import LoginStyles from "../styles/Login.module.css";
 import { signIn, getSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function Login() {
 	const router = useRouter();
 
 	const [ username, setUsername ] = useState('');
 	const [ password, setPassword ] = useState('');
+
+	useEffect(() => {
+		getSession().then(session => {
+			if(session) router.push('/dashboard')
+		})
+	})
 
 	function google(){
 		signIn('google', { callbackUrl: "http://localhost/dashboard"})

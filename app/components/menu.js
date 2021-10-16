@@ -1,6 +1,9 @@
 import Link from "next/link";
+import { useSession } from 'next-auth/react';
 
 function Menu({ onLink }) {
+	const { data: session, status } = useSession()
+
 	return (
 		<main>
 			<section className="section1">
@@ -9,7 +12,7 @@ function Menu({ onLink }) {
 				<h2><Link href="/roadmaps"><a className="link" onClick={onLink}>Roadmaps</a></Link></h2>
 				<h2><Link href="/events"><a className="link" onClick={onLink}>Events</a></Link></h2>
 				<h2><Link href="/settings"><a className="link" onClick={onLink}>Settings</a></Link></h2>
-				<h2><Link href="/login"><a className="link" onClick={onLink}>Login</a></Link></h2>
+				<h2><Link href={status === 'authenticated' ? '/dashboard' : '/login'}><a className="link" onClick={onLink}>{status === 'authenticated' ? "Dashboard" : 'Login'}</a></Link></h2>
 				<h2><Link href="/signup"><a className="link" onClick={onLink}>Sign Up</a></Link></h2>
 			</section>
 		</main>
