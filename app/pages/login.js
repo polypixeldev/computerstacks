@@ -21,6 +21,10 @@ function Login() {
 		signIn('google', { callbackUrl: "http://localhost/dashboard"})
 	}
 
+	function github(){
+		signIn('github', { callbackUrl: "http://localhost/dashboard"})
+	}
+
 	async function credentials(event){
 		event.preventDefault();
 		const res = await signIn('credentials', { username: username, password: password, redirect: false });
@@ -49,6 +53,8 @@ function Login() {
 				<h2>Login</h2>
 				<br />
 				<button onClick={google} className={`button ${LoginStyles.providerButton}`}>Sign in with Google</button>
+				<br />
+				<button onClick={github} className={`button ${LoginStyles.providerButton}`}>Sign in with GitHub</button>
 				<div className={HeadStyles.actionDiv}>
 					<hr />
 					<p>OR</p>
