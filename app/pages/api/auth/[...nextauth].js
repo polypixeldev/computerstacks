@@ -57,7 +57,10 @@ async function handler(req, res) {
       signIn: "/login"
     },
     jwt: {
-      signingKey: process.env.JWT_SIGNING_PRIVATE_KEY
+      signingKey: process.env.JWT_SIGNING_PRIVATE_KEY,
+      encryption: true,
+      encryptionKey: process.env.JWT_ENCRYPTION_KEY,
+      secret: process.env.JWT_SECRET
     },
     debug: false
   });
