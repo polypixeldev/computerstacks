@@ -61,11 +61,10 @@ export async function getStaticProps(context) {
 	*/
 	const RESOURCES_META_URL = ``; // Fetches names and location of resources, nothing else
 	
-	let res = { revalidate: 60, props: {} };
+	let res = { revalidate: 60, props: { data: {}, error: false } };
 
 	const data = await axios.get(RESOURCES_META_URL)?.data;
-	if(!data) res.props.error = true;
-	res.props.data = data;
+	if(!data) res.props.error = true; else res.props.data = data;
 	
 	return res;
 }
