@@ -44,21 +44,22 @@ function Library(props) {
 }
 
 export async function getStaticProps(context) {
-	/* For development
-	return {
-		props: {
-			data: {
-				numResources: 5,
-				numSubjects: 10,
-				subjects: [
-					[{ name: "Yes", uri: "yes" }, { name: "Hmmm", uri: "hmmm" }],
-					[{ name: "No", uri: "no" }],
-					[{ name: "Maybe", uri: "maybe" }]
-				]
-			}
-		}
-	}
-	*/
+	// For development
+	//
+	// return {
+	// 	props: {
+	// 		data: {
+	// 			numResources: 5,
+	// 			numSubjects: 10,
+	// 			subjects: [
+	// 				[{ name: "Yes", uri: "yes" }, { name: "Hmmm", uri: "hmmm" }],
+	// 				[{ name: "No", uri: "no" }],
+	// 				[{ name: "Maybe", uri: "maybe" }]
+	// 			]
+	// 		}
+	// 	}
+	// }
+	
 	const RESOURCES_META_URL = ``; // Fetches names and location of resources, nothing else
 	
 	let res = { revalidate: 60, props: { data: {}, error: false } };
