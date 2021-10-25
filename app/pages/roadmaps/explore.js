@@ -1,4 +1,5 @@
 import HeadStyles from "../../styles/Head.module.css";
+import axios from 'axios';
 
 function Explore() {
 	return (
@@ -24,6 +25,11 @@ function Explore() {
 			</section>
 		</main>
 	)
+}
+
+export async function getStaticProps() {
+	const ROADMAPS_META_URL = ``;
+	const data = await axios.get(ROADMAPS_META_URL)
 }
 
 export default Explore;

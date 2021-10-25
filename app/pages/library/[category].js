@@ -33,9 +33,7 @@ export async function getStaticPaths() {
 
 	if(!data) return res;
 
-	for(let subject of data.subjects) {
-		res.paths.push({ params: { category: subject.uri } })
-	}
+	for(let subject of data.subjects) res.paths.push({ params: { category: subject.uri } })
 
 	return res;
 }
@@ -61,7 +59,8 @@ export async function getStaticProps({ params }) {
 
 	let res = { revalidate: 60, props: { data: {}, error: false } };
 
-	const data = axios.get(CATEGORY_DATA_URL)?.data;
+	let data = await axios.get(CATEGORY_DATA_URL);
+	data = data.data;
 	if(!data) res.props.error = true; else res.props.data = data;
 
 	return res;

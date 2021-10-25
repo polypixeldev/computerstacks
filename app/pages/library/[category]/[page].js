@@ -22,25 +22,19 @@ export async function getStaticPaths() {
 	
 	let res = { paths: [], fallback: true };
 
-	const data = await axios.get(RESOURCES_META_URL)?.data;
+	let data = await axios.get(RESOURCES_META_URL);
+	data = data.data;
 
 	if(!data) return res;
 
 	for(let category of data.subjects) {
 		const CATEGORY_DATA_URL = ``;
 
-		const catdata = axios.get(CATEGORY_DATA_URL)?.data;
+		let catdata = await axios.get(CATEGORY_DATA_URL);
+		catdata = catdata.data
 		if(!catdata) return res;
 
-		for(let item of catdata.items) {
-			const ITEM_META_URL = ``; // Fetches names and location of resources, nothing else
-
-			const subData = await axios.get(ITEM_META_URL)?.data;
-
-			if(!data) return res;
-
-			res.paths.push({ params: { category: category.uri, page: item.uri }})
-		}
+		for(let item of catdata.items) res.paths.push({ params: { category: category.uri, page: item.uri }})
 	}
 
 	return res;
@@ -86,7 +80,8 @@ export async function getStaticProps({ params }) {
 
 	let res = { revalidate: 60, props: { data: {}, error: false }};
 
-	const data = axios.get(ITEM_META_URL)?.data;
+	let data = await axios.get(ITEM_META_URL);
+	data = data.data;
 	if(!data) res.props.error = true; else res.props.data = data;
 
 	return res;
