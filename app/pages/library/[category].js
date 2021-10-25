@@ -46,8 +46,8 @@ export async function getStaticProps({ params }) {
 	return {
 		props: {
 			data: {
-				name: Array.from(params.category).reverse().join(''),
 				description: "desc desc desc",
+				category: Array.from(params.category).reverse().join(''),
 				items: [
 					[{ name: "sub1", uri: "sub1" }, { name: "sub2", uri: "sub2" }],
 					[{ name: "sub3", uri: "sub3" }],

@@ -14,7 +14,8 @@ function CategoryPage(props) {
 	return (
 		<main>
 			<section className={HeadStyle.head} id="head">
-				<h2>{props.data.name}</h2>
+				{props.data.subcategory ? <h3>{props.data.category}</h3> : null}
+				{props.data.subcategory ? <h2>{props.data.subcategory}</h2> : <h2>{props.data.category}</h2>}
 				<p>{props.data.description}</p>
 				<div className={HeadStyle.actionDiv}>
 					<p>1</p>

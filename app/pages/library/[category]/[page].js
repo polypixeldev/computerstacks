@@ -9,7 +9,7 @@ function Page(props) {
 	
 	if(router.isFallback) return <Loading />
 
-	if(props.data.subcategory === true) return <CategoryPage data={props.data} />; else return <ResourcePage data={props.data} />;
+	if(props.data.subcategory) return <CategoryPage data={props.data} category={router.query.category} page={router.query.page} />; else return <ResourcePage data={props.data} category={router.query.category} resource={router.query.page} />;
 }
 
 export async function getStaticPaths() {
@@ -54,8 +54,8 @@ export async function getStaticProps({ params }) {
 	return {
 		props: {
 			data: {
-				subcategory: true,
-				name: Array.from(params.category).reverse().join(''),
+				subcategory: Array.from(params.page).reverse().join(''),
+				category: 'Parent',
 				description: "desc desc desc",
 				items: [
 					[{ name: "sub1", uri: "sub1" }, { name: "sub2", uri: "sub2" }],
@@ -72,12 +72,10 @@ export async function getStaticProps({ params }) {
 	return {
 		props: {
 			data: {
-				subcategory: false,
 				uri: "freecodecamp",
 				name: "freeCodeCamp",
 				description: "Learn to code — for free. Build projects. Earn certifications.",
 				link: "https://freecodecamp.org",
-				subcategory: "Courses",
 				category: "Web Development"
 			},
 			error: false
