@@ -6,7 +6,7 @@ function CategoryPage(props) {
 	function getLevel(level) {
 		return props.data.items[level].map(item => (
 			<div key={item.name}>
-				<p><strong><Link href={`/library/${props.category}/${item.uri}`}><a className="link">{item.name}</a></Link></strong></p>
+				<p><strong><Link href={`/library/${props.category}${props.page ? `/${props.page}/` : `/`}${item.uri}`}><a className="link">{item.name}</a></Link></strong></p>
 			</div>
 		))
 	}
