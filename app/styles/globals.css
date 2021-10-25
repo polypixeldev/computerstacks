@@ -130,6 +130,10 @@ section {
 footer {
 	background: var(--grey-4)
 }
+footer a {
+	font-family: "Zilla Slab", monospace;
+	font-size: calc(2vmin + 10px);
+}
 
 hr {
 	width: 20vw;
