@@ -53,7 +53,7 @@ function Settings() {
 				<form className={FormStyle.form} onSubmit={handleUsernameSubmit}>
 					<label>
 						New Username:
-						<input type="text" name="username" onChange={handleChange} value={username} />
+						<input type="text" name="username" autoComplete="username" onChange={handleChange} value={username} />
 					</label>
 				</form>
 				<br/>
@@ -61,15 +61,15 @@ function Settings() {
 				<form className={FormStyle.form} onSubmit={handlePasswordSubmit}>
 					<label>
 						Old Password:
-						<input type="password" name="oldPassword" onChange={handleChange} value={oldPassword} />
+						<input type="password" name="oldPassword" autoComplete="current-password" onChange={handleChange} value={oldPassword} />
 					</label>
 					<label>
 						New Password:
-						<input type="password" name="newPassword" onChange={handleChange} value={newPassword} />
+						<input type="password" name="newPassword" autoComplete="new-password" onChange={handleChange} value={newPassword} />
 					</label>
 					<label>
 						Confirm New Password:
-						<input type="password" name="confirmPassword" onChange={handleChange} value={confirmPassword} />
+						<input type="password" name="confirmPassword" autoComplete="new-password" onChange={handleChange} value={confirmPassword} />
 					</label>
 				</form>
 				<br/>
