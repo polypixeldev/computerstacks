@@ -8,8 +8,11 @@ import Image from "next/image";
 import { useState } from 'react'; 
 import MenuScreen from "../components/menu.js";
 import { SessionProvider } from "next-auth/react";
+import { useRouter } from "next/router";
 
 function MyApp({ Component, pageProps }) {
+	const router = useRouter();
+
 	let [ menuOpen, setMenuOpen ] = useState(false);
 	let [ query, setQuery ] = useState('');
 
@@ -23,6 +26,10 @@ function MyApp({ Component, pageProps }) {
 		const name = target.name;
 
 		if(name === 'query') setQuery(value)
+	}
+
+	function handleSearch() {
+		router.push(`/search?query=${query}`)
 	}
 
 	return (
@@ -39,7 +46,7 @@ function MyApp({ Component, pageProps }) {
 					<input type="search" autoComplete="on" name="query" placeholder="Browse our collection" value={query} onChange={handleChange} />
 					<div>
 						<div>
-							<Image height={18} width={18} src={SearchIcon} alt="search" className="searchIcon" />
+							<Image onClick={handleSearch} height={18} width={18} src={SearchIcon} alt="search" className="searchIcon" />
 						</div>
 					</div>
 				</div>
