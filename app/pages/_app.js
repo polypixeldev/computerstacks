@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Head from "next/head";
 import OpenMenu from "../public/openMenu.png";
 import CloseMenu from "../public/closeMenu.png";
+import SearchIcon from "../public/search.png";
 import Image from "next/image";
 import { useState } from 'react'; 
 import MenuScreen from "../components/menu.js";
@@ -10,8 +11,18 @@ import { SessionProvider } from "next-auth/react";
 
 function MyApp({ Component, pageProps }) {
 	let [ menuOpen, setMenuOpen ] = useState(false);
+	let [ query, setQuery ] = useState('');
+
 	function toggleMenu(){
 		menuOpen ? setMenuOpen(false) : setMenuOpen(true);
+	}
+
+	function handleChange(event) {
+		const target = event.target;
+		const value = target.value;
+		const name = target.name;
+
+		if(name === 'query') setQuery(value)
 	}
 
 	return (
@@ -23,6 +34,14 @@ function MyApp({ Component, pageProps }) {
 			<nav>
 				<div className="imageWrap" onClick={toggleMenu}>
 					<Image src={menuOpen ? CloseMenu : OpenMenu} alt="menu button" layout="fill" objectFit="contain" objectPosition="25% 50%" />
+				</div>
+				<div className="search">
+					<input type="search" autoComplete="on" name="query" placeholder="Browse our collection" value={query} onChange={handleChange} />
+					<div>
+						<div>
+							<Image height={18} width={18} src={SearchIcon} alt="search" className="searchIcon" />
+						</div>
+					</div>
 				</div>
 				<h1>Community Project</h1>
 			</nav>
