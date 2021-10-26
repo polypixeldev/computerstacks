@@ -7,7 +7,8 @@
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",
-		"format": "prettier --write ."
+		"format": "prettier --write .",
+		"prepare": "cd ../ && husky install ./app/.husky"
 	},
 	"dependencies": {
 		"@next-auth/mongodb-adapter": "^0.0.2-next.281",
@@ -24,6 +25,8 @@
 	"devDependencies": {
 		"eslint": "7.32.0",
 		"eslint-config-next": "11.1.2",
-		"eslint-config-prettier": "^8.3.0"
+		"eslint-config-prettier": "^8.3.0",
+		"husky": "^7.0.4",
+		"lint-staged": "^11.2.6"
 	}
 }
