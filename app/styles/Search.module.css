@@ -1,0 +1,57 @@
+.searchBar {
+	position: relative;
+	display: flex;
+	height: 8vh;
+
+	border: 2px solid #0265b5;
+	border-radius: 5px;
+	padding: 4px 4px 4px 60px;
+	outline: 0;
+	background-color: #0271cc;
+}
+
+.searchBar input {
+	border-radius: 5px;
+	background-color: #0278d9;
+	border: none;
+	padding-left: 1vw;
+	max-width: 80vw;
+	min-width: 10vw;
+}
+
+.searchBar input,
+.searchBar input::placeholder {
+	color: #ffffff;
+	font-family: "Zilla Slab", monospace;
+	font-size: calc(2vmin + 10px);
+}
+
+.searchBar div {
+	position: absolute;
+	top: 6px;
+	left: 16px;
+}
+
+.searchBar div div {
+	position: relative;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+}
+
+.result {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+}
+
+.result p {
+	padding: 0px;
+}
+
+.result a {
+	font-family: "Dosis", sans-serif;
+	font-size: calc(2vmin + 15px);
+}
