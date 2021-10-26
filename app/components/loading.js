@@ -5,7 +5,7 @@ function Loading() {
 				<h2>Loading...</h2>
 			</section>
 		</main>
-	)
+	);
 }
 
 export default Loading;

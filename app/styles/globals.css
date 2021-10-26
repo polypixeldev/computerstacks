@@ -1,8 +1,8 @@
 :root {
-	--grey-1: #4C4C63;
+	--grey-1: #4c4c63;
 	--grey-2: #454554;
-	--grey-3: #3B3B4F;
-	--grey-4: #23272A;
+	--grey-3: #3b3b4f;
+	--grey-4: #23272a;
 }
 
 .top {
@@ -19,11 +19,15 @@ html,
 body {
 	margin: 0px;
 	padding: 0px;
-	color: #FFFFFF;
+	color: #ffffff;
 	text-align: center;
 }
 
-h1, h2, h3, h4, p {
+h1,
+h2,
+h3,
+h4,
+p {
 	margin: 0px;
 	padding: 0px;
 }
@@ -32,7 +36,9 @@ h1 {
 	font-family: "Zilla Slab", monospace;
 }
 
-h2, h3, h4 {
+h2,
+h3,
+h4 {
 	font-family: "Dosis", sans-serif;
 	padding: 1.5vh 5vw;
 }
@@ -67,11 +73,11 @@ p {
 	min-height: 6vh;
 
 	background: rgba(120, 140, 206, 0.5);
-	border: 5px solid #788CCE;
+	border: 5px solid #788cce;
 	box-sizing: border-box;
 	border-radius: 20px;
 
-	color: #FFFFFF;
+	color: #ffffff;
 	font-family: "Zilla Slab", monospace;
 	font-size: calc(2vmin + 15px);
 }
@@ -90,10 +96,10 @@ p {
 	height: 5vh;
 
 	border: 1px solid var(--grey-4);
-    border-radius: 5px;
-    padding: 2px 2px 2px 30px;
-    outline: 0;
-    background-color: var(--grey-3);
+	border-radius: 5px;
+	padding: 2px 2px 2px 30px;
+	outline: 0;
+	background-color: var(--grey-3);
 }
 
 .search input {
@@ -104,21 +110,22 @@ p {
 	max-width: 32vw;
 }
 
-@media screen and (max-width: 450px){
+@media screen and (max-width: 450px) {
 	.search {
 		display: none;
 	}
 }
 
-.search input, .search input::placeholder {
-	color: #FFFFFF;
+.search input,
+.search input::placeholder {
+	color: #ffffff;
 	font-family: "Zilla Slab", monospace;
 }
 
 .search div {
 	position: absolute;
-    top: 6px;
-    left: 8px;
+	top: 6px;
+	left: 8px;
 }
 
 .search div div {
@@ -134,7 +141,7 @@ p {
 }
 
 .link {
-	color: #FFFFFF;
+	color: #ffffff;
 	text-decoration: none;
 }
 
@@ -173,7 +180,7 @@ section {
 }
 
 footer {
-	background: var(--grey-4)
+	background: var(--grey-4);
 }
 footer a {
 	font-family: "Zilla Slab", monospace;

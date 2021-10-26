@@ -5,7 +5,8 @@
 	align-items: center;
 }
 
-.label, .form label {
+.label,
+.form label {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -13,8 +14,9 @@
 	font-family: "Dosis", sans-serif;
 }
 
-.label input, .form label input {
-	background: #788CCE;
+.label input,
+.form label input {
+	background: #788cce;
 	border-radius: 10px;
 	border: none;
 	height: 3.5vh;

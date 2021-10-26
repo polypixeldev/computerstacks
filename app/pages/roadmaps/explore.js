@@ -1,14 +1,20 @@
 import HeadStyles from "../../styles/Head.module.css";
-import axios from 'axios';
-import Link from 'next/link';
+import axios from "axios";
+import Link from "next/link";
 
 function Explore(props) {
-	function getLevel(level){
-		return props.data.roadmaps[level].map(item => (
+	function getLevel(level) {
+		return props.data.roadmaps[level].map((item) => (
 			<div key={item.name}>
-				<p><strong><Link href={`/roadmaps/${item.uri}`}><a className="link">{item.name}</a></Link></strong></p>
+				<p>
+					<strong>
+						<Link href={`/roadmaps/${item.uri}`}>
+							<a className="link">{item.name}</a>
+						</Link>
+					</strong>
+				</p>
 			</div>
-		))
+		));
 	}
 
 	return (
@@ -36,7 +42,7 @@ function Explore(props) {
 				{getLevel(2)}
 			</section>
 		</main>
-	)
+	);
 }
 
 export async function getStaticProps() {
@@ -47,13 +53,13 @@ export async function getStaticProps() {
 			data: {
 				numRoadmaps: 5,
 				roadmaps: [
-					[{ name: "a", uri: "a"}],
-					[{ name: "b", uri: "b"}],
-					[{ name: "c", uri: "c"}]
-				]
-			}
-		}
-	}
+					[{ name: "a", uri: "a" }],
+					[{ name: "b", uri: "b" }],
+					[{ name: "c", uri: "c" }],
+				],
+			},
+		},
+	};
 
 	const ROADMAPS_META_URL = ``;
 
@@ -61,7 +67,8 @@ export async function getStaticProps() {
 
 	let data = await axios.get(ROADMAPS_META_URL);
 	data = data.data;
-	if(!data) res.props.error = true; else res.props.data = data;
+	if (!data) res.props.error = true;
+	else res.props.data = data;
 
 	return res;
 }

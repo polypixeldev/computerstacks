@@ -17,7 +17,7 @@ function Events() {
 				<h2>Past</h2>
 			</section>
 		</main>
-	)
+	);
 }
 
 export default Events;

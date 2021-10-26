@@ -1,6 +1,6 @@
 .eventCard {
 	background: rgba(120, 140, 206, 0.5);
-	border: 5px solid #788CCE;
+	border: 5px solid #788cce;
 	box-sizing: border-box;
 	border-radius: 30px;
 	margin-left: 20vw;
@@ -9,14 +9,14 @@
 
 .eventCard div {
 	background: rgba(120, 140, 206, 0.5);
-	border: 5px solid #788CCE;
+	border: 5px solid #788cce;
 	box-sizing: border-box;
 	border-radius: 30px;
 	margin: 1vh 4vw;
 }
 
 .card {
-	background: #58587E;
+	background: #58587e;
 	border-radius: 20px;
 	width: 50vmin;
 	min-height: 40vmin;

@@ -10,7 +10,9 @@ function Discover() {
 			</section>
 			<section className="section1">
 				<h2>Question _</h2>
-				<p><em>Lorem ipsum dolor sit amet, consectetur?</em></p>
+				<p>
+					<em>Lorem ipsum dolor sit amet, consectetur?</em>
+				</p>
 				<form className={FormStyles.form}>
 					<label className={FormStyles.checkboxLabel}>
 						<input type="radio" name="answer" value="A" />
@@ -37,7 +39,7 @@ function Discover() {
 				</form>
 			</section>
 		</main>
-	)
+	);
 }
 
 export default Discover;
