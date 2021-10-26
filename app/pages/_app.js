@@ -71,6 +71,20 @@ function MyApp({ Component, pageProps }) {
 					</div>
 				</div>
 				<h1>Community Project</h1>
+				<button
+					className="button-small"
+					id="signup"
+					onClick={() => router.push("/signup")}
+				>
+					Sign Up
+				</button>
+				<button
+					className="button-small"
+					id="login"
+					onClick={() => router.push("/login")}
+				>
+					Login
+				</button>
 			</nav>
 			{menuOpen ? (
 				<MenuScreen onLink={() => toggleMenu()} />

@@ -34,6 +34,7 @@ p {
 
 h1 {
 	font-family: "Zilla Slab", monospace;
+	font-size: calc(2vmin + 10px);
 }
 
 h2,
@@ -82,6 +83,26 @@ p {
 	font-size: calc(2vmin + 15px);
 }
 
+.button-small {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding: 0.5vmin 1.5vmin;
+
+	min-width: 13vw;
+	min-height: 3vh;
+
+	background: rgba(120, 140, 206, 0.5);
+	border: 2px solid #788cce;
+	box-sizing: border-box;
+	border-radius: 20px;
+
+	color: #ffffff;
+	font-family: "Zilla Slab", monospace;
+	font-size: calc(2vmin + 5px);
+}
+
 .imageWrap {
 	min-width: 10%;
 	min-height: 90%;
@@ -110,8 +131,20 @@ p {
 	max-width: 32vw;
 }
 
-@media screen and (max-width: 450px) {
+@media screen and (max-width: 475px) {
 	.search {
+		display: none;
+	}
+}
+
+@media screen and (max-width: 525px) {
+	#signup {
+		display: none;
+	}
+}
+
+@media screen and (max-width: 350px) {
+	#login {
 		display: none;
 	}
 }
