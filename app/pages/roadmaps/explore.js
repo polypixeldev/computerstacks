@@ -23,24 +23,9 @@ function Explore(props) {
 				<h2>Explore Roadmaps</h2>
 				<p>Explore {props.data.numRoadmaps} roadmaps to get started!</p>
 			</section>
-			<section className="section1">
-				<div>
-					<p>1</p>
-				</div>
-				{getLevel(0)}
-			</section>
-			<section className="section2">
-				<div>
-					<p>2</p>
-				</div>
-				{getLevel(1)}
-			</section>
-			<section className="section3">
-				<div>
-					<p>3</p>
-				</div>
-				{getLevel(2)}
-			</section>
+			<section className="section1">{getLevel(0)}</section>
+			<section className="section2">{getLevel(1)}</section>
+			<section className="section3">{getLevel(2)}</section>
 		</main>
 	);
 }

@@ -1,7 +1,11 @@
 import HeadStyles from "../../styles/Head.module.css";
 import axios from "axios";
+import { useRouter } from "next/router";
+import Loading from "../../components/loading";
 
 function Roadmap(props) {
+	const router = useRouter();
+	if (router.isFallback) return <Loading />;
 	return (
 		<main>
 			<section className={HeadStyles.head}>
