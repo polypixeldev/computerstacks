@@ -11,7 +11,7 @@
 		"prepare": "cd ../ && husky install ./app/.husky"
 	},
 	"dependencies": {
-		"@next-auth/mongodb-adapter": "^0.0.2-next.281",
+		"@next-auth/mongodb-adapter": "^0.0.2-pr.193-6071c497.276",
 		"axios": "^0.23.0",
 		"bcryptjs": "^2.4.3",
 		"mongodb": "^4.1.3",
