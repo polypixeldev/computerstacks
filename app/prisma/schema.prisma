@@ -8,44 +8,60 @@ datasource db {
   url      = env("MONGODB_URI")
 }
 
-model accounts {
-  docID                String  @id @default(dbgenerated()) @map("_id") @db.ObjectId
-  access_token      String
-  expires_at        Int?
-  id_token          String?
-  provider          String
-  providerAccountId String
-  scope             String
-  token_type        String
-  type              String
-  userId            String  @db.ObjectId
+model account {
+  id                 String  @id @default(cuid()) @map("_id")
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?
+  access_token       String?
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?
+  session_state      String?
+  oauth_token_secret String?
+  oauth_token        String?
+
+  user user @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
 }
 
-model resources {
-  docID String @id @default(dbgenerated()) @map("_id") @db.ObjectId
+model session {
+  id           String   @id @default(cuid()) @map("_id")
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         user     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-model sessions {
-  docID           String   @id @default(dbgenerated()) @map("_id") @db.ObjectId
-  expires      DateTime @db.Date
-  sessionToken String
-  userId       String   @db.ObjectId
-}
-
-model users {
-  docID           String    @id @default(dbgenerated()) @map("_id") @db.ObjectId
-  email         String?
-  emailVerified DateTime? @db.Date
-  userID     String?   @map("id")
-  image         String?
+model user {
+  id            String    @id @default(cuid()) @map("_id")
   name          String?
-  password      String?
-  username      String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      account[]
+  sessions      session[]
 }
 
-model verification_tokens {
-  docID         String                  @id @default(dbgenerated()) @map("_id") @db.ObjectId
-  expires    DateTime                @db.Date
-  identifier Unsupported("Unknown")?
-  token      String
+model credentialUsers {
+  id            String    @id @default(cuid()) @map("_id")
+  name          String
+  username      String
+  password      String
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+}
+
+model verificationToken {
+  id            String    @id @default(cuid()) @map("_id")
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
 }

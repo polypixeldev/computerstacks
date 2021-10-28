@@ -3,8 +3,8 @@ import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
 import EmailProvider from "next-auth/providers/email";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
-import clientPromise from "../../../lib/mongodb";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import prisma from "../../../prisma/client";
 import bcrypt from "bcryptjs";
 
 async function handler(req, res) {
@@ -21,11 +21,12 @@ async function handler(req, res) {
 					password: { label: "Password", type: "password" },
 				},
 				async authorize(credentials, req) {
-					const client = await clientPromise;
-					const db = client.db("project");
-					const users = db.collection("users");
+					const user = await prisma.credentialUsers.findFirst({
+						where: {
+							username: credentials.username,
+						},
+					});
 
-					const user = await users.findOne({ username: credentials.username });
 					if (!user) return null;
 					const auth = bcrypt.compareSync(credentials.password, user.password);
 
@@ -47,9 +48,7 @@ async function handler(req, res) {
 				from: process.env.EMAIL_FROM,
 			}),
 		],
-		adapter: MongoDBAdapter({
-			db: (await clientPromise).db("project"),
-		}),
+		adapter: PrismaAdapter(prisma),
 		session: {
 			jwt: true,
 		},
