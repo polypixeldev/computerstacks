@@ -1,0 +1,51 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["mongoDb"]
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("MONGODB_URI")
+}
+
+model accounts {
+  docID                String  @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  access_token      String
+  expires_at        Int?
+  id_token          String?
+  provider          String
+  providerAccountId String
+  scope             String
+  token_type        String
+  type              String
+  userId            String  @db.ObjectId
+}
+
+model resources {
+  docID String @id @default(dbgenerated()) @map("_id") @db.ObjectId
+}
+
+model sessions {
+  docID           String   @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  expires      DateTime @db.Date
+  sessionToken String
+  userId       String   @db.ObjectId
+}
+
+model users {
+  docID           String    @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  email         String?
+  emailVerified DateTime? @db.Date
+  userID     String?   @map("id")
+  image         String?
+  name          String?
+  password      String?
+  username      String?
+}
+
+model verification_tokens {
+  docID         String                  @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  expires    DateTime                @db.Date
+  identifier Unsupported("Unknown")?
+  token      String
+}
