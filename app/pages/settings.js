@@ -89,17 +89,17 @@ function Settings() {
 					</label>
 				</form>
 				<br />
-				<button className="button" onClick={handleAccountDelete}>
+				<button className="button-small" onClick={handleAccountDelete}>
 					Delete Account
 				</button>
 			</section>
 			<section className="section2">
 				<h2>Data</h2>
-				<button className="button" onClick={handleDataExport}>
+				<button className="button-small" onClick={handleDataExport}>
 					Export Data
 				</button>
 				<br />
-				<button className="button" onClick={handleDataDelete}>
+				<button className="button-small" onClick={handleDataDelete}>
 					Delete Data
 				</button>
 			</section>
