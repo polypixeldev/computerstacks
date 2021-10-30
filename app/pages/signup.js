@@ -79,7 +79,7 @@ function Signup() {
 					</label>
 					<br />
 					<br />
-					<button className={`button ${FormStyle.submit}`}>Create</button>
+					<button className={`button-small ${FormStyle.submit}`}>Create</button>
 				</form>
 			</section>
 		</main>
