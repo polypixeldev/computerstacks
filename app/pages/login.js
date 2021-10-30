@@ -100,7 +100,7 @@ function Login() {
 					</label>
 					<br />
 					<br />
-					<button className={`button ${FormStyle.submit}`}>Login</button>
+					<button className={`button-small ${FormStyle.submit}`}>Login</button>
 				</form>
 				<div className={HeadStyles.actionDiv}>
 					<hr />
@@ -125,7 +125,7 @@ function Login() {
 						Password
 						<input
 							type="password"
-							autoComplete="new-password"
+							autoComplete="current-password"
 							name="password"
 							value={password}
 							onChange={handleChange}
@@ -133,7 +133,7 @@ function Login() {
 					</label>
 					<br />
 					<br />
-					<button className={`button ${FormStyle.submit}`}>Login</button>
+					<button className={`button-small ${FormStyle.submit}`}>Login</button>
 				</form>
 			</section>
 		</main>
