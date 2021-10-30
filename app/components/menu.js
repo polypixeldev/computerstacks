@@ -9,42 +9,32 @@ function Menu({ onLink }) {
 			<section className="section1">
 				<h2>
 					<Link href="/">
-						<a className="link" onClick={onLink}>
-							Home
-						</a>
+						<a className="link">Home</a>
 					</Link>
 				</h2>
 				<h2>
 					<Link href="/library">
-						<a className="link" onClick={onLink}>
-							Library
-						</a>
+						<a className="link">Library</a>
 					</Link>
 				</h2>
 				<h2>
 					<Link href="/roadmaps">
-						<a className="link" onClick={onLink}>
-							Roadmaps
-						</a>
+						<a className="link">Roadmaps</a>
 					</Link>
 				</h2>
 				<h2>
 					<Link href="/events">
-						<a className="link" onClick={onLink}>
-							Events
-						</a>
+						<a className="link">Events</a>
 					</Link>
 				</h2>
 				<h2>
 					<Link href="/settings">
-						<a className="link" onClick={onLink}>
-							Settings
-						</a>
+						<a className="link">Settings</a>
 					</Link>
 				</h2>
 				<h2>
 					<Link href={status === "authenticated" ? "/dashboard" : "/login"}>
-						<a className="link" onClick={onLink}>
+						<a className="link">
 							{status === "authenticated" ? "Dashboard" : "Login"}
 						</a>
 					</Link>
@@ -52,9 +42,7 @@ function Menu({ onLink }) {
 				{status === "authenticated" ? null : (
 					<h2>
 						<Link href="/signup">
-							<a className="link" onClick={onLink}>
-								Sign Up
-							</a>
+							<a className="link">Sign Up</a>
 						</Link>
 					</h2>
 				)}
@@ -63,9 +51,7 @@ function Menu({ onLink }) {
 						<hr />
 						<h2>
 							<Link href="/signout">
-								<a className="link" onClick={onLink}>
-									Sign out
-								</a>
+								<a className="link">Sign out</a>
 							</Link>
 						</h2>
 					</>

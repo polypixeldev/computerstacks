@@ -5,7 +5,7 @@ import OpenMenu from "../public/openMenu.png";
 import CloseMenu from "../public/closeMenu.png";
 import SearchIcon from "../public/search.png";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import MenuScreen from "../components/menu.js";
 import { SessionProvider } from "next-auth/react";
 import { useRouter } from "next/router";
@@ -19,6 +19,12 @@ function MyApp({ Component, pageProps }) {
 	function toggleMenu() {
 		menuOpen ? setMenuOpen(false) : setMenuOpen(true);
 	}
+
+	useEffect(() => {
+		router.events.on("routeChangeStart", () => setMenuOpen(false));
+		return () =>
+			router.events.off("routeChangeStart", () => setMenuOpen(false));
+	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 
 	function handleChange(event) {
 		const target = event.target;
@@ -86,11 +92,7 @@ function MyApp({ Component, pageProps }) {
 					Login
 				</button>
 			</nav>
-			{menuOpen ? (
-				<MenuScreen onLink={() => toggleMenu()} />
-			) : (
-				<Component {...pageProps} />
-			)}
+			{menuOpen ? <MenuScreen /> : <Component {...pageProps} />}
 			<footer>
 				<div>
 					<h2>Community Project</h2>
