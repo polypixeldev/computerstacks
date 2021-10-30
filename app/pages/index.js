@@ -9,6 +9,7 @@ export default function Home() {
 		<main>
 			<section className="top">
 				<Image
+					priority={true}
 					src={Background}
 					alt="background"
 					layout="fill"
