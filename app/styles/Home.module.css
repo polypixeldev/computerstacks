@@ -5,6 +5,7 @@
 	border-radius: 30px;
 	margin-left: 20vw;
 	margin-right: 20vw;
+	max-width: calc(90% - 40vw);
 }
 
 .eventCard div {

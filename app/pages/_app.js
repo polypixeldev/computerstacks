@@ -92,10 +92,12 @@ function MyApp({ Component, pageProps }) {
 				<Component {...pageProps} />
 			)}
 			<footer>
-				<h2>Community Project</h2>
-				<p>
-					<strong>© 2021, Samuel Fernandez</strong>
-				</p>
+				<div>
+					<h2>Community Project</h2>
+					<p>
+						<strong>© 2021, Samuel Fernandez</strong>
+					</p>
+				</div>
 				<div>
 					<h3>Library</h3>
 					<div>

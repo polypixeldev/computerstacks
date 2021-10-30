@@ -214,6 +214,8 @@ section {
 
 footer {
 	background: var(--grey-4);
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 }
 footer a {
 	font-family: "Zilla Slab", monospace;
