@@ -78,7 +78,11 @@ function MyApp({ Component, pageProps }) {
 						</div>
 					</div>
 				</div>
-				<h1>Community Project</h1>
+				<Link href="/">
+					<a className="link">
+						<h1>Community Project</h1>
+					</a>
+				</Link>
 				<button
 					className="button-small"
 					id="signup"
