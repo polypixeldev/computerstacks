@@ -4,7 +4,30 @@ import styles from "../styles/Home.module.css";
 import Background from "../public/tech.png";
 import Icons from "../public/icons.png";
 
-export default function Home() {
+function Home(props) {
+	function listEvents() {
+		const events = props.data?.events.filter(
+			(event) => event.date >= Date.now()
+		);
+		console.log(events);
+
+		if (!events || events?.length === 0)
+			return (
+				<div>
+					<p>No upcoming events right now... Check back later!</p>
+				</div>
+			);
+
+		return events.map((event) => (
+			<div key={event.name} className={styles.eventCard}>
+				<h3>{event.name}</h3>
+				<div>
+					<p>{event.description}</p>
+				</div>
+			</div>
+		));
+	}
+
 	return (
 		<main>
 			<section className="top">
@@ -31,12 +54,7 @@ export default function Home() {
 			</section>
 			<section className="section2" id="events">
 				<h2>Events</h2>
-				<div className={styles.eventCard}>
-					<h3>Event</h3>
-					<div>
-						<p>Lorem ipsum dolor sit amet, consectetur</p>
-					</div>
-				</div>
+				{listEvents()}
 				<p>
 					<Link href="/events">
 						<a className="link">View the entire event calendar</a>
@@ -52,3 +70,43 @@ export default function Home() {
 		</main>
 	);
 }
+
+export async function getStaticProps() {
+	// For development
+
+	return {
+		props: {
+			data: {
+				events: [
+					{
+						name: "Event",
+						date: Date.now() + 5000,
+						description: "A Current Event",
+					},
+					{
+						name: "Dead Event",
+						date: Date.now() - 86400000,
+						description: "A Past Event",
+					},
+					{
+						name: "New Event",
+						date: Date.now() + 86400000,
+						description: "A Future Event",
+					},
+				],
+			},
+		},
+	};
+
+	const EVENTS_META_URL = ``; // Fetches names and location of resources, nothing else
+
+	let res = { revalidate: 60, props: { data: {}, error: false } };
+
+	const data = await axios.get(EVENTS_META_URL)?.data;
+	if (!data) res.props.error = true;
+	else res.props.data = data;
+
+	return res;
+}
+
+export default Home;

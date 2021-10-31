@@ -6,6 +6,7 @@
 	margin-left: 20vw;
 	margin-right: 20vw;
 	max-width: calc(90% - 40vw);
+	margin-bottom: 25px;
 }
 
 .eventCard div {
