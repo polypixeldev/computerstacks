@@ -3,13 +3,14 @@ import Link from "next/link";
 import styles from "../styles/Home.module.css";
 import Background from "../public/tech.png";
 import Icons from "../public/icons.png";
+import prettyMs from "pretty-ms";
 
 function Home(props) {
 	function listEvents() {
 		const events = props.data?.events.filter(
-			(event) => event.date >= Date.now()
+			(event) =>
+				Date.now() >= event.date && Date.now() <= event.date + event.duration
 		);
-		console.log(events);
 
 		if (!events || events?.length === 0)
 			return (
@@ -21,6 +22,7 @@ function Home(props) {
 		return events.map((event) => (
 			<div key={event.name} className={styles.eventCard}>
 				<h3>{event.name}</h3>
+				<p>{prettyMs(event.duration, { verbose: true })}</p>
 				<div>
 					<p>{event.description}</p>
 				</div>
@@ -80,17 +82,20 @@ export async function getStaticProps() {
 				events: [
 					{
 						name: "Event",
-						date: Date.now() + 5000,
+						date: Date.now(),
+						duration: 60000,
 						description: "A Current Event",
 					},
 					{
 						name: "Dead Event",
 						date: Date.now() - 86400000,
+						duration: 60000,
 						description: "A Past Event",
 					},
 					{
 						name: "New Event",
 						date: Date.now() + 86400000,
+						duration: 60000,
 						description: "A Future Event",
 					},
 				],
