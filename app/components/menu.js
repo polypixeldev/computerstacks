@@ -23,6 +23,11 @@ function Menu({ onLink }) {
 					</Link>
 				</h2>
 				<h2>
+					<Link href="/search">
+						<a className="link">Search</a>
+					</Link>
+				</h2>
+				<h2>
 					<Link href="/events">
 						<a className="link">Events</a>
 					</Link>
