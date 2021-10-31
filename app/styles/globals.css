@@ -21,6 +21,7 @@ body {
 	padding: 0px;
 	color: #ffffff;
 	text-align: center;
+	background-color: var(--grey-4);
 }
 
 h1,
