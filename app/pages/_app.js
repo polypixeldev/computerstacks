@@ -36,6 +36,7 @@ function MyApp({ Component, pageProps }) {
 
 	function handleSearch(event) {
 		if (event.key && event.key !== "Enter") return;
+		setQuery("");
 		router.push(`/search?query=${query}`);
 	}
 

@@ -43,7 +43,9 @@ function Search() {
 		if (name === "query") setQuery(value);
 	}
 
-	function handleSearch() {
+	function handleSearch(event) {
+		if (event.key && event.key !== "Enter") return;
+		setQuery("");
 		router.push(`/search?query=${query}`);
 	}
 
@@ -71,6 +73,7 @@ function Search() {
 						placeholder="Browse our collection"
 						value={query}
 						onChange={handleChange}
+						onKeyDown={handleSearch}
 					/>
 					<div>
 						<div>
