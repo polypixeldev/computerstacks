@@ -1,0 +1,35 @@
+{
+    "properties": {
+        "_id": {
+            "bsonType": "objectId"
+        },
+        "author": {
+            "bsonType": "string"
+        },
+        "communityRating": {
+            "bsonType": "int"
+        },
+        "communuityRating": {
+            "bsonType": "int"
+        },
+        "description": {
+            "bsonType": "string"
+        },
+        "link": {
+            "bsonType": "string"
+        },
+        "name": {
+            "bsonType": "string"
+        },
+        "teamRating": {
+            "bsonType": "int"
+        },
+        "timestamp": {
+            "bsonType": "date"
+        },
+        "uri": {
+            "bsonType": "string"
+        }
+    },
+    "title": "resource"
+}

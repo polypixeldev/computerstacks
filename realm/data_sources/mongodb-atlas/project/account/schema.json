@@ -1,0 +1,35 @@
+{
+    "properties": {
+        "_id": {
+            "bsonType": "string"
+        },
+        "access_token": {
+            "bsonType": "string"
+        },
+        "expires_at": {
+            "bsonType": "long"
+        },
+        "id_token": {
+            "bsonType": "string"
+        },
+        "provider": {
+            "bsonType": "string"
+        },
+        "providerAccountId": {
+            "bsonType": "string"
+        },
+        "scope": {
+            "bsonType": "string"
+        },
+        "token_type": {
+            "bsonType": "string"
+        },
+        "type": {
+            "bsonType": "string"
+        },
+        "userId": {
+            "bsonType": "string"
+        }
+    },
+    "title": "account"
+}
