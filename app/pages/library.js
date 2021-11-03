@@ -38,30 +38,12 @@ function Library(props) {
 }
 
 export async function getStaticProps(context) {
-	// For development
-
-	return {
-		props: {
-			data: {
-				numResources: 5,
-				numSubjects: 10,
-				subjects: [
-					[
-						{ name: "Yes", uri: "yes" },
-						{ name: "Hmmm", uri: "hmmm" },
-					],
-					[{ name: "No", uri: "no" }],
-					[{ name: "Maybe", uri: "maybe" }],
-				],
-			},
-		},
-	};
-
-	const RESOURCES_META_URL = ``; // Fetches names and location of resources, nothing else
+	const RESOURCES_META_URL = `/api/library/meta`; // Fetches names and location of resources, nothing else
 
 	let res = { revalidate: 60, props: { data: {}, error: false } };
 
-	const data = await axios.get(RESOURCES_META_URL)?.data;
+	let data = await axios.get(RESOURCES_META_URL);
+	data = data.data;
 	if (!data) res.props.error = true;
 	else res.props.data = data;
 
