@@ -1,4 +1,4 @@
-import prisma from "../../../prisma/client";
+import prisma from "../../../db/prisma";
 import bcrypt from "bcryptjs";
 
 async function create(req, res) {
