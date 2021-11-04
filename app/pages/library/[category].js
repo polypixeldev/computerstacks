@@ -18,57 +18,25 @@ function Category(props) {
 }
 
 export async function getStaticPaths() {
-	// For development
-
-	return {
-		paths: [
-			{ params: { category: "yes" } },
-			{ params: { category: "hmmm" } },
-			{ params: { category: "no" } },
-			{ params: { category: "maybe" } },
-		],
-		fallback: true,
-	};
-
-	const RESOURCES_META_URL = ``; // Fetches names and location of resources, nothing else
+	const RESOURCES_META_URL = `/api/library/meta`; // Fetches names and location of resources, nothing else
 
 	let res = { paths: [], fallback: true };
 
-	const data = await axios.get(RESOURCES_META_URL)?.data;
+	let data = await axios.get(RESOURCES_META_URL);
+
+	data = data.data;
 
 	if (!data) return res;
 
-	for (let subject of data.subjects)
-		res.paths.push({ params: { category: subject.uri } });
+	for (let level of data.subjects)
+		for (let subject of level)
+			res.paths.push({ params: { category: subject.uri } });
 
 	return res;
 }
 
 export async function getStaticProps({ params }) {
-	// For development
-
-	return {
-		props: {
-			data: {
-				description: "desc desc desc",
-				category: Array.from(params.category).reverse().join(""),
-				items: [
-					[
-						{ name: "sub1", uri: "sub1" },
-						{ name: "sub2", uri: "sub2" },
-					],
-					[{ name: "sub3", uri: "sub3" }],
-					[
-						{ name: "sub4", uri: "sub4" },
-						{ name: "sub5", uri: "sub5" },
-						{ name: "sub6", uri: "sub6" },
-					],
-				],
-			},
-		},
-	};
-
-	const CATEGORY_DATA_URL = ``;
+	const CATEGORY_DATA_URL = `/api/library/category?uri=${params.category}`;
 
 	let res = { revalidate: 60, props: { data: {}, error: false } };
 

@@ -2,9 +2,8 @@ import Link from "next/link";
 import HeadStyle from "../styles/Head.module.css";
 
 function CategoryPage(props) {
-	console.log(props.data.items);
 	function getLevel(level) {
-		return props.data.items[level].map((item) => (
+		return props.data.subcategories[level].map((item) => (
 			<div key={item.name}>
 				<p>
 					<strong>
