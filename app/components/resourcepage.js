@@ -1,11 +1,20 @@
 import HeadStyle from "../styles/Head.module.css";
+import Link from "next/link";
 
 function ResourcePage(props) {
 	return (
 		<main>
 			<section className={HeadStyle.head} id="head">
-				<h4>{props.category}</h4>
-				<h3>{props.subcategory}</h3>
+				<h4>
+					<Link href={`/library/${props.category}`}>
+						<a className="link">{props.category}</a>
+					</Link>
+				</h4>
+				<h3>
+					<Link href={`/library/${props.category}/${props.subcategory}`}>
+						<a className="link">{props.subcategory}</a>
+					</Link>
+				</h3>
 				<h2>{props.data.name}</h2>
 				<p>{props.data.description}</p>
 				<div className={HeadStyle.actionDiv}>

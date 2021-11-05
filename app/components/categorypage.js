@@ -24,7 +24,13 @@ function CategoryPage(props) {
 	return (
 		<main>
 			<section className={HeadStyle.head} id="head">
-				{props.subcategory ? <h3>{props.category}</h3> : null}
+				{props.subcategory ? (
+					<h3>
+						<Link href={`/library/${props.category}`}>
+							<a className="link">{props.category}</a>
+						</Link>
+					</h3>
+				) : null}
 				{props.data.subcategory ? (
 					<h2>{props.data.subcategory}</h2>
 				) : (
