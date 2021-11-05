@@ -11,14 +11,7 @@ function Resource(props) {
 }
 
 export async function getStaticPaths() {
-	// For development
-
-	return {
-		paths: [{ params: { category: "a", subcategory: "b", resource: "c" } }],
-		fallback: true,
-	};
-
-	const RESOURCES_META_URL = ``; // Fetches names and location of resources, nothing else
+	const RESOURCES_META_URL = `/api/library/meta`; // Fetches names and location of resources, nothing else
 
 	let res = { paths: [], fallback: true };
 
@@ -27,47 +20,39 @@ export async function getStaticPaths() {
 
 	if (!data) return res;
 
-	for (let category of data.subjects) {
-		const CATEGORY_DATA_URL = ``;
+	for (let level of data.subjects)
+		for (let category of level) {
+			const CATEGORY_DATA_URL = `/api/library/category?uri=${category.uri}`;
 
-		let catdata = await axios.get(CATEGORY_DATA_URL);
-		catdata = catdata.data;
+			let catdata = await axios.get(CATEGORY_DATA_URL);
+			catdata = catdata.data;
 
-		if (!catdata) return res;
+			if (!catdata) return res;
 
-		for (let subcat of catdata.items)
-			for (let resource of subcat.resources)
-				res.paths.push({
-					params: {
-						category: category.uri,
-						page: subcat.uri,
-						resource: resource.uri,
-					},
-				});
-	}
+			for (let sublevel of catdata.subcategories)
+				for (let subcat of sublevel) {
+					const SUBCATEGORY_DATA_URL = `/api/library/subcategory?uri=${subcat.uri}`;
+
+					let subcatdata = await axios.get(SUBCATEGORY_DATA_URL);
+					subcatdata = subcatdata.data;
+
+					for (let subsublevel of subcatdata.resources)
+						for (let resource of subsublevel)
+							res.paths.push({
+								params: {
+									category: category.uri,
+									subcategory: subcat.uri,
+									resource: resource.uri,
+								},
+							});
+				}
+		}
 
 	return res;
 }
 
 export async function getStaticProps({ params }) {
-	// For development
-
-	return {
-		props: {
-			data: {
-				uri: "freecodecamp",
-				name: "freeCodeCamp",
-				description:
-					"Learn to code — for free. Build projects. Earn certifications.",
-				link: "https://freecodecamp.org",
-				subcategory: "Courses",
-				category: "Web Development",
-			},
-			error: false,
-		},
-	};
-
-	const RESOURCE_URL = ``;
+	const RESOURCE_URL = `/api/library/resource?uri=${params.resource}`;
 
 	let res = { revalidate: 60, props: { data: {}, error: false } };
 

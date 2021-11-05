@@ -34,7 +34,6 @@ export async function getStaticPaths() {
 			let catdata = await axios.get(CATEGORY_DATA_URL);
 			catdata = catdata.data;
 			if (!catdata) return res;
-			console.log(catdata.subcategories);
 
 			for (let sublevel of catdata.subcategories)
 				for (let item of sublevel)
