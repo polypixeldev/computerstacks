@@ -9,7 +9,7 @@ function CategoryPage(props) {
 					<strong>
 						<Link
 							href={`/library/${props.category}${
-								props.page ? `/${props.page}/` : `/`
+								props.subcategory ? `/${props.subcategory}/` : `/`
 							}${item.uri}`}
 						>
 							<a className="link">{item.name}</a>

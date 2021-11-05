@@ -1,20 +1,24 @@
 import { useRouter } from "next/router";
-import ResourcePage from "../../../../components/resourcepage";
-import Loading from "../../../../components/loading";
-import axios from "axios";
+import Loading from "../../../components/loading";
+import CategoryPage from "../../../components/categorypage";
 
-function Resource(props) {
+function Subcategory(props) {
 	const router = useRouter();
+
 	if (router.isFallback) return <Loading />;
 
-	return <ResourcePage data={props.data} {...router.query} />;
+	return (
+		<CategoryPage
+			data={props.data}
+			category={router.query.category}
+			subcategory={router.query.subcategory}
+		/>
+	);
 }
 
 export async function getStaticPaths() {
-	// For development
-
 	return {
-		paths: [{ params: { category: "a", page: "b", resource: "c" } }],
+		paths: [{ params: { category: "a", subcategory: "b" } }],
 		fallback: true,
 	};
 
@@ -32,20 +36,10 @@ export async function getStaticPaths() {
 
 		let catdata = await axios.get(CATEGORY_DATA_URL);
 		catdata = catdata.data;
-
 		if (!catdata) return res;
 
-		let subcats = catdata.items.filter((item) => item.subcategory === true);
-
-		for (let subcat of subcats)
-			for (let resource of subcat.resources)
-				res.paths.push({
-					params: {
-						category: category.uri,
-						page: subcat.uri,
-						resource: resource.uri,
-					},
-				});
+		for (let item of catdata.items)
+			res.paths.push({ params: { category: category.uri, page: item.uri } });
 	}
 
 	return res;
@@ -53,7 +47,33 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
 	// For development
-	console.log("h");
+
+	// Subcategory version
+
+	return {
+		props: {
+			data: {
+				subcategory: Array.from(params.subcategory).reverse().join(""),
+				category: "Parent",
+				description: "desc desc desc",
+				subcategories: [
+					[
+						{ name: "sub1", uri: "sub1" },
+						{ name: "sub2", uri: "sub2" },
+					],
+					[{ name: "sub3", uri: "sub3" }],
+					[
+						{ name: "sub4", uri: "sub4" },
+						{ name: "sub5", uri: "sub5" },
+						{ name: "sub6", uri: "sub6" },
+					],
+				],
+			},
+			error: false,
+		},
+	};
+
+	// Resource version
 
 	return {
 		props: {
@@ -63,18 +83,17 @@ export async function getStaticProps({ params }) {
 				description:
 					"Learn to code — for free. Build projects. Earn certifications.",
 				link: "https://freecodecamp.org",
-				subcategory: "Courses",
 				category: "Web Development",
 			},
 			error: false,
 		},
 	};
 
-	const RESOURCE_URL = ``;
+	const SUBCATEGORY_DATA_URL = ``;
 
 	let res = { revalidate: 60, props: { data: {}, error: false } };
 
-	let data = await axios.get(RESOURCE_URL);
+	let data = await axios.get(SUBCATEGORY_DATA_URL);
 	data = data.data;
 	if (!data) res.props.error = true;
 	else res.props.data = data;
@@ -82,4 +101,4 @@ export async function getStaticProps({ params }) {
 	return res;
 }
 
-export default Resource;
+export default Subcategory;
