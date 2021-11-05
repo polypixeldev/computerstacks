@@ -4,8 +4,8 @@ function ResourcePage(props) {
 	return (
 		<main>
 			<section className={HeadStyle.head} id="head">
-				<h4>{props.data.category}</h4>
-				<h3>{props.data.subcategory}</h3>
+				<h4>{props.category}</h4>
+				<h3>{props.subcategory}</h3>
 				<h2>{props.data.name}</h2>
 				<p>{props.data.description}</p>
 				<div className={HeadStyle.actionDiv}>
