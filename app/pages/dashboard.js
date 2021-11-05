@@ -16,8 +16,6 @@ function Dashboard() {
 
 	if (status === "loading") return <Loading />;
 
-	console.log(session);
-
 	return (
 		<main>
 			<section className="section1">

@@ -1,7 +1,6 @@
 import HeadStyle from "../styles/Head.module.css";
 
 function ResourcePage(props) {
-	console.log(props);
 	return (
 		<main>
 			<section className={HeadStyle.head} id="head">

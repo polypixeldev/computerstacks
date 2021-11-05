@@ -51,7 +51,6 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
 	// For development
-	console.log("h");
 
 	return {
 		props: {

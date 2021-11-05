@@ -44,7 +44,6 @@ function Login() {
 			redirect: false,
 		});
 		const session = await getSession();
-		console.log(session);
 
 		if (res) {
 			router.push("/dashboard");

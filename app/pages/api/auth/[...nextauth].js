@@ -30,7 +30,6 @@ async function handler(req, res) {
 					if (!user) return null;
 					const auth = bcrypt.compareSync(credentials.password, user.password);
 
-					console.log(auth);
 					if (!auth) {
 						return null;
 					} else {

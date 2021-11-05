@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import axios from "axios";
 import Loading from "../../../components/loading";
 import CategoryPage from "../../../components/categorypage";
 
@@ -17,12 +18,7 @@ function Subcategory(props) {
 }
 
 export async function getStaticPaths() {
-	return {
-		paths: [{ params: { category: "a", subcategory: "b" } }],
-		fallback: true,
-	};
-
-	const RESOURCES_META_URL = ``; // Fetches names and location of resources, nothing else
+	const RESOURCES_META_URL = `/api/library/meta`; // Fetches names and location of resources, nothing else
 
 	let res = { paths: [], fallback: true };
 
@@ -31,65 +27,27 @@ export async function getStaticPaths() {
 
 	if (!data) return res;
 
-	for (let category of data.subjects) {
-		const CATEGORY_DATA_URL = ``;
+	for (let level of data.subjects)
+		for (let category of level) {
+			const CATEGORY_DATA_URL = `/api/library/category?uri=${category.uri}`;
 
-		let catdata = await axios.get(CATEGORY_DATA_URL);
-		catdata = catdata.data;
-		if (!catdata) return res;
+			let catdata = await axios.get(CATEGORY_DATA_URL);
+			catdata = catdata.data;
+			if (!catdata) return res;
+			console.log(catdata.subcategories);
 
-		for (let item of catdata.items)
-			res.paths.push({ params: { category: category.uri, page: item.uri } });
-	}
+			for (let sublevel of catdata.subcategories)
+				for (let item of sublevel)
+					res.paths.push({
+						params: { category: category.uri, subcategory: item.uri },
+					});
+		}
 
 	return res;
 }
 
 export async function getStaticProps({ params }) {
-	// For development
-
-	// Subcategory version
-
-	return {
-		props: {
-			data: {
-				subcategory: Array.from(params.subcategory).reverse().join(""),
-				category: "Parent",
-				description: "desc desc desc",
-				subcategories: [
-					[
-						{ name: "sub1", uri: "sub1" },
-						{ name: "sub2", uri: "sub2" },
-					],
-					[{ name: "sub3", uri: "sub3" }],
-					[
-						{ name: "sub4", uri: "sub4" },
-						{ name: "sub5", uri: "sub5" },
-						{ name: "sub6", uri: "sub6" },
-					],
-				],
-			},
-			error: false,
-		},
-	};
-
-	// Resource version
-
-	return {
-		props: {
-			data: {
-				uri: "freecodecamp",
-				name: "freeCodeCamp",
-				description:
-					"Learn to code — for free. Build projects. Earn certifications.",
-				link: "https://freecodecamp.org",
-				category: "Web Development",
-			},
-			error: false,
-		},
-	};
-
-	const SUBCATEGORY_DATA_URL = ``;
+	const SUBCATEGORY_DATA_URL = `/api/library/subcategory?uri=${params.subcategory}`;
 
 	let res = { revalidate: 60, props: { data: {}, error: false } };
 
