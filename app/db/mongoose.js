@@ -37,6 +37,13 @@ const resourceSchema = new mongoose.Schema({
 	comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "comments" }],
 });
 
+const roadmapSchema = new mongoose.Schema({
+	name: String,
+	description: String,
+	uri: String,
+	image: String,
+});
+
 const commentSchema = new mongoose.Schema({
 	content: String,
 });
@@ -48,6 +55,8 @@ const subcategories =
 	mongoose.model("subcategories", subcategorySchema);
 const resources =
 	mongoose.models.resources || mongoose.model("resources", resourceSchema);
+const roadmaps =
+	mongoose.models.roadmaps || mongoose.model("roadmaps", roadmapSchema);
 const comments =
 	mongoose.models.comments || mongoose.model("comments", commentSchema);
 
@@ -59,6 +68,7 @@ async function getDb() {
 		categories,
 		subcategories,
 		resources,
+		roadmaps,
 		comments,
 	};
 }
