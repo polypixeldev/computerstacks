@@ -31,22 +31,7 @@ function Explore(props) {
 }
 
 export async function getStaticProps() {
-	// For development
-
-	return {
-		props: {
-			data: {
-				numRoadmaps: 5,
-				roadmaps: [
-					[{ name: "a", uri: "a" }],
-					[{ name: "b", uri: "b" }],
-					[{ name: "c", uri: "c" }],
-				],
-			},
-		},
-	};
-
-	const ROADMAPS_META_URL = ``;
+	const ROADMAPS_META_URL = `/api/roadmaps/meta`;
 
 	let res = { revalidate: 60, props: { data: {}, error: false } };
 
