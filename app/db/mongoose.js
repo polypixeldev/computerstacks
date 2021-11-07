@@ -45,6 +45,7 @@ const roadmapSchema = new mongoose.Schema({
 	description: String,
 	uri: String,
 	image: String,
+	comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "comments" }],
 	level: Number,
 });
 

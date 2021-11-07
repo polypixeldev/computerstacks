@@ -1,15 +1,17 @@
 import HeadStyles from "../../styles/Head.module.css";
 import axios from "axios";
 import { useRouter } from "next/router";
+import Image from "next/image";
 import Loading from "../../components/loading";
 
 function Roadmap(props) {
 	const router = useRouter();
 	if (router.isFallback) return <Loading />;
+
 	return (
 		<main>
 			<section className={HeadStyles.head}>
-				<h2>{props.data.roadmap}</h2>
+				<h2>{props.data.name}</h2>
 				<p>{props.data.description}</p>
 				<div className={HeadStyles.actionDiv}>
 					<p>1</p>
@@ -19,6 +21,12 @@ function Roadmap(props) {
 			</section>
 			<section className="section1">
 				<h2>Roadmap</h2>
+				<Image
+					src={props.data.image}
+					alt="The roadmap"
+					width={800}
+					height={600}
+				/>
 			</section>
 			<section className="section2">
 				<h2>Comments</h2>
@@ -28,19 +36,7 @@ function Roadmap(props) {
 }
 
 export async function getStaticPaths() {
-	// For development
-
-	return {
-		paths: [
-			{ params: { roadmap: "yes" } },
-			{ params: { roadmap: "hmmm" } },
-			{ params: { roadmap: "no" } },
-			{ params: { roadmap: "maybe" } },
-		],
-		fallback: true,
-	};
-
-	const ROADMAPS_META_URL = ``;
+	const ROADMAPS_META_URL = `/api/roadmaps/meta`;
 
 	let res = { paths: [], fallback: true };
 
@@ -55,18 +51,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-	// For development
-
-	return {
-		props: {
-			data: {
-				description: "roadmap desc desc",
-				roadmap: Array.from(params.roadmap).reverse().join(""),
-			},
-		},
-	};
-
-	const ROADMAP_DATA_URL = ``;
+	const ROADMAP_DATA_URL = `/api/roadmaps/roadmap?uri=${params.roadmap}`;
 
 	let res = { revalidate: 60, props: { data: {}, error: false } };
 
