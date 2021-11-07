@@ -16,6 +16,7 @@ const categorySchema = new mongoose.Schema({
 	subcategories: [
 		{ type: mongoose.Schema.Types.ObjectId, ref: "subcategories" },
 	],
+	level: Number,
 });
 
 const subcategorySchema = new mongoose.Schema({
@@ -23,6 +24,7 @@ const subcategorySchema = new mongoose.Schema({
 	description: String,
 	uri: String,
 	resources: [{ type: mongoose.Schema.Types.ObjectId, ref: "resources" }],
+	level: Number,
 });
 
 const resourceSchema = new mongoose.Schema({
@@ -35,6 +37,7 @@ const resourceSchema = new mongoose.Schema({
 	author: String,
 	timestamp: Date,
 	comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "comments" }],
+	level: Number,
 });
 
 const roadmapSchema = new mongoose.Schema({
@@ -42,6 +45,7 @@ const roadmapSchema = new mongoose.Schema({
 	description: String,
 	uri: String,
 	image: String,
+	level: Number,
 });
 
 const commentSchema = new mongoose.Schema({
