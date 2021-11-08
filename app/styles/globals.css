@@ -182,7 +182,7 @@ nav {
 	display: grid;
 	grid-template-rows: 1fr;
 	position: sticky;
-	width: calc(100vw - 40px);
+	width: calc(100% - 40px);
 	height: 8vh;
 	top: 0px;
 	z-index: 2;
