@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import axios from "axios";
 import styles from "../styles/Home.module.css";
 import Background from "../public/tech.png";
 import Icons from "../public/icons.png";
@@ -7,10 +8,11 @@ import prettyMs from "pretty-ms";
 
 function Home(props) {
 	function listEvents() {
-		const events = props.data?.events.filter(
-			(event) =>
-				Date.now() >= event.date && Date.now() <= event.date + event.duration
-		);
+		const events = props.data?.events.filter((event) => {
+			const eventDate = new Date(event.date).getTime();
+			const now = Date.now();
+			return now >= eventDate && now <= eventDate + event.duration;
+		});
 
 		if (!events || events?.length === 0)
 			return (
@@ -74,40 +76,12 @@ function Home(props) {
 }
 
 export async function getStaticProps() {
-	// For development
-
-	return {
-		props: {
-			data: {
-				events: [
-					{
-						name: "Event",
-						date: Date.now(),
-						duration: 60000,
-						description: "A Current Event",
-					},
-					{
-						name: "Dead Event",
-						date: Date.now() - 86400000,
-						duration: 60000,
-						description: "A Past Event",
-					},
-					{
-						name: "New Event",
-						date: Date.now() + 86400000,
-						duration: 60000,
-						description: "A Future Event",
-					},
-				],
-			},
-		},
-	};
-
-	const EVENTS_META_URL = ``; // Fetches names and location of resources, nothing else
+	const EVENTS_META_URL = `/api/events/fetch`;
 
 	let res = { revalidate: 60, props: { data: {}, error: false } };
 
-	const data = await axios.get(EVENTS_META_URL)?.data;
+	let data = await axios.get(EVENTS_META_URL);
+	data = data.data;
 	if (!data) res.props.error = true;
 	else res.props.data = data;
 
