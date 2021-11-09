@@ -49,6 +49,14 @@ const roadmapSchema = new mongoose.Schema({
 	level: Number,
 });
 
+const eventSchema = new mongoose.Schema({
+	name: String,
+	description: String,
+	uri: String,
+	date: Date,
+	duration: Number,
+});
+
 const commentSchema = new mongoose.Schema({
 	content: String,
 });
@@ -62,6 +70,7 @@ const resources =
 	mongoose.models.resources || mongoose.model("resources", resourceSchema);
 const roadmaps =
 	mongoose.models.roadmaps || mongoose.model("roadmaps", roadmapSchema);
+const events = mongoose.models.events || mongoose.model("events", eventSchema);
 const comments =
 	mongoose.models.comments || mongoose.model("comments", commentSchema);
 
@@ -74,6 +83,7 @@ async function getDb() {
 		subcategories,
 		resources,
 		roadmaps,
+		events,
 		comments,
 	};
 }
