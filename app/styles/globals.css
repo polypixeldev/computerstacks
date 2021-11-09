@@ -50,11 +50,11 @@ h2 {
 }
 
 h3 {
-	font-size: calc(3vmin + 8px);
+	font-size: calc(3vmin + 7px);
 }
 
 h4 {
-	font-size: calc(3vmin + 6px);
+	font-size: calc(3vmin + 3px);
 }
 
 p {

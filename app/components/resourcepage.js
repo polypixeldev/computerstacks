@@ -1,5 +1,6 @@
 import HeadStyle from "../styles/Head.module.css";
 import Link from "next/link";
+import styles from "../styles/Resource.module.css";
 
 function ResourcePage(props) {
 	return (
@@ -7,15 +8,19 @@ function ResourcePage(props) {
 			<section className={HeadStyle.head} id="head">
 				<h4>
 					<Link href={`/library/${props.category}`}>
-						<a className="link">{props.category}</a>
+						<a className={`link ${styles.category}`}>{props.category}</a>
 					</Link>
 				</h4>
 				<h3>
 					<Link href={`/library/${props.category}/${props.subcategory}`}>
-						<a className="link">{props.subcategory}</a>
+						<a className={`link ${styles.subcategory}`}>{props.subcategory}</a>
 					</Link>
 				</h3>
-				<h2>{props.data.name}</h2>
+				<h2>
+					<Link href={props.data.link}>
+						<a className="link">{props.data.name}</a>
+					</Link>
+				</h2>
 				<p>{props.data.description}</p>
 				<div className={HeadStyle.actionDiv}>
 					<p>1</p>
