@@ -60,6 +60,30 @@ async function handler(req, res) {
 			encryptionKey: process.env.JWT_ENCRYPTION_KEY,
 			secret: process.env.JWT_SECRET,
 		},
+		callbacks: {
+			async jwt({ token, user }) {
+				if (user) {
+					token._id = user.id;
+				}
+
+				return token;
+			},
+			async session({ session, token }) {
+				const dbUser = await prisma.user.findUnique({
+					where: {
+						id: token._id,
+					},
+					select: {
+						favorites: true,
+					},
+				});
+
+				session.user._id = token._id;
+				session.user.favorites = dbUser.favorites;
+
+				return session;
+			},
+		},
 		debug: false,
 	});
 }

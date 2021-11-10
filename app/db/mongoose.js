@@ -61,6 +61,18 @@ const commentSchema = new mongoose.Schema({
 	content: String,
 });
 
+const userSchema = new mongoose.Schema(
+	{
+		_id: String,
+		name: String,
+		email: String,
+		emailVerified: mongoose.Schema.Types.Mixed,
+		image: String,
+		favorites: Array,
+	},
+	{ collection: "user" }
+);
+
 const categories =
 	mongoose.models.categories || mongoose.model("categories", categorySchema);
 const subcategories =
@@ -73,6 +85,7 @@ const roadmaps =
 const events = mongoose.models.events || mongoose.model("events", eventSchema);
 const comments =
 	mongoose.models.comments || mongoose.model("comments", commentSchema);
+const user = mongoose.models.user || mongoose.model("user", userSchema);
 
 async function getDb() {
 	await connection;
@@ -85,6 +98,7 @@ async function getDb() {
 		roadmaps,
 		events,
 		comments,
+		user,
 	};
 }
 
