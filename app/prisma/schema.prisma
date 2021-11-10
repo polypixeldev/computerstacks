@@ -43,6 +43,7 @@ model user {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
+  favorites     String[]
   accounts      account[]
   sessions      session[]
 }

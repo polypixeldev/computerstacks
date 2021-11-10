@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 500 500" width="500" height="500" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
+  <path style="fill: rgb(216, 216, 216); stroke: rgb(0, 0, 0);" d="M 313.752 204.606"/>
+  <path d="M 216 82.17 L 245.82 167.957 L 336.622 169.807 L 264.249 224.677 L 290.549 311.608 L 216 259.732 L 141.451 311.608 L 167.751 224.677 L 95.378 169.807 L 186.18 167.957 Z" style="stroke: rgb(0, 0, 0); paint-order: stroke; stroke-linejoin: round; stroke-linecap: round; stroke-width: 10px; fill: none;" transform="matrix(-0.809017, 0.587785, -0.587785, -0.809017, 533.909928, 280.774422)" bx:shape="star 216 209 126.83 126.83 0.4 5 1@47d6cfb3"/>
+</svg>
