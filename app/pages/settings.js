@@ -6,7 +6,12 @@ import { signOut } from "next-auth/react";
 function Settings() {
 	const router = useRouter();
 
-	function handleDataExport() {}
+	async function handleDataExport() {
+		const DATA_EXPORT_URL = `/api/data/export`;
+		const data = await axios.get(DATA_EXPORT_URL);
+
+		alert(`Your data is: ${JSON.stringify(data.data)}`);
+	}
 
 	async function handleDataDelete() {
 		const DATA_DELETE_URL = `/api/data/delete`;
