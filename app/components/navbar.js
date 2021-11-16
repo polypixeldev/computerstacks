@@ -2,12 +2,15 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 import OpenMenu from "../public/openMenu.png";
 import CloseMenu from "../public/closeMenu.png";
 import SearchIcon from "../public/search.png";
 
 function Navbar(props) {
 	let [query, setQuery] = useState("");
+
+	const { status } = useSession();
 	const router = useRouter();
 
 	function handleChange(event) {
@@ -67,20 +70,32 @@ function Navbar(props) {
 					<h1>Community Project</h1>
 				</a>
 			</Link>
-			<button
-				className="button-small"
-				id="signup"
-				onClick={() => router.push("/signup")}
-			>
-				Sign Up
-			</button>
-			<button
-				className="button-small"
-				id="login"
-				onClick={() => router.push("/login")}
-			>
-				Login
-			</button>
+			{status !== "authenticated" ? (
+				<button
+					className="button-small"
+					id="signup"
+					onClick={() => router.push("/signup")}
+				>
+					Sign Up
+				</button>
+			) : null}
+			{status !== "authenticated" ? (
+				<button
+					className="button-small"
+					id="login"
+					onClick={() => router.push("/login")}
+				>
+					Login
+				</button>
+			) : (
+				<button
+					className="button-small"
+					id="login"
+					onClick={() => router.push("/dashboard")}
+				>
+					Dashboard
+				</button>
+			)}
 		</nav>
 	);
 }
