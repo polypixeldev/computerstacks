@@ -49,16 +49,6 @@ model user {
   sessions      session[]
 }
 
-model credentialUsers {
-  id            String    @id @default(cuid()) @map("_id")
-  name          String
-  username      String
-  password      String
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-}
-
 model verificationToken {
   id            String    @id @default(cuid()) @map("_id")
   identifier String
