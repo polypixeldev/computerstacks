@@ -10,6 +10,8 @@ import { useEffect, useState } from "react";
 
 function Dashboard() {
 	const [favorites, setFavorites] = useState([]);
+	const [roadmaps, setRoadmaps] = useState([]);
+
 	const router = useRouter();
 	const { data: session, status } = useSession({
 		required: true,
@@ -20,7 +22,6 @@ function Dashboard() {
 
 	useEffect(() => {
 		if (status !== "authenticated") return;
-		console.log("e");
 
 		let newFavs = [];
 		let queries = [];
@@ -40,6 +41,27 @@ function Dashboard() {
 		});
 	}, [status, session?.user.favorites]);
 
+	useEffect(() => {
+		if (status !== "authenticated") return;
+
+		let newRoadmaps = [];
+		let queries = [];
+
+		for (let roadmap of session.user.roadmaps) {
+			const uri = roadmap;
+
+			queries.push(
+				axios.get(`/api/roadmaps/roadmap?uri=${uri}`).then((res) => {
+					newRoadmaps.push({ ...res.data, uri: roadmap });
+				})
+			);
+		}
+
+		Promise.all(queries).then(() => {
+			setRoadmaps(newRoadmaps);
+		});
+	}, [status, session?.user.roadmaps]);
+
 	if (status === "loading") return <Loading />;
 
 	function listFavorites() {
@@ -48,6 +70,17 @@ function Dashboard() {
 			<h3 key={favorite.uri}>
 				<Link href={`/library/${favorite.uri}`}>
 					<a className="link">{favorite.name}</a>
+				</Link>
+			</h3>
+		));
+	}
+
+	function listRoadmaps() {
+		console.log(roadmaps);
+		return roadmaps.map((roadmap) => (
+			<h3 key={roadmap.uri}>
+				<Link href={`/roadmaps/${roadmap.uri}`}>
+					<a className="link">{roadmap.name}</a>
 				</Link>
 			</h3>
 		));
@@ -67,6 +100,7 @@ function Dashboard() {
 			</section>
 			<section className="section2">
 				<h2>Roadmaps</h2>
+				{listRoadmaps()}
 			</section>
 			<section className="section3">
 				<h2>Favorites</h2>

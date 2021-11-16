@@ -75,11 +75,13 @@ async function handler(req, res) {
 					},
 					select: {
 						favorites: true,
+						roadmaps: true,
 					},
 				});
 
 				session.user._id = token._id;
 				session.user.favorites = dbUser.favorites;
+				session.user.roadmaps = dbUser.roadmaps;
 
 				return session;
 			},

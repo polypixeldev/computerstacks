@@ -69,6 +69,7 @@ const userSchema = new mongoose.Schema(
 		emailVerified: mongoose.Schema.Types.Mixed,
 		image: String,
 		favorites: Array,
+		roadmaps: Array,
 	},
 	{ collection: "user" }
 );

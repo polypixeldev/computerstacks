@@ -1,12 +1,44 @@
 import HeadStyles from "../../styles/Head.module.css";
 import axios from "axios";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Loading from "../../components/loading";
 
+import roadmap from "../../public/favorite.svg";
+import notroadmap from "../../public/notfavorite.svg";
+
 function Roadmap(props) {
 	const router = useRouter();
+	const { data: session, status } = useSession();
+
+	const [isRoadmap, setIsRoadmap] = useState(false);
+
+	useEffect(() => {
+		if (status !== "authenticated") return;
+
+		if (session.user.roadmaps.includes(router.query.roadmap))
+			setIsRoadmap(true);
+	}, [session?.user.roadmaps, status, router.query.roadmap]);
+
 	if (router.isFallback) return <Loading />;
+
+	function handleRoadmap() {
+		const ROADMAP_URL = `/api/user/roadmap`;
+
+		if (isRoadmap) {
+			setIsRoadmap(false);
+			axios.post(ROADMAP_URL, {
+				uri: router.query.roadmap,
+			});
+		} else {
+			setIsRoadmap(true);
+			axios.post(ROADMAP_URL, {
+				uri: router.query.roadmap,
+			});
+		}
+	}
 
 	return (
 		<main>
@@ -15,7 +47,13 @@ function Roadmap(props) {
 				<p>{props.data.description}</p>
 				<div className={HeadStyles.actionDiv}>
 					<p>1</p>
-					<p>2</p>
+					<Image
+						onClick={handleRoadmap}
+						src={isRoadmap ? roadmap : notroadmap}
+						alt="Favorite button"
+						width={75}
+						height={75}
+					/>
 					<p>3</p>
 				</div>
 			</section>
