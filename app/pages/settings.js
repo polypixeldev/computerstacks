@@ -9,7 +9,7 @@ function Settings() {
 	function handleDataExport() {}
 
 	async function handleDataDelete() {
-		const DATA_DELETE_URL = `/api/auth/delete`;
+		const DATA_DELETE_URL = `/api/data/delete`;
 		await axios.post(DATA_DELETE_URL);
 
 		await signOut({ redirect: false });
