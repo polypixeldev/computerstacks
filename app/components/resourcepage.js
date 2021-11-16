@@ -2,13 +2,32 @@ import HeadStyle from "../styles/Head.module.css";
 import Link from "next/link";
 import Image from "next/image";
 import axios from "axios";
-import { useState } from "react";
+import { useSession } from "next-auth/react";
+import { useState, useEffect } from "react";
 import styles from "../styles/Resource.module.css";
 import favorite from "../public/favorite.svg";
 import notfavorite from "../public/notfavorite.svg";
 
 function ResourcePage(props) {
 	const [isFavorite, setIsFavorite] = useState(false);
+	const { data: session, status } = useSession();
+
+	useEffect(() => {
+		if (status !== "authenticated") return;
+
+		if (
+			session.user.favorites.includes(
+				`${props.category}/${props.subcategory}/${props.resource}`
+			)
+		)
+			setIsFavorite(true);
+	}, [
+		session?.user.favorites,
+		status,
+		props.category,
+		props.subcategory,
+		props.resource,
+	]);
 
 	function handleFavorite() {
 		const FAVORITE_URL = `/api/user/favorite`;
