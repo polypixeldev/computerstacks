@@ -7,9 +7,11 @@ import { useState, useEffect } from "react";
 import styles from "../styles/Resource.module.css";
 import favorite from "../public/favorite.svg";
 import notfavorite from "../public/notfavorite.svg";
+import profile from "../public/profile.png";
 
 function ResourcePage(props) {
 	const [isFavorite, setIsFavorite] = useState(false);
+	const [comment, setComment] = useState("");
 	const { data: session, status } = useSession();
 
 	useEffect(() => {
@@ -45,6 +47,24 @@ function ResourcePage(props) {
 		}
 	}
 
+	function handleChange(event) {
+		const target = event.target;
+		const value = target.value;
+		const name = target.name;
+
+		if (name === "comment") setComment(value);
+	}
+
+	function handleComment() {
+		const RESOURCE_COMMENT_URL = `/api/library/comment`;
+
+		axios.post(RESOURCE_COMMENT_URL, {
+			uri: props.resource,
+			content: comment,
+		});
+		setComment("");
+	}
+
 	return (
 		<main>
 			<section className={HeadStyle.head} id="head">
@@ -78,6 +98,16 @@ function ResourcePage(props) {
 			</section>
 			<section className="section1">
 				<h2>Comments</h2>
+				<div className={styles.newCommentBox}>
+					<Image
+						src={session?.user?.image || profile}
+						width={40}
+						height={40}
+						alt="Profile picture"
+					/>
+					<textarea name="comment" value={comment} onChange={handleChange} />
+					<button onClick={handleComment}>Comment</button>
+				</div>
 				<div>
 					<p>1</p>
 					<p>2</p>

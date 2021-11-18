@@ -59,6 +59,8 @@ const eventSchema = new mongoose.Schema({
 
 const commentSchema = new mongoose.Schema({
 	content: String,
+	author: { type: String, ref: "user" },
+	timestamp: Date,
 });
 
 const userSchema = new mongoose.Schema(
