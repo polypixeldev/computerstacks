@@ -4,7 +4,6 @@ import GitHubProvider from "next-auth/providers/github";
 import EmailProvider from "next-auth/providers/email";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "../../../db/prisma";
-import bcrypt from "bcryptjs";
 
 async function handler(req, res) {
 	return await NextAuth(req, res, {
@@ -36,9 +35,32 @@ async function handler(req, res) {
 			secret: process.env.JWT_SECRET,
 		},
 		callbacks: {
-			async jwt({ token, user }) {
+			async jwt({ token, user, isNewUser }) {
 				if (user) {
 					token._id = user.id;
+				}
+
+				if (isNewUser) {
+					await prisma.user.update({
+						where: {
+							id: user.id,
+						},
+						data: {
+							favorites: [],
+							roadmaps: [],
+						},
+					});
+
+					if (!user.email) {
+						await prisma.user.update({
+							where: {
+								id: user.id,
+							},
+							data: {
+								email: null,
+							},
+						});
+					}
 				}
 
 				return token;
