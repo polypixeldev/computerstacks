@@ -1,4 +1,5 @@
 import HeadStyle from "../styles/Head.module.css";
+import CommentStyle from "../styles/Comment.module.css";
 import Link from "next/link";
 import Image from "next/image";
 import axios from "axios";
@@ -98,7 +99,7 @@ function ResourcePage(props) {
 			</section>
 			<section className="section1">
 				<h2>Comments</h2>
-				<div className={styles.newCommentBox}>
+				<div className={CommentStyle.newCommentBox}>
 					<Image
 						src={session?.user?.image || profile}
 						width={40}
