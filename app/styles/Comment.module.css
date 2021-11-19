@@ -9,16 +9,6 @@
 	border-radius: 10px;
 }
 
-.newCommentBox img {
-	background: #c4c4c4;
-	border-radius: 50%;
-}
-
-.newCommentBox span {
-	padding: 1px !important;
-	min-height: 100% !important;
-}
-
 .newCommentBox textarea {
 	border-radius: 10px;
 	margin: 5px;
@@ -37,4 +27,44 @@
 	font-family: "Dosis", sans-serif;
 	font-size: calc(2vmin + 5px);
 	cursor: pointer;
+}
+
+.authorImg {
+	background: #c4c4c4;
+	border-radius: 50%;
+}
+
+.comment {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	padding: 10px;
+	background: var(--grey-3);
+	border-radius: 5px;
+}
+
+.inner {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.commentDiv {
+	width: 80%;
+}
+
+.commentText {
+	padding: 10px;
+	background: var(--grey-2);
+	border-radius: 5px;
+	width: 90%;
+	height: 100%;
+}
+
+.timestamp {
+	font-size: calc(2vmin + 5px);
+	font-style: oblique;
 }
