@@ -65,7 +65,6 @@ function Dashboard() {
 	if (status === "loading") return <Loading />;
 
 	function listFavorites() {
-		console.log(favorites);
 		return favorites.map((favorite) => (
 			<h3 key={favorite.uri}>
 				<Link href={`/library/${favorite.uri}`}>
@@ -76,7 +75,6 @@ function Dashboard() {
 	}
 
 	function listRoadmaps() {
-		console.log(roadmaps);
 		return roadmaps.map((roadmap) => (
 			<h3 key={roadmap.uri}>
 				<Link href={`/roadmaps/${roadmap.uri}`}>

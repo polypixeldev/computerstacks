@@ -71,7 +71,6 @@ function Roadmap(props) {
 	}
 
 	async function reloadComments() {
-		console.log("reloading...");
 		const ROADMAP_URL = `/api/roadmaps/roadmap?uri=${router.query.roadmap}`;
 
 		let res = await axios.get(ROADMAP_URL);
@@ -80,7 +79,6 @@ function Roadmap(props) {
 	}
 
 	function listComments() {
-		console.log(comments);
 		if (!comments) return null;
 		return comments.map((comment) => (
 			<Comment key={comment._id} data={comment} />
