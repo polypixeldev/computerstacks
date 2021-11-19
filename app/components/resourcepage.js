@@ -1,5 +1,6 @@
 import HeadStyle from "../styles/Head.module.css";
 import CommentStyle from "../styles/Comment.module.css";
+import Comment from "../components/comment";
 import Link from "next/link";
 import Image from "next/image";
 import axios from "axios";
@@ -13,6 +14,7 @@ import profile from "../public/profile.png";
 function ResourcePage(props) {
 	const [isFavorite, setIsFavorite] = useState(false);
 	const [comment, setComment] = useState("");
+	const [comments, setComments] = useState(props.data.comments);
 	const { data: session, status } = useSession();
 
 	useEffect(() => {
@@ -59,11 +61,28 @@ function ResourcePage(props) {
 	function handleComment() {
 		const RESOURCE_COMMENT_URL = `/api/library/comment`;
 
-		axios.post(RESOURCE_COMMENT_URL, {
-			uri: props.resource,
-			content: comment,
-		});
+		axios
+			.post(RESOURCE_COMMENT_URL, {
+				uri: props.resource,
+				content: comment,
+			})
+			.then(() => reloadComments);
+
 		setComment("");
+	}
+
+	async function reloadComments() {
+		const RESOURCE_URL = `/api/library/resource?uri=${props.resource}`;
+
+		let res = await axios.get(RESOURCE_URL);
+
+		setComments(res.data.comments);
+	}
+
+	function listComments() {
+		return comments.map((comment) => (
+			<Comment key={comment._id} data={comment} />
+		));
 	}
 
 	return (
@@ -102,6 +121,7 @@ function ResourcePage(props) {
 				<div className={CommentStyle.newCommentBox}>
 					<Image
 						src={session?.user?.image || profile}
+						className={CommentStyle.authorImg}
 						width={40}
 						height={40}
 						alt="Profile picture"
@@ -109,11 +129,7 @@ function ResourcePage(props) {
 					<textarea name="comment" value={comment} onChange={handleChange} />
 					<button onClick={handleComment}>Comment</button>
 				</div>
-				<div>
-					<p>1</p>
-					<p>2</p>
-					<p>3</p>
-				</div>
+				<div className={CommentStyle.commentDiv}>{listComments()}</div>
 			</section>
 		</main>
 	);
