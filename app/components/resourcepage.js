@@ -66,7 +66,7 @@ function ResourcePage(props) {
 				uri: props.resource,
 				content: comment,
 			})
-			.then(() => reloadComments);
+			.then(reloadComments);
 
 		setComment("");
 	}
