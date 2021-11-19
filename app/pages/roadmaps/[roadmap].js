@@ -1,4 +1,6 @@
 import HeadStyles from "../../styles/Head.module.css";
+import CommentStyle from "../../styles/Comment.module.css";
+import Comment from "../../components/comment";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
@@ -8,12 +10,15 @@ import Loading from "../../components/loading";
 
 import roadmap from "../../public/favorite.svg";
 import notroadmap from "../../public/notfavorite.svg";
+import profile from "../../public/profile.png";
 
 function Roadmap(props) {
 	const router = useRouter();
 	const { data: session, status } = useSession();
 
 	const [isRoadmap, setIsRoadmap] = useState(false);
+	const [comment, setComment] = useState("");
+	const [comments, setComments] = useState(props?.data?.comments);
 
 	useEffect(() => {
 		if (status !== "authenticated") return;
@@ -21,6 +26,10 @@ function Roadmap(props) {
 		if (session.user.roadmaps.includes(router.query.roadmap))
 			setIsRoadmap(true);
 	}, [session?.user.roadmaps, status, router.query.roadmap]);
+
+	useEffect(() => {
+		setComments(props?.data?.comments);
+	}, [props?.data?.comments]);
 
 	if (router.isFallback) return <Loading />;
 
@@ -38,6 +47,44 @@ function Roadmap(props) {
 				uri: router.query.roadmap,
 			});
 		}
+	}
+
+	function handleChange(event) {
+		const target = event.target;
+		const value = target.value;
+		const name = target.name;
+
+		if (name === "comment") setComment(value);
+	}
+
+	function handleComment() {
+		const ROADMAPS_COMMENT_URL = `/api/roadmaps/comment`;
+
+		axios
+			.post(ROADMAPS_COMMENT_URL, {
+				uri: router.query.roadmap,
+				content: comment,
+			})
+			.then(reloadComments);
+
+		setComment("");
+	}
+
+	async function reloadComments() {
+		console.log("reloading...");
+		const ROADMAP_URL = `/api/roadmaps/roadmap?uri=${router.query.roadmap}`;
+
+		let res = await axios.get(ROADMAP_URL);
+
+		setComments(res.data.comments);
+	}
+
+	function listComments() {
+		console.log(comments);
+		if (!comments) return null;
+		return comments.map((comment) => (
+			<Comment key={comment._id} data={comment} />
+		));
 	}
 
 	return (
@@ -68,6 +115,18 @@ function Roadmap(props) {
 			</section>
 			<section className="section2">
 				<h2>Comments</h2>
+				<div className={CommentStyle.newCommentBox}>
+					<Image
+						src={session?.user?.image || profile}
+						className={CommentStyle.authorImg}
+						width={40}
+						height={40}
+						alt="Profile picture"
+					/>
+					<textarea name="comment" value={comment} onChange={handleChange} />
+					<button onClick={handleComment}>Comment</button>
+				</div>
+				<div className={CommentStyle.commentDiv}>{listComments()}</div>
 			</section>
 		</main>
 	);

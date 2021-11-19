@@ -5,11 +5,13 @@ async function roadmap(req, res) {
 
 	let data = await roadmaps.findOne(
 		{ uri: req.query.uri },
-		"name description image comments",
-		{ lean: true }
+		"name description image comments"
 	);
 
-	return res.json(data);
+	await data.populate("comments");
+	await data.populate("comments.author");
+
+	return res.json(data.toObject());
 }
 
 export default roadmap;
