@@ -5,11 +5,13 @@ async function resource(req, res) {
 
 	let data = await resources.findOne(
 		{ uri: req.query.uri },
-		"name description teamRating communityRating link author timestamp comments",
-		{ lean: true }
+		"name description teamRating communityRating link author timestamp comments"
 	);
 
-	return res.json(data);
+	await data.populate("comments");
+	await data.populate("comments.author");
+
+	return res.json(data.toObject());
 }
 
 export default resource;
