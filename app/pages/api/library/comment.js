@@ -16,7 +16,10 @@ async function comment(req, res) {
 		{ uri: req.body.uri },
 		{
 			$push: {
-				comments: newComment._id,
+				comments: {
+					$each: [newComment._id],
+					$position: 0,
+				},
 			},
 		}
 	);
