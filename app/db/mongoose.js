@@ -9,44 +9,88 @@ const connection =
 
 if (process.env.NODE_ENV !== "production") global.mongoose = connection;
 
-const categorySchema = new mongoose.Schema({
-	name: String,
-	description: String,
-	uri: String,
-	subcategories: [
-		{ type: mongoose.Schema.Types.ObjectId, ref: "subcategories" },
-	],
-	level: Number,
+const categorySchema = new mongoose.Schema(
+	{
+		name: String,
+		description: String,
+		uri: String,
+		level: Number,
+	},
+	{
+		toJSON: { virtuals: true },
+		toObject: { virtuals: true },
+	}
+);
+
+categorySchema.virtual("subcategories", {
+	ref: "subcategories",
+	localField: "_id",
+	foreignField: "parent",
 });
 
-const subcategorySchema = new mongoose.Schema({
-	name: String,
-	description: String,
-	uri: String,
-	resources: [{ type: mongoose.Schema.Types.ObjectId, ref: "resources" }],
-	level: Number,
+const subcategorySchema = new mongoose.Schema(
+	{
+		name: String,
+		description: String,
+		uri: String,
+		level: Number,
+		parent: { type: mongoose.Schema.Types.ObjectId, ref: "categories" },
+	},
+	{
+		toJSON: { virtuals: true },
+		toObject: { virtuals: true },
+	}
+);
+
+subcategorySchema.virtual("resources", {
+	ref: "resources",
+	localField: "_id",
+	foreignField: "parent",
 });
 
-const resourceSchema = new mongoose.Schema({
-	name: String,
-	description: String,
-	uri: String,
-	teamRating: Number,
-	communityRating: Number,
-	link: String,
-	author: String,
-	timestamp: Date,
-	comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "comments" }],
-	level: Number,
+const resourceSchema = new mongoose.Schema(
+	{
+		name: String,
+		description: String,
+		uri: String,
+		teamRating: Number,
+		communityRating: Number,
+		link: String,
+		author: String,
+		timestamp: Date,
+		level: Number,
+		parent: { type: mongoose.Schema.Types.ObjectId, ref: "subcategories" },
+	},
+	{
+		toJSON: { virtuals: true },
+		toObject: { virtuals: true },
+	}
+);
+
+resourceSchema.virtual("comments", {
+	ref: "resourceComments",
+	localField: "_id",
+	foreignField: "parent",
 });
 
-const roadmapSchema = new mongoose.Schema({
-	name: String,
-	description: String,
-	uri: String,
-	image: String,
-	comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "comments" }],
-	level: Number,
+const roadmapSchema = new mongoose.Schema(
+	{
+		name: String,
+		description: String,
+		uri: String,
+		image: String,
+		level: Number,
+	},
+	{
+		toJSON: { virtuals: true },
+		toObject: { virtuals: true },
+	}
+);
+
+roadmapSchema.virtual("comments", {
+	ref: "roadmapComments",
+	localField: "_id",
+	foreignField: "parent",
 });
 
 const eventSchema = new mongoose.Schema({
@@ -57,10 +101,18 @@ const eventSchema = new mongoose.Schema({
 	duration: Number,
 });
 
-const commentSchema = new mongoose.Schema({
+const resourceCommentSchema = new mongoose.Schema({
 	content: String,
 	author: { type: String, ref: "user" },
 	timestamp: Date,
+	parent: { type: mongoose.Schema.Types.ObjectId, ref: "resources" },
+});
+
+const roadmapCommentSchema = new mongoose.Schema({
+	content: String,
+	author: { type: String, ref: "user" },
+	timestamp: Date,
+	parent: { type: mongoose.Schema.Types.ObjectId, ref: "roadmaps" },
 });
 
 const userSchema = new mongoose.Schema(
@@ -86,8 +138,12 @@ const resources =
 const roadmaps =
 	mongoose.models.roadmaps || mongoose.model("roadmaps", roadmapSchema);
 const events = mongoose.models.events || mongoose.model("events", eventSchema);
-const comments =
-	mongoose.models.comments || mongoose.model("comments", commentSchema);
+const resourceComments =
+	mongoose.models.resourceComments ||
+	mongoose.model("resourceComments", resourceCommentSchema, "resourceComments");
+const roadmapComments =
+	mongoose.models.roadmapComments ||
+	mongoose.model("roadmapComments", roadmapCommentSchema, "roadmapComments");
 const user = mongoose.models.user || mongoose.model("user", userSchema);
 
 async function getDb() {
@@ -100,7 +156,8 @@ async function getDb() {
 		resources,
 		roadmaps,
 		events,
-		comments,
+		resourceComments,
+		roadmapComments,
 		user,
 	};
 }

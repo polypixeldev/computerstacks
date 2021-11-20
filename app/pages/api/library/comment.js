@@ -3,26 +3,17 @@ import { getSession } from "next-auth/react";
 import mongoose from "mongoose";
 
 async function comment(req, res) {
-	const { resources, comments } = await getDb();
+	const { resources, resourceComments } = await getDb();
 	const session = await getSession({ req });
 
-	const newComment = await comments.create({
+	const target = await resources.findOne({ uri: req.body.uri }, "_id");
+
+	await resourceComments.create({
 		content: req.body.content,
 		author: session.user._id,
+		parent: target._id,
 		timestamp: Date.now(),
 	});
-
-	await resources.updateOne(
-		{ uri: req.body.uri },
-		{
-			$push: {
-				comments: {
-					$each: [newComment._id],
-					$position: 0,
-				},
-			},
-		}
-	);
 
 	return res.status(200).end();
 }
