@@ -14,17 +14,7 @@ function Search() {
 	let [results, setResults] = useState(null);
 
 	useEffect(() => {
-		// For development
-		setResults([
-			{
-				name: "ESLint",
-				description: "Find and fix problems in your JavaScript code",
-				url: "/library/javascript/clean-code/eslint",
-			},
-		]);
-		return;
-
-		const SEARCH_URL = ``;
+		const SEARCH_URL = `/api/search`;
 		axios
 			.post(SEARCH_URL, { query: router.query.query })
 			.then((res) => {
@@ -49,14 +39,15 @@ function Search() {
 		router.push(`/search?query=${query}`);
 	}
 
-	function listResults() {
+	function listResults(type) {
 		if (results === null) {
 			return <p>Loading....</p>;
 		} else if (results === "error") {
 			return <p>There was an error fetching the results.</p>;
 		} else {
-			return results.map((result) => (
-				<SearchResult key={result.name} {...result} />
+			console.log(results[type]);
+			return results[type].map((result) => (
+				<SearchResult type={type} key={result.name} {...result} />
 			));
 		}
 	}
@@ -89,7 +80,15 @@ function Search() {
 					</div>
 				</div>
 			</section>
-			<section className="section1">{listResults()}</section>
+			<section className={`section1`}>
+				<h3>Resources</h3>
+				<hr />
+				<div className={SearchStyle.results}>{listResults("resource")}</div>
+				<br />
+				<h3>Roadmaps</h3>
+				<hr />
+				<div className={SearchStyle.results}>{listResults("roadmap")}</div>
+			</section>
 		</main>
 	);
 }

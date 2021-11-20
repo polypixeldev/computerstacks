@@ -5,12 +5,16 @@ function SearchResult(props) {
 	return (
 		<>
 			<div className={SearchStyle.result}>
-				<Link href={props.url}>
+				<Link
+					href={`/${
+						props.type === "resource" ? "TODO" : `roadmaps/${props.uri}`
+					}`}
+				>
 					<a className="link">{props.name}</a>
 				</Link>
 				<p>{props.description}</p>
 			</div>
-			<hr />
+			<br />
 		</>
 	);
 }
