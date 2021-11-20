@@ -14,9 +14,10 @@ function Search() {
 	let [results, setResults] = useState(null);
 
 	useEffect(() => {
+		if (!router.query.query) return;
 		const SEARCH_URL = `/api/search`;
 		axios
-			.post(SEARCH_URL, { query: router.query.query })
+			.get(SEARCH_URL, { params: { query: router.query.query } })
 			.then((res) => {
 				setResults(res.data);
 			})
@@ -88,6 +89,10 @@ function Search() {
 				<h3>Roadmaps</h3>
 				<hr />
 				<div className={SearchStyle.results}>{listResults("roadmap")}</div>
+				<br />
+				<h3>Categories &amp; Subcategories</h3>
+				<hr />
+				<div className={SearchStyle.results}>{listResults("category")}</div>
 			</section>
 		</main>
 	);

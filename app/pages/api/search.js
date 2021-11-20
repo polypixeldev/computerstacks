@@ -1,30 +1,49 @@
 import getDb from "../../db/mongoose";
 
 async function search(req, res) {
-	const { resources, roadmaps } = await getDb();
+	const { categories, subcategories, resources, roadmaps } = await getDb();
 
-	const queryRegex = new RegExp(req.query.query, "ig");
+	console.log(typeof req.query.query);
+
+	const queryRegex = { $regex: req.query.query, $options: "i" };
 
 	let queries = [
-		resources.find(
-			{
-				$or: [
-					{ name: queryRegex },
-					{ description: queryRegex },
-					{ author: queryRegex },
-				],
-			},
-			"name description uri"
-		),
-		roadmaps.find(
-			{ $or: [{ name: queryRegex }, { description: queryRegex }] },
-			"name description uri"
+		categories.find({
+			$or: [{ name: queryRegex }, { description: queryRegex }],
+		}),
+		subcategories.find({
+			$or: [{ name: queryRegex }, { description: queryRegex }],
+		}),
+		resources.find({
+			$or: [
+				{ name: queryRegex },
+				{ description: queryRegex },
+				{ author: queryRegex },
+			],
+		}),
+		roadmaps.find({ $or: [{ name: queryRegex }, { description: queryRegex }] }),
+	];
+
+	const [category, subcategory, resource, roadmap] = await Promise.all(queries);
+
+	queries = [
+		Promise.all(subcategory.map((subcat) => subcat.populate("parent"))),
+		Promise.all(
+			resource.map((res) =>
+				res.populate({
+					path: "parent",
+					populate: {
+						path: "parent",
+					},
+				})
+			)
 		),
 	];
 
-	const [resource, roadmap] = await Promise.all(queries);
+	await Promise.all(queries);
 
 	res.json({
+		category: [...category, ...subcategory],
 		resource,
 		roadmap,
 	});
