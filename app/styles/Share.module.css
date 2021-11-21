@@ -1,0 +1,21 @@
+.card {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background-color: #585873;
+	position: absolute;
+	right: 10px;
+	z-index: 2;
+	width: 25vw;
+	box-shadow: 5px 5px 5px var(--grey-3);
+	border-radius: 5px;
+}
+
+.card div {
+	display: flex;
+	flex-direction: row !important;
+	justify-content: space-around;
+	align-items: center;
+	width: 100%;
+}

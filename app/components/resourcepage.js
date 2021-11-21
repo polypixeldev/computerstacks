@@ -4,20 +4,23 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 
-import Comment from '../components/comment';
+import Share from './share';
+import Comment from './comment';
 
 import HeadStyle from '../styles/Head.module.css';
 import styles from '../styles/Resource.module.css';
 import CommentStyle from '../styles/Comment.module.css';
 
+import shareIcon from '../public/share.png';
+import profile from '../public/profile.png';
 import favorite from '../public/favorite.svg';
 import notfavorite from '../public/notfavorite.svg';
-import profile from '../public/profile.png';
 
 function ResourcePage(props) {
 	const [isFavorite, setIsFavorite] = useState(false);
 	const [comment, setComment] = useState('');
 	const [comments, setComments] = useState(props.data.comments);
+	const [isShare, setIsShare] = useState(false);
 	const { data: session, status } = useSession();
 
 	useEffect(() => {
@@ -88,6 +91,14 @@ function ResourcePage(props) {
 		));
 	}
 
+	function handleShare() {
+		if (isShare) {
+			setIsShare(false);
+		} else {
+			setIsShare(true);
+		}
+	}
+
 	return (
 		<main>
 			<section className={HeadStyle.head} id="head">
@@ -108,7 +119,18 @@ function ResourcePage(props) {
 				</h2>
 				<p>{props.data.description}</p>
 				<div className={HeadStyle.actionDiv}>
-					<p>1</p>
+					<div style={{ position: 'relative' }}>
+						<Image
+							onClick={handleShare}
+							src={shareIcon}
+							alt="Share Icon"
+							width={50}
+							height={50}
+						/>
+						{isShare ? (
+							<Share name={props.data.name} toggle={handleShare} />
+						) : null}
+					</div>
 					<Image
 						onClick={handleFavorite}
 						src={isFavorite ? favorite : notfavorite}

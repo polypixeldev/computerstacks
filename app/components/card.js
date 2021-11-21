@@ -4,14 +4,18 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 
+import Share from './share';
+
 import CardStyle from '../styles/Card.module.css';
 import HeadStyle from '../styles/Head.module.css';
 
 import favorite from '../public/favorite.svg';
 import notfavorite from '../public/notfavorite.svg';
+import shareIcon from '../public/share.png';
 
 function Card(props) {
 	const [isFavorite, setIsFavorite] = useState(false);
+	const [isShare, setIsShare] = useState(false);
 	const { data: session, status } = useSession();
 
 	useEffect(() => {
@@ -53,6 +57,14 @@ function Card(props) {
 		}
 	}
 
+	function handleShare() {
+		if (isShare) {
+			setIsShare(false);
+		} else {
+			setIsShare(true);
+		}
+	}
+
 	return (
 		<div className={CardStyle.card}>
 			<Link
@@ -68,7 +80,16 @@ function Card(props) {
 				</a>
 			</Link>
 			<div className={HeadStyle.actionDiv}>
-				<p>1</p>
+				<div style={{ position: 'relative' }}>
+					<Image
+						onClick={handleShare}
+						src={shareIcon}
+						alt="Share Icon"
+						width={50}
+						height={50}
+					/>
+					{isShare ? <Share name={props.name} toggle={handleShare} /> : null}
+				</div>
 				<Image
 					onClick={handleFavorite}
 					src={isFavorite ? favorite : notfavorite}

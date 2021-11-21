@@ -4,15 +4,18 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 
-import Card from '../components/card';
+import Card from './card';
+import Share from './share';
 
 import HeadStyle from '../styles/Head.module.css';
 
 import favorite from '../public/favorite.svg';
 import notfavorite from '../public/notfavorite.svg';
+import shareIcon from '../public/share.png';
 
 function CategoryPage(props) {
 	const [isFavorite, setIsFavorite] = useState(false);
+	const [isShare, setIsShare] = useState(false);
 	const { data: session, status } = useSession();
 
 	useEffect(() => {
@@ -65,6 +68,13 @@ function CategoryPage(props) {
 			});
 		}
 	}
+	function handleShare() {
+		if (isShare) {
+			setIsShare(false);
+		} else {
+			setIsShare(true);
+		}
+	}
 
 	return (
 		<main>
@@ -83,7 +93,21 @@ function CategoryPage(props) {
 				)}
 				<p>{props.data.description}</p>
 				<div className={HeadStyle.actionDiv}>
-					<p>1</p>
+					<div style={{ position: 'relative' }}>
+						<Image
+							onClick={handleShare}
+							src={shareIcon}
+							alt="Share Icon"
+							width={50}
+							height={50}
+						/>
+						{isShare ? (
+							<Share
+								name={props.data.subcategory || props.data.category}
+								toggle={handleShare}
+							/>
+						) : null}
+					</div>
 					<Image
 						onClick={handleFavorite}
 						src={isFavorite ? favorite : notfavorite}
