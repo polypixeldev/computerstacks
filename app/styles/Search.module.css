@@ -22,7 +22,7 @@
 .searchBar input,
 .searchBar input::placeholder {
 	color: #ffffff;
-	font-family: "Zilla Slab", monospace;
+	font-family: 'Zilla Slab', monospace;
 	font-size: calc(2vmin + 10px);
 }
 
@@ -61,6 +61,6 @@
 }
 
 .result a {
-	font-family: "Dosis", sans-serif;
+	font-family: 'Dosis', sans-serif;
 	font-size: calc(2vmin + 15px);
 }

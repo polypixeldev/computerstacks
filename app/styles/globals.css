@@ -34,14 +34,14 @@ p {
 }
 
 h1 {
-	font-family: "Zilla Slab", monospace;
+	font-family: 'Zilla Slab', monospace;
 	font-size: calc(2vmin + 10px);
 }
 
 h2,
 h3,
 h4 {
-	font-family: "Dosis", sans-serif;
+	font-family: 'Dosis', sans-serif;
 	padding: 1.5vh 5vw;
 }
 
@@ -59,7 +59,7 @@ h4 {
 
 p {
 	z-index: 1;
-	font-family: "Open Sans", sans-serif;
+	font-family: 'Open Sans', sans-serif;
 	font-size: calc(2vmin + 10px);
 	padding: 1.5vh 7vw;
 }
@@ -80,7 +80,7 @@ p {
 	border-radius: 20px;
 
 	color: #ffffff;
-	font-family: "Zilla Slab", monospace;
+	font-family: 'Zilla Slab', monospace;
 	font-size: calc(2vmin + 15px);
 }
 
@@ -100,7 +100,7 @@ p {
 	border-radius: 20px;
 
 	color: #ffffff;
-	font-family: "Zilla Slab", monospace;
+	font-family: 'Zilla Slab', monospace;
 	font-size: calc(2vmin + 5px);
 }
 
@@ -152,7 +152,7 @@ p {
 .search input,
 .search input::placeholder {
 	color: #ffffff;
-	font-family: "Zilla Slab", monospace;
+	font-family: 'Zilla Slab', monospace;
 }
 
 .search div {
@@ -222,7 +222,7 @@ footer {
 	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 }
 footer a {
-	font-family: "Zilla Slab", monospace;
+	font-family: 'Zilla Slab', monospace;
 	font-size: calc(2vmin + 10px);
 }
 

@@ -1,13 +1,13 @@
-import getDb from "../../../db/mongoose";
+import getDb from '../../../db/mongoose';
 
 async function subcategory(req, res) {
 	const { subcategories } = await getDb();
 
 	let data = await subcategories.findOne(
 		{ uri: req.query.uri },
-		"name description resources"
+		'name description resources'
 	);
-	await data.populate("resources", "name uri level");
+	await data.populate('resources', 'name uri level');
 	data = data.toObject();
 
 	const level1 = data.resources.filter((resource) => resource.level === 1);

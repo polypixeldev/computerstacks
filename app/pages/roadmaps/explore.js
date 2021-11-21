@@ -1,6 +1,6 @@
-import HeadStyles from "../../styles/Head.module.css";
-import axios from "axios";
-import Link from "next/link";
+import HeadStyles from '../../styles/Head.module.css';
+import axios from 'axios';
+import Link from 'next/link';
 
 function Explore(props) {
 	function getLevel(level) {

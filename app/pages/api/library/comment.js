@@ -1,12 +1,12 @@
-import getDb from "../../../db/mongoose";
-import { getSession } from "next-auth/react";
-import mongoose from "mongoose";
+import getDb from '../../../db/mongoose';
+import { getSession } from 'next-auth/react';
+import mongoose from 'mongoose';
 
 async function comment(req, res) {
 	const { resources, resourceComments } = await getDb();
 	const session = await getSession({ req });
 
-	const target = await resources.findOne({ uri: req.body.uri }, "_id");
+	const target = await resources.findOne({ uri: req.body.uri }, '_id');
 
 	await resourceComments.create({
 		content: req.body.content,

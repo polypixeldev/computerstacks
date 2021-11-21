@@ -1,10 +1,10 @@
-import getDb from "../../../db/mongoose";
+import getDb from '../../../db/mongoose';
 
 async function meta(req, res) {
 	const { roadmaps } = await getDb();
 	const queries = [
 		roadmaps.estimatedDocumentCount(),
-		roadmaps.find({}, "name uri level", { lean: true }),
+		roadmaps.find({}, 'name uri level', { lean: true }),
 	];
 	const [numRoadmaps, roadmapsArr] = await Promise.all(queries);
 

@@ -1,6 +1,6 @@
-import prisma from "../../../db/prisma";
-import { getSession } from "next-auth/react";
-import axios from "axios";
+import prisma from '../../../db/prisma';
+import { getSession } from 'next-auth/react';
+import axios from 'axios';
 
 async function deleteData(req, res) {
 	const session = await getSession({ req });

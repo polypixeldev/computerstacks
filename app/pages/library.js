@@ -1,6 +1,6 @@
-import HeadStyle from "../styles/Head.module.css";
-import axios from "axios";
-import Link from "next/link";
+import HeadStyle from '../styles/Head.module.css';
+import axios from 'axios';
+import Link from 'next/link';
 
 function Library(props) {
 	function getLevel(level) {
@@ -26,7 +26,7 @@ function Library(props) {
 			<section className={HeadStyle.head} id="head">
 				<h2>Resource Library</h2>
 				<p>
-					Browse {props.data.numResources} resources in {props.data.numSubjects}{" "}
+					Browse {props.data.numResources} resources in {props.data.numSubjects}{' '}
 					subjects
 				</p>
 			</section>

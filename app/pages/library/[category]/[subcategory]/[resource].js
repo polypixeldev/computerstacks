@@ -1,7 +1,7 @@
-import { useRouter } from "next/router";
-import ResourcePage from "../../../../components/resourcepage";
-import Loading from "../../../../components/loading";
-import axios from "axios";
+import { useRouter } from 'next/router';
+import ResourcePage from '../../../../components/resourcepage';
+import Loading from '../../../../components/loading';
+import axios from 'axios';
 
 function Resource(props) {
 	const router = useRouter();

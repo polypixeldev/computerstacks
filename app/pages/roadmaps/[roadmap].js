@@ -1,27 +1,27 @@
-import HeadStyles from "../../styles/Head.module.css";
-import CommentStyle from "../../styles/Comment.module.css";
-import Comment from "../../components/comment";
-import axios from "axios";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
-import Image from "next/image";
-import Loading from "../../components/loading";
+import HeadStyles from '../../styles/Head.module.css';
+import CommentStyle from '../../styles/Comment.module.css';
+import Comment from '../../components/comment';
+import axios from 'axios';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
+import Image from 'next/image';
+import Loading from '../../components/loading';
 
-import roadmap from "../../public/favorite.svg";
-import notroadmap from "../../public/notfavorite.svg";
-import profile from "../../public/profile.png";
+import roadmap from '../../public/favorite.svg';
+import notroadmap from '../../public/notfavorite.svg';
+import profile from '../../public/profile.png';
 
 function Roadmap(props) {
 	const router = useRouter();
 	const { data: session, status } = useSession();
 
 	const [isRoadmap, setIsRoadmap] = useState(false);
-	const [comment, setComment] = useState("");
+	const [comment, setComment] = useState('');
 	const [comments, setComments] = useState(props?.data?.comments);
 
 	useEffect(() => {
-		if (status !== "authenticated") return;
+		if (status !== 'authenticated') return;
 
 		if (session.user.roadmaps.includes(router.query.roadmap))
 			setIsRoadmap(true);
@@ -54,7 +54,7 @@ function Roadmap(props) {
 		const value = target.value;
 		const name = target.name;
 
-		if (name === "comment") setComment(value);
+		if (name === 'comment') setComment(value);
 	}
 
 	function handleComment() {
@@ -67,7 +67,7 @@ function Roadmap(props) {
 			})
 			.then(reloadComments);
 
-		setComment("");
+		setComment('');
 	}
 
 	async function reloadComments() {

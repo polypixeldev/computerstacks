@@ -1,7 +1,7 @@
-import HeadStyles from "../styles/Head.module.css";
-import axios from "axios";
-import { useRouter } from "next/router";
-import { signOut } from "next-auth/react";
+import HeadStyles from '../styles/Head.module.css';
+import axios from 'axios';
+import { useRouter } from 'next/router';
+import { signOut } from 'next-auth/react';
 
 function Settings() {
 	const router = useRouter();
@@ -19,7 +19,7 @@ function Settings() {
 
 		await signOut({ redirect: false });
 
-		router.push("/login");
+		router.push('/login');
 	}
 
 	return (

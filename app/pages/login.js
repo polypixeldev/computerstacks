@@ -1,36 +1,36 @@
-import FormStyle from "../styles/Form.module.css";
-import HeadStyles from "../styles/Head.module.css";
-import LoginStyles from "../styles/Login.module.css";
-import { signIn, getSession } from "next-auth/react";
-import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
+import FormStyle from '../styles/Form.module.css';
+import HeadStyles from '../styles/Head.module.css';
+import LoginStyles from '../styles/Login.module.css';
+import { signIn, getSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
+import { useState, useEffect } from 'react';
 
 function Login() {
 	const router = useRouter();
 
-	const [userEmail, setUserEmail] = useState("");
+	const [userEmail, setUserEmail] = useState('');
 
 	useEffect(() => {
 		getSession().then((session) => {
-			if (session) router.push("/dashboard");
+			if (session) router.push('/dashboard');
 		});
 	});
 
 	function google(event) {
 		event.preventDefault();
-		signIn("google", { callbackUrl: "http://localhost/dashboard" });
+		signIn('google', { callbackUrl: 'http://localhost/dashboard' });
 	}
 
 	function github(event) {
 		event.preventDefault();
-		signIn("github", { callbackUrl: "http://localhost/dashboard" });
+		signIn('github', { callbackUrl: 'http://localhost/dashboard' });
 	}
 
 	function email(event) {
 		event.preventDefault();
-		signIn("email", {
+		signIn('email', {
 			email: userEmail,
-			callbackUrl: "http://localhost/dashboard",
+			callbackUrl: 'http://localhost/dashboard',
 		});
 	}
 
@@ -39,7 +39,7 @@ function Login() {
 		const value = target.value;
 		const name = target.name;
 
-		if (name === "email") setUserEmail(value);
+		if (name === 'email') setUserEmail(value);
 	}
 
 	return (

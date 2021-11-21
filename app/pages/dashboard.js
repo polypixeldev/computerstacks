@@ -1,12 +1,12 @@
-import styles from "../styles/Dashboard.module.css";
-import { useSession } from "next-auth/react";
-import Loading from "../components/loading";
-import { useRouter } from "next/router";
-import Link from "next/link";
-import Image from "next/image";
-import profile from "../public/profile.png";
-import axios from "axios";
-import { useEffect, useState } from "react";
+import styles from '../styles/Dashboard.module.css';
+import { useSession } from 'next-auth/react';
+import Loading from '../components/loading';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
+import Image from 'next/image';
+import profile from '../public/profile.png';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 function Dashboard() {
 	const [favorites, setFavorites] = useState([]);
@@ -16,18 +16,18 @@ function Dashboard() {
 	const { data: session, status } = useSession({
 		required: true,
 		onUnauthenticated() {
-			router.push("/login");
+			router.push('/login');
 		},
 	});
 
 	useEffect(() => {
-		if (status !== "authenticated") return;
+		if (status !== 'authenticated') return;
 
 		let newFavs = [];
 		let queries = [];
 
 		for (let fav of session.user.favorites) {
-			const uri = fav.split("/")[2];
+			const uri = fav.split('/')[2];
 
 			queries.push(
 				axios.get(`/api/library/resource?uri=${uri}`).then((res) => {
@@ -42,7 +42,7 @@ function Dashboard() {
 	}, [status, session?.user.favorites]);
 
 	useEffect(() => {
-		if (status !== "authenticated") return;
+		if (status !== 'authenticated') return;
 
 		let newRoadmaps = [];
 		let queries = [];
@@ -62,7 +62,7 @@ function Dashboard() {
 		});
 	}, [status, session?.user.roadmaps]);
 
-	if (status === "loading") return <Loading />;
+	if (status === 'loading') return <Loading />;
 
 	function listFavorites() {
 		return favorites.map((favorite) => (

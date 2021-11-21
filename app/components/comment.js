@@ -1,6 +1,6 @@
-import CommentStyle from "../styles/Comment.module.css";
-import Image from "next/image";
-import profile from "../public/profile.png";
+import CommentStyle from '../styles/Comment.module.css';
+import Image from 'next/image';
+import profile from '../public/profile.png';
 
 function Comment(props) {
 	const time = new Date(props.data.timestamp);

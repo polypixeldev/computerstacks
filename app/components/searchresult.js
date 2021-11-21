@@ -1,5 +1,5 @@
-import Link from "next/link";
-import SearchStyle from "../styles/Search.module.css";
+import Link from 'next/link';
+import SearchStyle from '../styles/Search.module.css';
 
 function SearchResult(props) {
 	console.log(props);
@@ -8,10 +8,10 @@ function SearchResult(props) {
 			<div className={SearchStyle.result}>
 				<Link
 					href={`/${
-						props.type === "resource"
+						props.type === 'resource'
 							? `library/${props.parent.parent.uri}/${props.parent.uri}/${props.uri}`
-							: props.type === "category"
-							? `library${`/${props.parent?.uri}` || ""}/${props.uri}`
+							: props.type === 'category'
+							? `library${`/${props.parent?.uri}` || ''}/${props.uri}`
 							: `roadmaps/${props.uri}`
 					}`}
 				>

@@ -1,11 +1,11 @@
-import getDb from "../../../db/mongoose";
-import { getSession } from "next-auth/react";
+import getDb from '../../../db/mongoose';
+import { getSession } from 'next-auth/react';
 
 async function comment(req, res) {
 	const { roadmaps, roadmapComments } = await getDb();
 	const session = await getSession({ req });
 
-	const target = await roadmaps.findOne({ uri: req.body.uri }, "_id");
+	const target = await roadmaps.findOne({ uri: req.body.uri }, '_id');
 
 	await roadmapComments.create({
 		content: req.body.content,

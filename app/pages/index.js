@@ -1,10 +1,10 @@
-import Image from "next/image";
-import Link from "next/link";
-import axios from "axios";
-import styles from "../styles/Home.module.css";
-import Background from "../public/tech.png";
-import Icons from "../public/icons.png";
-import prettyMs from "pretty-ms";
+import Image from 'next/image';
+import Link from 'next/link';
+import axios from 'axios';
+import styles from '../styles/Home.module.css';
+import Background from '../public/tech.png';
+import Icons from '../public/icons.png';
+import prettyMs from 'pretty-ms';
 
 function Home(props) {
 	function listEvents() {

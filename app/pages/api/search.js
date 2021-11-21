@@ -1,11 +1,11 @@
-import getDb from "../../db/mongoose";
+import getDb from '../../db/mongoose';
 
 async function search(req, res) {
 	const { categories, subcategories, resources, roadmaps } = await getDb();
 
 	console.log(typeof req.query.query);
 
-	const queryRegex = { $regex: req.query.query, $options: "i" };
+	const queryRegex = { $regex: req.query.query, $options: 'i' };
 
 	let queries = [
 		categories.find({
@@ -27,13 +27,13 @@ async function search(req, res) {
 	const [category, subcategory, resource, roadmap] = await Promise.all(queries);
 
 	queries = [
-		Promise.all(subcategory.map((subcat) => subcat.populate("parent"))),
+		Promise.all(subcategory.map((subcat) => subcat.populate('parent'))),
 		Promise.all(
 			resource.map((res) =>
 				res.populate({
-					path: "parent",
+					path: 'parent',
 					populate: {
-						path: "parent",
+						path: 'parent',
 					},
 				})
 			)

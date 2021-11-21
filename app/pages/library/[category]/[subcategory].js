@@ -1,7 +1,7 @@
-import { useRouter } from "next/router";
-import axios from "axios";
-import Loading from "../../../components/loading";
-import CategoryPage from "../../../components/categorypage";
+import { useRouter } from 'next/router';
+import axios from 'axios';
+import Loading from '../../../components/loading';
+import CategoryPage from '../../../components/categorypage';
 
 function Subcategory(props) {
 	const router = useRouter();

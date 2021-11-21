@@ -1,24 +1,24 @@
-import HeadStyle from "../styles/Head.module.css";
-import CommentStyle from "../styles/Comment.module.css";
-import Comment from "../components/comment";
-import Link from "next/link";
-import Image from "next/image";
-import axios from "axios";
-import { useSession } from "next-auth/react";
-import { useState, useEffect } from "react";
-import styles from "../styles/Resource.module.css";
-import favorite from "../public/favorite.svg";
-import notfavorite from "../public/notfavorite.svg";
-import profile from "../public/profile.png";
+import HeadStyle from '../styles/Head.module.css';
+import CommentStyle from '../styles/Comment.module.css';
+import Comment from '../components/comment';
+import Link from 'next/link';
+import Image from 'next/image';
+import axios from 'axios';
+import { useSession } from 'next-auth/react';
+import { useState, useEffect } from 'react';
+import styles from '../styles/Resource.module.css';
+import favorite from '../public/favorite.svg';
+import notfavorite from '../public/notfavorite.svg';
+import profile from '../public/profile.png';
 
 function ResourcePage(props) {
 	const [isFavorite, setIsFavorite] = useState(false);
-	const [comment, setComment] = useState("");
+	const [comment, setComment] = useState('');
 	const [comments, setComments] = useState(props.data.comments);
 	const { data: session, status } = useSession();
 
 	useEffect(() => {
-		if (status !== "authenticated") return;
+		if (status !== 'authenticated') return;
 
 		if (
 			session.user.favorites.includes(
@@ -55,7 +55,7 @@ function ResourcePage(props) {
 		const value = target.value;
 		const name = target.name;
 
-		if (name === "comment") setComment(value);
+		if (name === 'comment') setComment(value);
 	}
 
 	function handleComment() {
@@ -68,7 +68,7 @@ function ResourcePage(props) {
 			})
 			.then(reloadComments);
 
-		setComment("");
+		setComment('');
 	}
 
 	async function reloadComments() {

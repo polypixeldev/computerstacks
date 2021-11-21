@@ -1,5 +1,5 @@
-import HeadStyles from "../../styles/Head.module.css";
-import FormStyles from "../../styles/Form.module.css";
+import HeadStyles from '../../styles/Head.module.css';
+import FormStyles from '../../styles/Form.module.css';
 
 function Discover() {
 	return (

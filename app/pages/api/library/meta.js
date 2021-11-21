@@ -1,11 +1,11 @@
-import getDb from "../../../db/mongoose";
+import getDb from '../../../db/mongoose';
 
 async function meta(req, res) {
 	const { categories, resources } = await getDb();
 	const queries = [
 		resources.estimatedDocumentCount(),
 		categories.estimatedDocumentCount(),
-		categories.find({}, "name uri level", { lean: true }),
+		categories.find({}, 'name uri level', { lean: true }),
 	];
 	const [numResources, numSubjects, subjects] = await Promise.all(queries);
 

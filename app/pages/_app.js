@@ -1,11 +1,11 @@
-import "../styles/globals.css";
-import Link from "next/link";
-import Head from "next/head";
-import { useState, useEffect } from "react";
-import MenuScreen from "../components/menu.js";
-import { SessionProvider } from "next-auth/react";
-import { useRouter } from "next/router";
-import Navbar from "../components/navbar";
+import '../styles/globals.css';
+import Link from 'next/link';
+import Head from 'next/head';
+import { useState, useEffect } from 'react';
+import MenuScreen from '../components/menu.js';
+import { SessionProvider } from 'next-auth/react';
+import { useRouter } from 'next/router';
+import Navbar from '../components/navbar';
 
 function MyApp({ Component, pageProps }) {
 	const router = useRouter();
@@ -13,9 +13,9 @@ function MyApp({ Component, pageProps }) {
 	let [menuOpen, setMenuOpen] = useState(false);
 
 	useEffect(() => {
-		router.events.on("routeChangeStart", () => setMenuOpen(false));
+		router.events.on('routeChangeStart', () => setMenuOpen(false));
 		return () =>
-			router.events.off("routeChangeStart", () => setMenuOpen(false));
+			router.events.off('routeChangeStart', () => setMenuOpen(false));
 	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 
 	return (

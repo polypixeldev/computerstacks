@@ -1,14 +1,14 @@
-import { useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
-import OpenMenu from "../public/openMenu.png";
-import CloseMenu from "../public/closeMenu.png";
-import SearchIcon from "../public/search.png";
+import { useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
+import OpenMenu from '../public/openMenu.png';
+import CloseMenu from '../public/closeMenu.png';
+import SearchIcon from '../public/search.png';
 
 function Navbar(props) {
-	let [query, setQuery] = useState("");
+	let [query, setQuery] = useState('');
 
 	const { status } = useSession();
 	const router = useRouter();
@@ -18,12 +18,12 @@ function Navbar(props) {
 		const value = target.value;
 		const name = target.name;
 
-		if (name === "query") setQuery(value);
+		if (name === 'query') setQuery(value);
 	}
 
 	function handleSearch(event) {
-		if (event.key && event.key !== "Enter") return;
-		setQuery("");
+		if (event.key && event.key !== 'Enter') return;
+		setQuery('');
 		router.push(`/search?query=${query}`);
 	}
 
@@ -70,20 +70,20 @@ function Navbar(props) {
 					<h1>Community Project</h1>
 				</a>
 			</Link>
-			{status !== "authenticated" ? (
+			{status !== 'authenticated' ? (
 				<button
 					className="button-small"
 					id="signup"
-					onClick={() => router.push("/signup")}
+					onClick={() => router.push('/signup')}
 				>
 					Sign Up
 				</button>
 			) : null}
-			{status !== "authenticated" ? (
+			{status !== 'authenticated' ? (
 				<button
 					className="button-small"
 					id="login"
-					onClick={() => router.push("/login")}
+					onClick={() => router.push('/login')}
 				>
 					Login
 				</button>
@@ -91,7 +91,7 @@ function Navbar(props) {
 				<button
 					className="button-small"
 					id="login"
-					onClick={() => router.push("/dashboard")}
+					onClick={() => router.push('/dashboard')}
 				>
 					Dashboard
 				</button>

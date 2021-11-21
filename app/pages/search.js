@@ -1,16 +1,16 @@
-import { useRouter } from "next/router";
-import HeadStyle from "../styles/Head.module.css";
-import Image from "next/image";
-import { useState, useEffect } from "react";
-import SearchIcon from "../public/search.png";
-import SearchStyle from "../styles/Search.module.css";
-import axios from "axios";
-import SearchResult from "../components/searchresult";
+import { useRouter } from 'next/router';
+import HeadStyle from '../styles/Head.module.css';
+import Image from 'next/image';
+import { useState, useEffect } from 'react';
+import SearchIcon from '../public/search.png';
+import SearchStyle from '../styles/Search.module.css';
+import axios from 'axios';
+import SearchResult from '../components/searchresult';
 
 function Search() {
 	const router = useRouter();
 
-	let [query, setQuery] = useState("");
+	let [query, setQuery] = useState('');
 	let [results, setResults] = useState(null);
 
 	useEffect(() => {
@@ -22,7 +22,7 @@ function Search() {
 				setResults(res.data);
 			})
 			.catch(() => {
-				setResults("error");
+				setResults('error');
 			});
 	}, [router.query.query]);
 
@@ -31,19 +31,19 @@ function Search() {
 		const value = target.value;
 		const name = target.name;
 
-		if (name === "query") setQuery(value);
+		if (name === 'query') setQuery(value);
 	}
 
 	function handleSearch(event) {
-		if (event.key && event.key !== "Enter") return;
-		setQuery("");
+		if (event.key && event.key !== 'Enter') return;
+		setQuery('');
 		router.push(`/search?query=${query}`);
 	}
 
 	function listResults(type) {
 		if (results === null) {
 			return <p>Loading....</p>;
-		} else if (results === "error") {
+		} else if (results === 'error') {
 			return <p>There was an error fetching the results.</p>;
 		} else {
 			console.log(results[type]);
@@ -56,7 +56,7 @@ function Search() {
 	return (
 		<main>
 			<section className={HeadStyle.head}>
-				<h2>Search {router.query.query ? "Results" : null}</h2>
+				<h2>Search {router.query.query ? 'Results' : null}</h2>
 				<div className={SearchStyle.searchBar}>
 					<input
 						type="search"
@@ -84,15 +84,15 @@ function Search() {
 			<section className={`section1`}>
 				<h3>Resources</h3>
 				<hr />
-				<div className={SearchStyle.results}>{listResults("resource")}</div>
+				<div className={SearchStyle.results}>{listResults('resource')}</div>
 				<br />
 				<h3>Roadmaps</h3>
 				<hr />
-				<div className={SearchStyle.results}>{listResults("roadmap")}</div>
+				<div className={SearchStyle.results}>{listResults('roadmap')}</div>
 				<br />
 				<h3>Categories &amp; Subcategories</h3>
 				<hr />
-				<div className={SearchStyle.results}>{listResults("category")}</div>
+				<div className={SearchStyle.results}>{listResults('category')}</div>
 			</section>
 		</main>
 	);

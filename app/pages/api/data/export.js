@@ -1,5 +1,5 @@
-import prisma from "../../../db/prisma";
-import { getSession } from "next-auth/react";
+import prisma from '../../../db/prisma';
+import { getSession } from 'next-auth/react';
 
 async function exportData(req, res) {
 	const session = await getSession({ req });

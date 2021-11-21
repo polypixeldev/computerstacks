@@ -1,5 +1,5 @@
-import getDb from "../../../db/mongoose";
-import { getSession } from "next-auth/react";
+import getDb from '../../../db/mongoose';
+import { getSession } from 'next-auth/react';
 
 async function roadmap(req, res) {
 	const { user } = await getDb();

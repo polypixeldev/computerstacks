@@ -1,16 +1,16 @@
-import HeadStyles from "../styles/Head.module.css";
-import HomeStyles from "../styles/Home.module.css";
-import prettyMs from "pretty-ms";
-import axios from "axios";
+import HeadStyles from '../styles/Head.module.css';
+import HomeStyles from '../styles/Home.module.css';
+import prettyMs from 'pretty-ms';
+import axios from 'axios';
 
 function Events(props) {
 	function listEvents(rel) {
 		const events = props.data?.events.filter((event) => {
 			const eventDate = new Date(event.date).getTime();
 			const now = Date.now();
-			return rel === "current"
+			return rel === 'current'
 				? now >= eventDate && now <= eventDate + event.duration
-				: rel === "future"
+				: rel === 'future'
 				? now <= eventDate
 				: now >= eventDate + event.duration;
 		});
@@ -41,15 +41,15 @@ function Events(props) {
 			</section>
 			<section className="section1">
 				<h2>Ongoing</h2>
-				{listEvents("current")}
+				{listEvents('current')}
 			</section>
 			<section className="section2">
 				<h2>Upcoming</h2>
-				{listEvents("future")}
+				{listEvents('future')}
 			</section>
 			<section className="section3">
 				<h2>Past</h2>
-				{listEvents("past")}
+				{listEvents('past')}
 			</section>
 		</main>
 	);

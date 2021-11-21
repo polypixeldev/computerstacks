@@ -1,9 +1,9 @@
-import NextAuth from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
-import GitHubProvider from "next-auth/providers/github";
-import EmailProvider from "next-auth/providers/email";
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import prisma from "../../../db/prisma";
+import NextAuth from 'next-auth';
+import GoogleProvider from 'next-auth/providers/google';
+import GitHubProvider from 'next-auth/providers/github';
+import EmailProvider from 'next-auth/providers/email';
+import { PrismaAdapter } from '@next-auth/prisma-adapter';
+import prisma from '../../../db/prisma';
 
 async function handler(req, res) {
 	return await NextAuth(req, res, {
@@ -26,7 +26,7 @@ async function handler(req, res) {
 			jwt: true,
 		},
 		pages: {
-			signIn: "/login",
+			signIn: '/login',
 		},
 		jwt: {
 			signingKey: process.env.JWT_SIGNING_PRIVATE_KEY,

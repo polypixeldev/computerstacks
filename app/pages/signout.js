@@ -1,6 +1,6 @@
-import { signOut } from "next-auth/react";
-import { useRouter } from "next/router";
-import { useState } from "react";
+import { signOut } from 'next-auth/react';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
 
 function Signout() {
 	const [signedOut, setSignedOut] = useState(false);
@@ -9,7 +9,7 @@ function Signout() {
 	signOut({ redirect: false }).then((data) => {
 		setSignedOut(true);
 		setTimeout(() => {
-			router.push("/login");
+			router.push('/login');
 		}, 2000);
 	});
 
