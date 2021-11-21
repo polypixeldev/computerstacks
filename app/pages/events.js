@@ -1,7 +1,8 @@
+import axios from 'axios';
+import prettyMs from 'pretty-ms';
+
 import HeadStyles from '../styles/Head.module.css';
 import HomeStyles from '../styles/Home.module.css';
-import prettyMs from 'pretty-ms';
-import axios from 'axios';
 
 function Events(props) {
 	function listEvents(rel) {
@@ -55,7 +56,7 @@ function Events(props) {
 	);
 }
 
-export async function getStaticProps() {
+async function getStaticProps() {
 	const EVENTS_META_URL = `/api/events/fetch`;
 
 	let res = { revalidate: 60, props: { data: {}, error: false } };
@@ -67,5 +68,7 @@ export async function getStaticProps() {
 
 	return res;
 }
+
+export { getStaticProps };
 
 export default Events;

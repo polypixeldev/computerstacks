@@ -1,6 +1,6 @@
-import { signOut } from 'next-auth/react';
-import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { signOut } from 'next-auth/react';
 
 function Signout() {
 	const [signedOut, setSignedOut] = useState(false);

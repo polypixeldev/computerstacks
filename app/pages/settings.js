@@ -1,7 +1,8 @@
-import HeadStyles from '../styles/Head.module.css';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { signOut } from 'next-auth/react';
+
+import HeadStyles from '../styles/Head.module.css';
 
 function Settings() {
 	const router = useRouter();

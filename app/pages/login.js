@@ -1,9 +1,10 @@
+import { useRouter } from 'next/router';
+import { useState, useEffect } from 'react';
+import { signIn, getSession } from 'next-auth/react';
+
 import FormStyle from '../styles/Form.module.css';
 import HeadStyles from '../styles/Head.module.css';
 import LoginStyles from '../styles/Login.module.css';
-import { signIn, getSession } from 'next-auth/react';
-import { useRouter } from 'next/router';
-import { useState, useEffect } from 'react';
 
 function Login() {
 	const router = useRouter();

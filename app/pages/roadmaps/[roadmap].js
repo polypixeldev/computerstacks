@@ -1,12 +1,14 @@
+import axios from 'axios';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
+
+import Loading from '../../components/loading';
+
 import HeadStyles from '../../styles/Head.module.css';
 import CommentStyle from '../../styles/Comment.module.css';
 import Comment from '../../components/comment';
-import axios from 'axios';
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
-import { useSession } from 'next-auth/react';
-import Image from 'next/image';
-import Loading from '../../components/loading';
 
 import roadmap from '../../public/favorite.svg';
 import notroadmap from '../../public/notfavorite.svg';
@@ -130,7 +132,7 @@ function Roadmap(props) {
 	);
 }
 
-export async function getStaticPaths() {
+async function getStaticPaths() {
 	const ROADMAPS_META_URL = `/api/roadmaps/meta`;
 
 	let res = { paths: [], fallback: true };
@@ -145,7 +147,7 @@ export async function getStaticPaths() {
 	return res;
 }
 
-export async function getStaticProps({ params }) {
+async function getStaticProps({ params }) {
 	const ROADMAP_DATA_URL = `/api/roadmaps/roadmap?uri=${params.roadmap}`;
 
 	let res = { revalidate: 60, props: { data: {}, error: false } };
@@ -157,5 +159,7 @@ export async function getStaticProps({ params }) {
 
 	return res;
 }
+
+export { getStaticPaths, getStaticProps };
 
 export default Roadmap;

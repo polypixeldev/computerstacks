@@ -1,10 +1,12 @@
-import Image from 'next/image';
-import Link from 'next/link';
 import axios from 'axios';
+import Link from 'next/link';
+import Image from 'next/image';
+import prettyMs from 'pretty-ms';
+
 import styles from '../styles/Home.module.css';
+
 import Background from '../public/tech.png';
 import Icons from '../public/icons.png';
-import prettyMs from 'pretty-ms';
 
 function Home(props) {
 	function listEvents() {
@@ -75,7 +77,7 @@ function Home(props) {
 	);
 }
 
-export async function getStaticProps() {
+async function getStaticProps() {
 	const EVENTS_META_URL = `/api/events/fetch`;
 
 	let res = { revalidate: 60, props: { data: {}, error: false } };
@@ -87,5 +89,7 @@ export async function getStaticProps() {
 
 	return res;
 }
+
+export { getStaticProps };
 
 export default Home;

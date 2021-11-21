@@ -1,6 +1,7 @@
-import HeadStyle from '../styles/Head.module.css';
 import axios from 'axios';
 import Link from 'next/link';
+
+import HeadStyle from '../styles/Head.module.css';
 
 function Library(props) {
 	function getLevel(level) {
@@ -37,7 +38,7 @@ function Library(props) {
 	);
 }
 
-export async function getStaticProps(context) {
+async function getStaticProps(context) {
 	const RESOURCES_META_URL = `/api/library/meta`; // Fetches names and location of resources, nothing else
 
 	let res = { revalidate: 60, props: { data: {}, error: false } };
@@ -49,5 +50,7 @@ export async function getStaticProps(context) {
 
 	return res;
 }
+
+export { getStaticProps };
 
 export default Library;

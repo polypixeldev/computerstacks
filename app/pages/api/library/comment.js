@@ -1,6 +1,6 @@
-import getDb from '../../../db/mongoose';
 import { getSession } from 'next-auth/react';
-import mongoose from 'mongoose';
+
+import getDb from '../../../db/mongoose';
 
 async function comment(req, res) {
 	const { resources, resourceComments } = await getDb();

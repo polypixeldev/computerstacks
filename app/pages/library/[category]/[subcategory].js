@@ -1,5 +1,6 @@
-import { useRouter } from 'next/router';
 import axios from 'axios';
+import { useRouter } from 'next/router';
+
 import Loading from '../../../components/loading';
 import CategoryPage from '../../../components/categorypage';
 
@@ -17,7 +18,7 @@ function Subcategory(props) {
 	);
 }
 
-export async function getStaticPaths() {
+async function getStaticPaths() {
 	const RESOURCES_META_URL = `/api/library/meta`; // Fetches names and location of resources, nothing else
 
 	let res = { paths: [], fallback: true };
@@ -45,7 +46,7 @@ export async function getStaticPaths() {
 	return res;
 }
 
-export async function getStaticProps({ params }) {
+async function getStaticProps({ params }) {
 	const SUBCATEGORY_DATA_URL = `/api/library/subcategory?uri=${params.subcategory}`;
 
 	let res = { revalidate: 60, props: { data: {}, error: false } };
@@ -57,5 +58,7 @@ export async function getStaticProps({ params }) {
 
 	return res;
 }
+
+export { getStaticPaths, getStaticProps };
 
 export default Subcategory;

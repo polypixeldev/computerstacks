@@ -1,6 +1,7 @@
-import HeadStyles from '../../styles/Head.module.css';
 import axios from 'axios';
 import Link from 'next/link';
+
+import HeadStyles from '../../styles/Head.module.css';
 
 function Explore(props) {
 	function getLevel(level) {
@@ -30,7 +31,7 @@ function Explore(props) {
 	);
 }
 
-export async function getStaticProps() {
+async function getStaticProps() {
 	const ROADMAPS_META_URL = `/api/roadmaps/meta`;
 
 	let res = { revalidate: 60, props: { data: {}, error: false } };
@@ -42,5 +43,7 @@ export async function getStaticProps() {
 
 	return res;
 }
+
+export { getStaticProps };
 
 export default Explore;

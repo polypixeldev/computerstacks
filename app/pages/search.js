@@ -1,11 +1,14 @@
-import { useRouter } from 'next/router';
-import HeadStyle from '../styles/Head.module.css';
-import Image from 'next/image';
-import { useState, useEffect } from 'react';
-import SearchIcon from '../public/search.png';
-import SearchStyle from '../styles/Search.module.css';
 import axios from 'axios';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { useState, useEffect } from 'react';
+
 import SearchResult from '../components/searchresult';
+
+import HeadStyle from '../styles/Head.module.css';
+import SearchStyle from '../styles/Search.module.css';
+
+import SearchIcon from '../public/search.png';
 
 function Search() {
 	const router = useRouter();
