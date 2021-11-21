@@ -5,7 +5,7 @@ async function meta(req, res) {
 	const queries = [
 		resources.estimatedDocumentCount(),
 		categories.estimatedDocumentCount(),
-		categories.find({}, 'name uri level', { lean: true }),
+		categories.find({}, 'name description uri level', { lean: true }),
 	];
 	const [numResources, numSubjects, subjects] = await Promise.all(queries);
 

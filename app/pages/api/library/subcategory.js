@@ -7,7 +7,7 @@ async function subcategory(req, res) {
 		{ uri: req.query.uri },
 		'name description resources'
 	);
-	await data.populate('resources', 'name uri level');
+	await data.populate('resources', 'name description uri level');
 	data = data.toObject();
 
 	const level1 = data.resources.filter((resource) => resource.level === 1);

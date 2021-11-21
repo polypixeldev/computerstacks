@@ -1,5 +1,6 @@
 import axios from 'axios';
-import Link from 'next/link';
+
+import Card from '../components/card.js';
 
 import HeadStyle from '../styles/Head.module.css';
 
@@ -10,15 +11,7 @@ function Library(props) {
 		}
 
 		return props.data.subjects[level].map((subject) => (
-			<div key={subject.name}>
-				<p>
-					<strong>
-						<Link href={`/library/${subject.uri}`}>
-							<a className="link">{subject.name}</a>
-						</Link>
-					</strong>
-				</p>
-			</div>
+			<Card {...subject} key={subject.uri} />
 		));
 	}
 

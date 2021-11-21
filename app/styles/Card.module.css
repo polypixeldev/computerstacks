@@ -1,0 +1,35 @@
+.card {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	background-color: #6c6c8c;
+	border-radius: 10px;
+	border-width: 3px;
+	border-color: black;
+	border-style: solid;
+	box-shadow: 5px 5px 5px var(--grey-3);
+	padding: 10px;
+	margin: 10px;
+}
+
+.card div {
+	display: flex;
+	flex-direction: column;
+	padding: 10px;
+}
+
+.card div p {
+	padding: 0px;
+	padding-bottom: 10px;
+}
+
+.name {
+	font-family: 'Dosis', sans-serif;
+	font-size: calc(2vmin + 15px);
+}
+
+.desc {
+	font-family: 'Dosis', sans-serif;
+	font-size: calc(2vmin + 5px);
+}

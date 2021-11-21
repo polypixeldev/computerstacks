@@ -1,24 +1,19 @@
 import Link from 'next/link';
 
+import Card from '../components/card';
+
 import HeadStyle from '../styles/Head.module.css';
 
 function CategoryPage(props) {
 	const items = props.data.subcategories || props.data.resources;
 	function getLevel(level) {
 		return items[level].map((item) => (
-			<div key={item.name}>
-				<p>
-					<strong>
-						<Link
-							href={`/library/${props.category}${
-								props.subcategory ? `/${props.subcategory}/` : `/`
-							}${item.uri}`}
-						>
-							<a className="link">{item.name}</a>
-						</Link>
-					</strong>
-				</p>
-			</div>
+			<Card
+				{...item}
+				key={item.uri}
+				category={props.category}
+				subcategory={props.subcategory}
+			/>
 		));
 	}
 
