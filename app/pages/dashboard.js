@@ -25,15 +25,24 @@ function Dashboard() {
 
 	useEffect(() => {
 		if (status !== 'authenticated') return;
+		console.log(session.user.favorites);
 
 		let newFavs = [];
 		let queries = [];
 
 		for (let fav of session.user.favorites) {
-			const uri = fav.split('/')[2];
+			const split = fav.split('/');
+			const type =
+				split.length === 1
+					? 'category'
+					: split.length === 2
+					? 'subcategory'
+					: 'resource';
+			const uri = split[split.length - 1];
+			console.log(split);
 
 			queries.push(
-				axios.get(`/api/library/resource?uri=${uri}`).then((res) => {
+				axios.get(`/api/library/${type}?uri=${uri}`).then((res) => {
 					newFavs.push({ ...res.data, uri: fav });
 				})
 			);
@@ -68,10 +77,13 @@ function Dashboard() {
 	if (status === 'loading') return <Loading />;
 
 	function listFavorites() {
+		console.log(favorites);
 		return favorites.map((favorite) => (
 			<h3 key={favorite.uri}>
 				<Link href={`/library/${favorite.uri}`}>
-					<a className="link">{favorite.name}</a>
+					<a className="link">
+						{favorite.category || favorite.subcategory || favorite.name}
+					</a>
 				</Link>
 			</h3>
 		));

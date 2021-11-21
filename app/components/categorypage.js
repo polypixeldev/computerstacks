@@ -1,10 +1,39 @@
+import axios from 'axios';
 import Link from 'next/link';
+import Image from 'next/image';
+import { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 
 import Card from '../components/card';
 
 import HeadStyle from '../styles/Head.module.css';
 
+import favorite from '../public/favorite.svg';
+import notfavorite from '../public/notfavorite.svg';
+
 function CategoryPage(props) {
+	const [isFavorite, setIsFavorite] = useState(false);
+	const { data: session, status } = useSession();
+
+	useEffect(() => {
+		if (status !== 'authenticated') return;
+
+		console.log(
+			`${props.category || ''}${
+				props.subcategory ? `/${props.subcategory}` : ''
+			}`
+		);
+
+		if (
+			session.user.favorites.includes(
+				`${props.category || ''}${
+					props.subcategory ? `/${props.subcategory}` : ''
+				}`
+			)
+		)
+			setIsFavorite(true);
+	}, [session?.user.favorites, status, props.category, props.subcategory]);
+
 	const items = props.data.subcategories || props.data.resources;
 	function getLevel(level) {
 		return items[level].map((item) => (
@@ -15,6 +44,26 @@ function CategoryPage(props) {
 				subcategory={props.subcategory}
 			/>
 		));
+	}
+
+	function handleFavorite() {
+		const FAVORITE_URL = `/api/user/favorite`;
+
+		if (isFavorite) {
+			setIsFavorite(false);
+			axios.post(FAVORITE_URL, {
+				uri: `${props.category || ''}${
+					props.subcategory ? `/${props.subcategory}` : ''
+				}`,
+			});
+		} else {
+			setIsFavorite(true);
+			axios.post(FAVORITE_URL, {
+				uri: `${props.category || ''}${
+					props.subcategory ? `/${props.subcategory}` : ''
+				}`,
+			});
+		}
 	}
 
 	return (
@@ -35,7 +84,13 @@ function CategoryPage(props) {
 				<p>{props.data.description}</p>
 				<div className={HeadStyle.actionDiv}>
 					<p>1</p>
-					<p>2</p>
+					<Image
+						onClick={handleFavorite}
+						src={isFavorite ? favorite : notfavorite}
+						alt="Favorite button"
+						width={75}
+						height={75}
+					/>
 					<p>3</p>
 				</div>
 			</section>
