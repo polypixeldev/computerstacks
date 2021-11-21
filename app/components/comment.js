@@ -1,5 +1,7 @@
-import CommentStyle from '../styles/Comment.module.css';
 import Image from 'next/image';
+
+import CommentStyle from '../styles/Comment.module.css';
+
 import profile from '../public/profile.png';
 
 function Comment(props) {

@@ -1,12 +1,15 @@
-import HeadStyle from '../styles/Head.module.css';
-import CommentStyle from '../styles/Comment.module.css';
-import Comment from '../components/comment';
+import axios from 'axios';
 import Link from 'next/link';
 import Image from 'next/image';
-import axios from 'axios';
-import { useSession } from 'next-auth/react';
 import { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
+
+import Comment from '../components/comment';
+
+import HeadStyle from '../styles/Head.module.css';
 import styles from '../styles/Resource.module.css';
+import CommentStyle from '../styles/Comment.module.css';
+
 import favorite from '../public/favorite.svg';
 import notfavorite from '../public/notfavorite.svg';
 import profile from '../public/profile.png';

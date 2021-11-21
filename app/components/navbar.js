@@ -1,11 +1,12 @@
-import { useState } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
+import Image from 'next/image';
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
+
 import OpenMenu from '../public/openMenu.png';
-import CloseMenu from '../public/closeMenu.png';
 import SearchIcon from '../public/search.png';
+import CloseMenu from '../public/closeMenu.png';
 
 function Navbar(props) {
 	let [query, setQuery] = useState('');

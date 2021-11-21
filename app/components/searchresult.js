@@ -1,4 +1,5 @@
 import Link from 'next/link';
+
 import SearchStyle from '../styles/Search.module.css';
 
 function SearchResult(props) {

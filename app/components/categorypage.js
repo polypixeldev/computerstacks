@@ -1,4 +1,5 @@
 import Link from 'next/link';
+
 import HeadStyle from '../styles/Head.module.css';
 
 function CategoryPage(props) {
