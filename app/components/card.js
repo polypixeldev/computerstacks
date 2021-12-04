@@ -19,18 +19,26 @@ function Card(props) {
 	const { data: session, status } = useSession();
 
 	useEffect(() => {
-		if (status !== 'authenticated' || props.roadmap === true) return;
+		if (status !== 'authenticated') return;
 
-		if (
-			session.user.favorites.includes(
-				`${props.category ? `${props.category}/` : ''}${
-					props.subcategory ? `${props.subcategory}/` : ''
-				}${props.uri}`
-			)
-		)
-			setIsFavorite(true);
+		if (props.roadmap === true) {
+			if (session.user.roadmaps.includes(props.uri)) {
+				setIsFavorite(true);
+			}
+		} else {
+			if (
+				session.user.favorites.includes(
+					`${props.category ? `${props.category}/` : ''}${
+						props.subcategory ? `${props.subcategory}/` : ''
+					}${props.uri}`
+				)
+			) {
+				setIsFavorite(true);
+			}
+		}
 	}, [
 		session?.user.favorites,
+		session?.user.roadmaps,
 		status,
 		props.category,
 		props.subcategory,
@@ -39,22 +47,38 @@ function Card(props) {
 	]);
 
 	function handleFavorite() {
-		const FAVORITE_URL = `/api/user/favorite`;
+		if (props.roadmap === true) {
+			const ROADMAP_URL = `/api/user/roadmap`;
 
-		if (isFavorite) {
-			setIsFavorite(false);
-			axios.post(FAVORITE_URL, {
-				uri: `${props.category ? `${props.category}/` : ''}${
-					props.subcategory ? `${props.subcategory}/` : ''
-				}${props.uri}`,
-			});
+			if (isFavorite) {
+				setIsFavorite(false);
+				axios.post(ROADMAP_URL, {
+					uri: props.uri,
+				});
+			} else {
+				setIsFavorite(true);
+				axios.post(ROADMAP_URL, {
+					uri: props.uri,
+				});
+			}
 		} else {
-			setIsFavorite(true);
-			axios.post(FAVORITE_URL, {
-				uri: `${props.category ? `${props.category}/` : ''}${
-					props.subcategory ? `${props.subcategory}/` : ''
-				}${props.uri}`,
-			});
+			const FAVORITE_URL = `/api/user/favorite`;
+
+			if (isFavorite) {
+				setIsFavorite(false);
+				axios.post(FAVORITE_URL, {
+					uri: `${props.category ? `${props.category}/` : ''}${
+						props.subcategory ? `${props.subcategory}/` : ''
+					}${props.uri}`,
+				});
+			} else {
+				setIsFavorite(true);
+				axios.post(FAVORITE_URL, {
+					uri: `${props.category ? `${props.category}/` : ''}${
+						props.subcategory ? `${props.subcategory}/` : ''
+					}${props.uri}`,
+				});
+			}
 		}
 	}
 
@@ -95,15 +119,13 @@ function Card(props) {
 					/>
 					{isShare ? <Share name={props.name} toggle={handleShare} /> : null}
 				</div>
-				{props.roadmap === true ? null : (
-					<Image
-						onClick={handleFavorite}
-						src={isFavorite ? favorite : notfavorite}
-						alt="Favorite button"
-						width={75}
-						height={75}
-					/>
-				)}
+				<Image
+					onClick={handleFavorite}
+					src={isFavorite ? favorite : notfavorite}
+					alt="Favorite button"
+					width={75}
+					height={75}
+				/>
 			</div>
 		</div>
 	);
