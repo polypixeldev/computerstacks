@@ -4,7 +4,7 @@ async function meta(req, res) {
 	const { roadmaps } = await getDb();
 	const queries = [
 		roadmaps.estimatedDocumentCount(),
-		roadmaps.find({}, 'name uri level', { lean: true }),
+		roadmaps.find({}, 'name description uri level', { lean: true }),
 	];
 	const [numRoadmaps, roadmapsArr] = await Promise.all(queries);
 

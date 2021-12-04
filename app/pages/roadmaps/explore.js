@@ -1,20 +1,13 @@
 import axios from 'axios';
-import Link from 'next/link';
+
+import Card from '../../components/card.js';
 
 import HeadStyles from '../../styles/Head.module.css';
 
 function Explore(props) {
 	function getLevel(level) {
 		return props.data.roadmaps[level].map((item) => (
-			<div key={item.name}>
-				<p>
-					<strong>
-						<Link href={`/roadmaps/${item.uri}`}>
-							<a className="link">{item.name}</a>
-						</Link>
-					</strong>
-				</p>
-			</div>
+			<Card {...item} key={item.uri} roadmap={true} />
 		));
 	}
 

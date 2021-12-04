@@ -19,7 +19,7 @@ function Card(props) {
 	const { data: session, status } = useSession();
 
 	useEffect(() => {
-		if (status !== 'authenticated') return;
+		if (status !== 'authenticated' || props.roadmap === true) return;
 
 		if (
 			session.user.favorites.includes(
@@ -35,6 +35,7 @@ function Card(props) {
 		props.category,
 		props.subcategory,
 		props.uri,
+		props.roadmap,
 	]);
 
 	function handleFavorite() {
@@ -68,9 +69,13 @@ function Card(props) {
 	return (
 		<div className={CardStyle.card}>
 			<Link
-				href={`/library/${props.category ? `${props.category}/` : ''}${
-					props.subcategory ? `${props.subcategory}/` : ''
-				}${props.uri}`}
+				href={
+					props.roadmap
+						? `/roadmaps/${props.uri}`
+						: `/library/${props.category ? `${props.category}/` : ''}${
+								props.subcategory ? `${props.subcategory}/` : ''
+						  }${props.uri}`
+				}
 			>
 				<a className="link">
 					<div>
@@ -90,13 +95,15 @@ function Card(props) {
 					/>
 					{isShare ? <Share name={props.name} toggle={handleShare} /> : null}
 				</div>
-				<Image
-					onClick={handleFavorite}
-					src={isFavorite ? favorite : notfavorite}
-					alt="Favorite button"
-					width={75}
-					height={75}
-				/>
+				{props.roadmap === true ? null : (
+					<Image
+						onClick={handleFavorite}
+						src={isFavorite ? favorite : notfavorite}
+						alt="Favorite button"
+						width={75}
+						height={75}
+					/>
+				)}
 				<p>3</p>
 			</div>
 		</div>
