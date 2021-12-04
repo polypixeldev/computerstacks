@@ -23,14 +23,14 @@ function MyApp({ Component, pageProps }) {
 	return (
 		<SessionProvider session={pageProps.session}>
 			<Head>
-				<title>Community Project</title>
+				<title>ComputerStacks</title>
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<Navbar menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
 			{menuOpen ? <MenuScreen /> : <Component {...pageProps} />}
 			<footer>
 				<div>
-					<h2>Community Project</h2>
+					<h2>ComputerStacks</h2>
 					<p>
 						<strong>© 2021, Samuel Fernandez</strong>
 					</p>

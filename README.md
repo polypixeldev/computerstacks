@@ -1,4 +1,4 @@
-# community-project
+# ComputerStacks
 A digital collection of computer-related resources and support
 
 ## How to contribute
@@ -6,8 +6,8 @@ A digital collection of computer-related resources and support
   - [Git](https://git-scm.com/)
   - [NodeJS](https://nodejs.org/en/)
 2. Fork this repository by clicking the "Fork" button in the top right corner
-2. Run `git clone https://github.com/<YOUR_GITHUB_USERNAME>/community-project.git` to clone the source code onto your computer
-3. Run `cd community-project/app` to change your working directory to the community-project's source code folder
+2. Run `git clone https://github.com/<YOUR_GITHUB_USERNAME>/computerstacks.git` to clone the source code onto your computer
+3. Run `cd computerstacks/app` to change your working directory to ComputerStack's source code folder
 4. Run `npm i` to install all dependencies
 5. Create a `.env` file in the current working directory and set your environment variable values
 

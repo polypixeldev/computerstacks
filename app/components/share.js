@@ -27,34 +27,34 @@ function Share(props) {
 			<div>
 				<FacebookShareButton
 					url={window.location.href}
-					quote={`Check out ${props.name} on community-project!`}
-					hashtag="#communityproject"
+					quote={`Check out ${props.name} on ComputerStacks!`}
+					hashtag="#ComputerStacks"
 				>
 					<FacebookIcon size={25} round />
 				</FacebookShareButton>
 				<PinterestShareButton
 					url={window.location.href}
-					media={`Check out ${props.name} on community-project!`}
-					description={`Check out ${props.name} on community-project!`}
+					media={`Check out ${props.name} on ComputerStacks!`}
+					description={`Check out ${props.name} on ComputerStacks!`}
 				>
 					<PinterestIcon size={25} round />
 				</PinterestShareButton>
 				<TwitterShareButton
 					url={window.location.href}
-					title={`Check out ${props.name} on community-project!`}
+					title={`Check out ${props.name} on ComputerStacks!`}
 				>
 					<TwitterIcon size={25} round />
 				</TwitterShareButton>
 				<WhatsappShareButton
 					url={window.location.href}
-					title={`Check out ${props.name} on community-project!`}
+					title={`Check out ${props.name} on ComputerStacks!`}
 				>
 					<WhatsappIcon size={25} round />
 				</WhatsappShareButton>
 				<EmailShareButton
 					url={window.location.href}
-					subject={`Check out ${props.name} on community-project!`}
-					body={`Check out ${props.name} on community-project!`}
+					subject={`Check out ${props.name} on ComputerStacks!`}
+					body={`Check out ${props.name} on ComputerStacks!`}
 				>
 					<EmailIcon size={25} round />
 				</EmailShareButton>

@@ -68,7 +68,7 @@ function Navbar(props) {
 			</div>
 			<Link href="/">
 				<a className="link">
-					<h1>Community Project</h1>
+					<h1>ComputerStacks</h1>
 				</a>
 			</Link>
 			{status !== 'authenticated' ? (
