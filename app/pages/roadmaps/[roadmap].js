@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 
 import Loading from '../../components/loading';
+import Share from '../../components/share';
 
 import HeadStyles from '../../styles/Head.module.css';
 import CommentStyle from '../../styles/Comment.module.css';
@@ -22,6 +23,7 @@ import profile from '../../public/profile.png';
 import python from '../../public/python.png';
 import react from '../../public/react.png';
 import roadmap from '../../public/favorite.svg';
+import shareIcon from '../../public/share.png';
 
 function Roadmap(props) {
 	const images = {
@@ -41,6 +43,7 @@ function Roadmap(props) {
 	const [isRoadmap, setIsRoadmap] = useState(false);
 	const [comment, setComment] = useState('');
 	const [comments, setComments] = useState(props?.data?.comments);
+	const [isShare, setIsShare] = useState(false);
 
 	useEffect(() => {
 		if (status !== 'authenticated') return;
@@ -107,13 +110,32 @@ function Roadmap(props) {
 		));
 	}
 
+	function handleShare() {
+		if (isShare) {
+			setIsShare(false);
+		} else {
+			setIsShare(true);
+		}
+	}
+
 	return (
 		<main>
 			<section className={HeadStyles.head}>
 				<h2>{props.data.name}</h2>
 				<p>{props.data.description}</p>
 				<div className={HeadStyles.actionDiv}>
-					<p>1</p>
+					<div style={{ position: 'relative' }}>
+						<Image
+							onClick={handleShare}
+							src={shareIcon}
+							alt="Share Icon"
+							width={50}
+							height={50}
+						/>
+						{isShare ? (
+							<Share name={props.data.name} toggle={handleShare} />
+						) : null}
+					</div>
 					<Image
 						onClick={handleRoadmap}
 						src={isRoadmap ? roadmap : notroadmap}
