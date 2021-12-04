@@ -115,7 +115,6 @@ function CategoryPage(props) {
 						width={75}
 						height={75}
 					/>
-					<p>3</p>
 				</div>
 			</section>
 			<section className="section1">{getLevel(0)}</section>

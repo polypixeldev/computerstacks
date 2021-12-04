@@ -104,7 +104,6 @@ function Card(props) {
 						height={75}
 					/>
 				)}
-				<p>3</p>
 			</div>
 		</div>
 	);
