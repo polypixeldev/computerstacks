@@ -5,6 +5,7 @@ module.exports = {
 			'lh3.googleusercontent.com',
 			'avatars.githubusercontent.com',
 			'raw.githubusercontent.com',
+			'roadmap.sh',
 		],
 	},
 };
