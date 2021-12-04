@@ -34,6 +34,9 @@ function MyApp({ Component, pageProps }) {
 					<p>
 						<strong>© 2021, Samuel Fernandez</strong>
 					</p>
+					<p>
+						Favicon &ldquo;Computer&rdquo; by Erin Standley from NounProject.com
+					</p>
 				</div>
 				<div>
 					<h3>Library</h3>
