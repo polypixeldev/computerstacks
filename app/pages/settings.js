@@ -1,10 +1,13 @@
 import axios from 'axios';
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { signOut } from 'next-auth/react';
 
 import HeadStyles from '../styles/Head.module.css';
+import SettingsStyles from '../styles/Settings.module.css';
 
 function Settings() {
+	const [modal, setModal] = useState(false);
 	const router = useRouter();
 
 	async function handleDataExport() {
@@ -23,6 +26,10 @@ function Settings() {
 		router.push('/login');
 	}
 
+	function handleModal() {
+		setModal(!modal);
+	}
+
 	return (
 		<main>
 			<section className={HeadStyles.head}>
@@ -34,10 +41,27 @@ function Settings() {
 					Export Data
 				</button>
 				<br />
-				<button className="button-small" onClick={handleDataDelete}>
+				<button className="button-small" onClick={handleModal}>
 					Delete Data
 				</button>
 			</section>
+			<div
+				className={SettingsStyles.modal}
+				style={{ display: modal ? 'flex' : 'none' }}
+			>
+				<p>
+					Are you sure you want to delete all of your data?{' '}
+					<strong>This is irreversible!</strong>
+				</p>
+				<div>
+					<button className="button-small" onClick={handleDataDelete}>
+						Yes, DELETE my data.
+					</button>
+					<button className="button-small" onClick={handleModal}>
+						No, save my data!
+					</button>
+				</div>
+			</div>
 		</main>
 	);
 }

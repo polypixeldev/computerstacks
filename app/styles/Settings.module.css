@@ -1,0 +1,28 @@
+.modal {
+	position: fixed;
+	top: 30vh;
+	left: 20vw;
+	right: 20vw;
+	bottom: 30vh;
+	width: 60vw;
+	height: 40vh;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background-color: var(--grey-3);
+	border-color: var(--grey-2);
+	border-width: 3px;
+	border-radius: 5px;
+	border-style: solid;
+}
+
+.modal div {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.modal div button {
+	margin: 5px;
+}
