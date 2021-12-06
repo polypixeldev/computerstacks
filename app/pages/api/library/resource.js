@@ -1,25 +1,7 @@
-import getDb from '../../../db/mongoose';
+import libraryResource from '../../../functions/libraryResource';
 
 async function resource(req, res) {
-	const { resources } = await getDb();
-
-	let data = await resources.findOne(
-		{ uri: req.query.uri },
-		'name description teamRating communityRating link author timestamp comments'
-	);
-
-	await data.populate({
-		path: 'comments',
-		populate: {
-			path: 'author',
-		},
-	});
-
-	const obj = data.toObject();
-
-	obj.comments.reverse();
-
-	return res.json(obj);
+	return res.json(await libraryResource(req.query.uri));
 }
 
 export default resource;

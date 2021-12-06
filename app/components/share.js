@@ -15,44 +15,50 @@ import { useRouter } from 'next/router';
 import ShareStyle from '../styles/Share.module.css';
 
 function Share(props) {
-	if (typeof window.location.href === 'undefined')
+	let href;
+	if (typeof window === 'undefined') {
+		href = '';
 		return (
 			<div className={ShareStyle.card}>
 				<p>Loading...</p>
 			</div>
 		);
+	} else {
+		href = window.location.href;
+	}
+
 	return (
 		<div className={ShareStyle.card}>
 			<p>Share this page!</p>
 			<div>
 				<FacebookShareButton
-					url={window.location.href}
+					url={href}
 					quote={`Check out ${props.name} on ComputerStacks!`}
 					hashtag="#ComputerStacks"
 				>
 					<FacebookIcon size={25} round />
 				</FacebookShareButton>
 				<PinterestShareButton
-					url={window.location.href}
+					url={href}
 					media={`Check out ${props.name} on ComputerStacks!`}
 					description={`Check out ${props.name} on ComputerStacks!`}
 				>
 					<PinterestIcon size={25} round />
 				</PinterestShareButton>
 				<TwitterShareButton
-					url={window.location.href}
+					url={href}
 					title={`Check out ${props.name} on ComputerStacks!`}
 				>
 					<TwitterIcon size={25} round />
 				</TwitterShareButton>
 				<WhatsappShareButton
-					url={window.location.href}
+					url={href}
 					title={`Check out ${props.name} on ComputerStacks!`}
 				>
 					<WhatsappIcon size={25} round />
 				</WhatsappShareButton>
 				<EmailShareButton
-					url={window.location.href}
+					url={href}
 					subject={`Check out ${props.name} on ComputerStacks!`}
 					body={`Check out ${props.name} on ComputerStacks!`}
 				>

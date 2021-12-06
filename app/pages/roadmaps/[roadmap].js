@@ -25,6 +25,9 @@ import react from '../../public/react.png';
 import roadmap from '../../public/favorite.svg';
 import shareIcon from '../../public/share.png';
 
+import roadmapsMeta from '../../functions/roadmapsMeta';
+import roadmapsRoadmap from '../../functions/roadmapsRoadmap';
+
 function Roadmap(props) {
 	const images = {
 		android,
@@ -169,27 +172,25 @@ function Roadmap(props) {
 }
 
 async function getStaticPaths() {
-	const ROADMAPS_META_URL = `/api/roadmaps/meta`;
-
 	let res = { paths: [], fallback: true };
 
-	const data = await axios.get(ROADMAPS_META_URL)?.data;
+	const data = await roadmapsMeta();
+	console.log(data);
 
 	if (!data) return res;
 
-	for (let roadmap of data.roadmaps)
-		res.paths.push({ params: { roadmap: roadmap.uri } });
+	for (const level of data.roadmaps) {
+		for (const roadmap of level)
+			res.paths.push({ params: { roadmap: roadmap.uri } });
+	}
 
 	return res;
 }
 
 async function getStaticProps({ params }) {
-	const ROADMAP_DATA_URL = `/api/roadmaps/roadmap?uri=${params.roadmap}`;
-
 	let res = { revalidate: 60, props: { data: {}, error: false } };
+	const data = await roadmapsRoadmap(params.roadmap);
 
-	let data = await axios.get(ROADMAP_DATA_URL);
-	data = data.data;
 	if (!data) res.props.error = true;
 	else res.props.data = data;
 

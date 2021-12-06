@@ -1,8 +1,10 @@
-import axios from 'axios';
 import { useRouter } from 'next/router';
 
 import Loading from '../../components/loading';
 import CategoryPage from '../../components/categorypage';
+
+import libraryMeta from '../../functions/libraryMeta';
+import libraryCategory from '../../functions/libraryCategory';
 
 function Category(props) {
 	const router = useRouter();
@@ -19,13 +21,9 @@ function Category(props) {
 }
 
 async function getStaticPaths() {
-	const RESOURCES_META_URL = `/api/library/meta`; // Fetches names and location of resources, nothing else
-
 	let res = { paths: [], fallback: true };
 
-	let data = await axios.get(RESOURCES_META_URL);
-
-	data = data.data;
+	const data = await libraryMeta();
 
 	if (!data) return res;
 
@@ -37,12 +35,9 @@ async function getStaticPaths() {
 }
 
 async function getStaticProps({ params }) {
-	const CATEGORY_DATA_URL = `/api/library/category?uri=${params.category}`;
-
 	let res = { revalidate: 60, props: { data: {}, error: false } };
 
-	let data = await axios.get(CATEGORY_DATA_URL);
-	data = data.data;
+	const data = await libraryCategory(params.category);
 	if (!data) res.props.error = true;
 	else res.props.data = data;
 

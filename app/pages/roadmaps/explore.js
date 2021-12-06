@@ -4,6 +4,8 @@ import Card from '../../components/card.js';
 
 import HeadStyles from '../../styles/Head.module.css';
 
+import roadmapsMeta from '../../functions/roadmapsMeta';
+
 function Explore(props) {
 	function getLevel(level) {
 		return props.data.roadmaps[level].map((item) => (
@@ -25,12 +27,10 @@ function Explore(props) {
 }
 
 async function getStaticProps() {
-	const ROADMAPS_META_URL = `/api/roadmaps/meta`;
-
 	let res = { revalidate: 60, props: { data: {}, error: false } };
 
-	let data = await axios.get(ROADMAPS_META_URL);
-	data = data.data;
+	const data = await roadmapsMeta();
+
 	if (!data) res.props.error = true;
 	else res.props.data = data;
 

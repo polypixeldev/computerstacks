@@ -1,8 +1,12 @@
-import axios from 'axios';
 import { useRouter } from 'next/router';
 
 import Loading from '../../../../components/loading';
 import ResourcePage from '../../../../components/resourcepage';
+
+import libraryMeta from '../../../../functions/libraryMeta';
+import libraryCategory from '../../../../functions/libraryCategory';
+import librarySubcategory from '../../../../functions/librarySubcategory';
+import libraryResource from '../../../../functions/libraryResource';
 
 function Resource(props) {
 	const router = useRouter();
@@ -12,30 +16,21 @@ function Resource(props) {
 }
 
 async function getStaticPaths() {
-	const RESOURCES_META_URL = `/api/library/meta`; // Fetches names and location of resources, nothing else
-
 	let res = { paths: [], fallback: true };
 
-	let data = await axios.get(RESOURCES_META_URL);
-	data = data.data;
+	const data = await libraryMeta();
 
 	if (!data) return res;
 
 	for (let level of data.subjects)
 		for (let category of level) {
-			const CATEGORY_DATA_URL = `/api/library/category?uri=${category.uri}`;
-
-			let catdata = await axios.get(CATEGORY_DATA_URL);
-			catdata = catdata.data;
+			const catdata = await libraryCategory(category.uri);
 
 			if (!catdata) return res;
 
 			for (let sublevel of catdata.subcategories)
 				for (let subcat of sublevel) {
-					const SUBCATEGORY_DATA_URL = `/api/library/subcategory?uri=${subcat.uri}`;
-
-					let subcatdata = await axios.get(SUBCATEGORY_DATA_URL);
-					subcatdata = subcatdata.data;
+					const subcatdata = await librarySubcategory(subcat.uri);
 
 					for (let subsublevel of subcatdata.resources)
 						for (let resource of subsublevel)
@@ -53,12 +48,9 @@ async function getStaticPaths() {
 }
 
 async function getStaticProps({ params }) {
-	const RESOURCE_URL = `/api/library/resource?uri=${params.resource}`;
-
 	let res = { revalidate: 60, props: { data: {}, error: false } };
 
-	let data = await axios.get(RESOURCE_URL);
-	data = data.data;
+	const data = await libraryResource(params.resource);
 	if (!data) res.props.error = true;
 	else res.props.data = data;
 

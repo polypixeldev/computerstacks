@@ -1,15 +1,7 @@
-import getDb from '../../../db/mongoose';
+import eventsFetch from '../../../functions/eventsFetch';
 
 async function fetch(req, res) {
-	const { events } = await getDb();
-
-	let data = await events.find({}, 'name description uri date duration', {
-		lean: true,
-	});
-
-	return res.json({
-		events: data,
-	});
+	return res.json(await eventsFetch());
 }
 
 export default fetch;

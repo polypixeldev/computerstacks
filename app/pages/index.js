@@ -8,6 +8,8 @@ import styles from '../styles/Home.module.css';
 import Background from '../public/tech.png';
 import Icons from '../public/icons.png';
 
+import eventsFetch from '../functions/eventsFetch';
+
 function Home(props) {
 	function listEvents() {
 		const events = props.data?.events.filter((event) => {
@@ -78,12 +80,10 @@ function Home(props) {
 }
 
 async function getStaticProps() {
-	const EVENTS_META_URL = `/api/events/fetch`;
-
 	let res = { revalidate: 60, props: { data: {}, error: false } };
 
-	let data = await axios.get(EVENTS_META_URL);
-	data = data.data;
+	const data = await eventsFetch();
+
 	if (!data) res.props.error = true;
 	else res.props.data = data;
 

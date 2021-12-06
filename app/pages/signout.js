@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { signOut } from 'next-auth/react';
 
@@ -6,12 +6,14 @@ function Signout() {
 	const [signedOut, setSignedOut] = useState(false);
 	const router = useRouter();
 
-	signOut({ redirect: false }).then((data) => {
-		setSignedOut(true);
-		setTimeout(() => {
-			router.push('/login');
-		}, 2000);
-	});
+	useEffect(() => {
+		signOut({ redirect: false }).then((data) => {
+			setSignedOut(true);
+			setTimeout(() => {
+				router.push('/login');
+			}, 2000);
+		});
+	}, [router]);
 
 	return (
 		<main>

@@ -4,6 +4,8 @@ import Card from '../components/card.js';
 
 import HeadStyle from '../styles/Head.module.css';
 
+import libraryMeta from '../functions/libraryMeta';
+
 function Library(props) {
 	function getLevel(level) {
 		if (props.error) {
@@ -31,13 +33,10 @@ function Library(props) {
 	);
 }
 
-async function getStaticProps(context) {
-	const RESOURCES_META_URL = `/api/library/meta`; // Fetches names and location of resources, nothing else
-
+async function getStaticProps() {
 	let res = { revalidate: 60, props: { data: {}, error: false } };
 
-	let data = await axios.get(RESOURCES_META_URL);
-	data = data.data;
+	const data = await libraryMeta();
 	if (!data) res.props.error = true;
 	else res.props.data = data;
 

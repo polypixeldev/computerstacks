@@ -1,8 +1,11 @@
-import axios from 'axios';
 import { useRouter } from 'next/router';
 
 import Loading from '../../../components/loading';
 import CategoryPage from '../../../components/categorypage';
+
+import libraryMeta from '../../../functions/libraryMeta';
+import libraryCategory from '../../../functions/libraryCategory';
+import librarySubcategory from '../../../functions/librarySubcategory';
 
 function Subcategory(props) {
 	const router = useRouter();
@@ -19,21 +22,15 @@ function Subcategory(props) {
 }
 
 async function getStaticPaths() {
-	const RESOURCES_META_URL = `/api/library/meta`; // Fetches names and location of resources, nothing else
-
 	let res = { paths: [], fallback: true };
 
-	let data = await axios.get(RESOURCES_META_URL);
-	data = data.data;
+	const data = await libraryMeta();
 
 	if (!data) return res;
 
 	for (let level of data.subjects)
 		for (let category of level) {
-			const CATEGORY_DATA_URL = `/api/library/category?uri=${category.uri}`;
-
-			let catdata = await axios.get(CATEGORY_DATA_URL);
-			catdata = catdata.data;
+			const catdata = await libraryCategory(category.uri);
 			if (!catdata) return res;
 
 			for (let sublevel of catdata.subcategories)
@@ -47,12 +44,9 @@ async function getStaticPaths() {
 }
 
 async function getStaticProps({ params }) {
-	const SUBCATEGORY_DATA_URL = `/api/library/subcategory?uri=${params.subcategory}`;
-
 	let res = { revalidate: 60, props: { data: {}, error: false } };
 
-	let data = await axios.get(SUBCATEGORY_DATA_URL);
-	data = data.data;
+	const data = await librarySubcategory(params.subcategory);
 	if (!data) res.props.error = true;
 	else res.props.data = data;
 
