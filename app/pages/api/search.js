@@ -3,8 +3,6 @@ import getDb from '../../db/mongoose';
 async function search(req, res) {
 	const { categories, subcategories, resources, roadmaps } = await getDb();
 
-	console.log(typeof req.query.query);
-
 	const queryRegex = { $regex: req.query.query, $options: 'i' };
 
 	let queries = [

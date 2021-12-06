@@ -9,8 +9,6 @@ async function eventsFetch() {
 
 	data = data.map((event) => ({ ...event, date: event.date.toISOString() }));
 
-	console.log(data);
-
 	return {
 		events: data,
 	};

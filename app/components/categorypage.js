@@ -21,12 +21,6 @@ function CategoryPage(props) {
 	useEffect(() => {
 		if (status !== 'authenticated') return;
 
-		console.log(
-			`${props.category || ''}${
-				props.subcategory ? `/${props.subcategory}` : ''
-			}`
-		);
-
 		if (
 			session.user.favorites.includes(
 				`${props.category || ''}${

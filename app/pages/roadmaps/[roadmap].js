@@ -175,7 +175,6 @@ async function getStaticPaths() {
 	let res = { paths: [], fallback: true };
 
 	const data = await roadmapsMeta();
-	console.log(data);
 
 	if (!data) return res;
 

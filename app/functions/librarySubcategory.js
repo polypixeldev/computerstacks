@@ -8,7 +8,6 @@ async function librarySubcategory(uri) {
 		'name description resources'
 	);
 	await data.populate('resources', '-_id -parent name description uri level');
-	console.log(data);
 	data = data.toObject();
 
 	const level1 = data.resources.filter((resource) => resource.level === 1);

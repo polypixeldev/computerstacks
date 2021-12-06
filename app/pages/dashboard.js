@@ -25,7 +25,6 @@ function Dashboard() {
 
 	useEffect(() => {
 		if (status !== 'authenticated') return;
-		console.log(session.user.favorites);
 
 		let newFavs = [];
 		let queries = [];
@@ -39,7 +38,6 @@ function Dashboard() {
 					? 'subcategory'
 					: 'resource';
 			const uri = split[split.length - 1];
-			console.log(split);
 
 			queries.push(
 				axios.get(`/api/library/${type}?uri=${uri}`).then((res) => {
@@ -77,7 +75,6 @@ function Dashboard() {
 	if (status === 'loading') return <Loading />;
 
 	function listFavorites() {
-		console.log(favorites);
 		return favorites.map((favorite) => (
 			<h3 key={favorite.uri}>
 				<Link href={`/library/${favorite.uri}`}>

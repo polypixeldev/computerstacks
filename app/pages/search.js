@@ -49,7 +49,6 @@ function Search() {
 		} else if (results === 'error') {
 			return <p>There was an error fetching the results.</p>;
 		} else {
-			console.log(results[type]);
 			return results[type].map((result) => (
 				<SearchResult type={type} key={result.name} {...result} />
 			));
