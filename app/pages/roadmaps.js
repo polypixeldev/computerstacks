@@ -11,8 +11,8 @@ function Roadmaps() {
 			</section>
 			<section className="section1">
 				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-					eiusmod tempor incididunt ut labore et dolore magna aliqua
+					Need help figuring out where to start? Click the link below to take a
+					quiz to help you choose your roadmap.
 				</p>
 				<button className="button">
 					<Link href="/roadmaps/discover">
@@ -22,8 +22,13 @@ function Roadmaps() {
 			</section>
 			<section className="section2">
 				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-					eiusmod tempor incididunt ut labore et dolore magna aliqua
+					Browse our collection of roadmaps from{' '}
+					<Link href="https://roadmap.sh">
+						<a className="link" target="_blank">
+							roadmap.sh
+						</a>
+					</Link>{' '}
+					by clicking the button below.
 				</p>
 				<button className="button">
 					<Link href="/roadmaps/explore">

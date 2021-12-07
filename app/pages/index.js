@@ -48,12 +48,19 @@ function Home(props) {
 				/>
 				<Image src={Icons} alt="Computer Icons" className={styles.icons} />
 				<p className={styles.blurb}>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit
+					<strong>
+						<em>The universal collection of computer-related resources</em>
+					</strong>
 				</p>
 			</section>
 			<section className="section1" id="main-desc">
 				<h2>The world&apos;s largest collection of computer resources</h2>
-				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
+				<p>
+					ComputerStacks is a free, open-source online collection of resources
+					related to computers to help you learn about computers in this digital
+					world. Click the button below to browse the library, or enter a query
+					in the search bar above.
+				</p>
 				<button className="button">
 					<Link href="/library">
 						<a className="link">Browse now</a>
@@ -71,7 +78,14 @@ function Home(props) {
 			</section>
 			<section className="section3" id="cards">
 				<div className={styles.card}>
-					<p>Lorem ipsum dolor sit amet, consectetur</p>
+					<p>
+						Visit the ComputerStacks GitHub repository at{' '}
+						<Link href="https://github.com/Poly-Pixel/computerstacks">
+							<a className="link" target="_blank">
+								https://github.com/Poly-Pixel/computerstacks
+							</a>
+						</Link>
+					</p>
 				</div>
 				{/* Card Carousel? */}
 			</section>

@@ -20,15 +20,21 @@
 .card {
 	background: #58587e;
 	border-radius: 20px;
-	width: 50vmin;
-	min-height: 40vmin;
+	width: calc(50vmin - 20px);
+	min-height: calc(40vmin - 20px);
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	padding: 20px;
 }
 
 .card p {
 	font-family: 'Dosis', sans-serif;
+	font-size: calc(2vmin + 20px);
+}
+
+.blurb {
+	font-family: 'Zilla Slab', sans-serif;
 	font-size: calc(2vmin + 20px);
 }
