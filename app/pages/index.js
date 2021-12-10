@@ -94,7 +94,7 @@ function Home(props) {
 }
 
 async function getStaticProps() {
-	let res = { revalidate: 60, props: { data: {}, error: false } };
+	let res = { revalidate: 43200, props: { data: {}, error: false } };
 
 	const data = await eventsFetch();
 

@@ -44,7 +44,7 @@ async function getStaticPaths() {
 }
 
 async function getStaticProps({ params }) {
-	let res = { revalidate: 60, props: { data: {}, error: false } };
+	let res = { revalidate: 43200, props: { data: {}, error: false } };
 
 	const data = await librarySubcategory(params.subcategory);
 	if (!data) res.props.error = true;
