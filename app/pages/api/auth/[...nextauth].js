@@ -7,6 +7,16 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import prisma from '../../../db/prisma';
 
 async function handler(req, res) {
+	// Temporary fix for email auth?
+	const adapter = PrismaAdapter(prisma);
+	adapter.updateUser = (data) => {
+		const newData = { ...data };
+
+		newData.id = undefined;
+
+		return prisma.user.update({ where: { id: data.id }, data: newData });
+	};
+
 	return await NextAuth(req, res, {
 		providers: [
 			GoogleProvider({
@@ -22,7 +32,7 @@ async function handler(req, res) {
 				from: process.env.EMAIL_FROM,
 			}),
 		],
-		adapter: PrismaAdapter(prisma),
+		adapter: adapter,
 		session: {
 			jwt: true,
 		},
