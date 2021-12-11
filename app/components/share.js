@@ -15,16 +15,18 @@ import { useRouter } from 'next/router';
 import ShareStyle from '../styles/Share.module.css';
 
 function Share(props) {
-	let href;
-	if (typeof window === 'undefined') {
-		href = '';
-		return (
-			<div className={ShareStyle.card}>
-				<p>Loading...</p>
-			</div>
-		);
-	} else {
-		href = window.location.href;
+	let href = props.href;
+	if (!href) {
+		if (typeof window === 'undefined') {
+			href = '';
+			return (
+				<div className={ShareStyle.card}>
+					<p>Loading...</p>
+				</div>
+			);
+		} else {
+			href = window.location.href;
+		}
 	}
 
 	return (

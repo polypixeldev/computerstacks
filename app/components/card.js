@@ -119,7 +119,19 @@ function Card(props) {
 						width={50}
 						height={50}
 					/>
-					{isShare ? <Share name={props.name} toggle={handleShare} /> : null}
+					{isShare ? (
+						<Share
+							href={
+								props.roadmap
+									? `/roadmaps/${props.uri}`
+									: `/library/${props.category ? `${props.category}/` : ''}${
+											props.subcategory ? `${props.subcategory}/` : ''
+									  }${props.uri}`
+							}
+							name={props.name}
+							toggle={handleShare}
+						/>
+					) : null}
 				</div>
 				{props.noFavorite === true ? null : (
 					<Image
