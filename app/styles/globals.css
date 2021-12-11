@@ -137,12 +137,6 @@ p {
 	}
 }
 
-@media screen and (max-width: 525px) {
-	#signup {
-		display: none;
-	}
-}
-
 @media screen and (max-width: 350px) {
 	#login {
 		display: none;

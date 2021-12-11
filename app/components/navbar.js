@@ -74,15 +74,6 @@ function Navbar(props) {
 			{status !== 'authenticated' ? (
 				<button
 					className="button-small"
-					id="signup"
-					onClick={() => router.push('/signup')}
-				>
-					Sign Up
-				</button>
-			) : null}
-			{status !== 'authenticated' ? (
-				<button
-					className="button-small"
 					id="login"
 					onClick={() => router.push('/login')}
 				>

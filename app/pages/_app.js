@@ -92,10 +92,6 @@ function MyApp({ Component, pageProps }) {
 						<Link href="/login">
 							<a className="link">Login</a>
 						</Link>
-						<br />
-						<Link href="/signup">
-							<a className="link">Sign Up</a>
-						</Link>
 					</div>
 				</div>
 			</footer>
