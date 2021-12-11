@@ -20,6 +20,7 @@ function Card(props) {
 
 	useEffect(() => {
 		if (status !== 'authenticated') return;
+		if (props.noFavorite === true) return;
 
 		if (props.roadmap === true) {
 			if (session.user.roadmaps.includes(props.uri)) {
@@ -44,6 +45,7 @@ function Card(props) {
 		props.subcategory,
 		props.uri,
 		props.roadmap,
+		props.noFavorite,
 	]);
 
 	function handleFavorite() {
@@ -119,13 +121,15 @@ function Card(props) {
 					/>
 					{isShare ? <Share name={props.name} toggle={handleShare} /> : null}
 				</div>
-				<Image
-					onClick={handleFavorite}
-					src={isFavorite ? favorite : notfavorite}
-					alt="Favorite button"
-					width={75}
-					height={75}
-				/>
+				{props.noFavorite === true ? null : (
+					<Image
+						onClick={handleFavorite}
+						src={isFavorite ? favorite : notfavorite}
+						alt="Favorite button"
+						width={75}
+						height={75}
+					/>
+				)}
 			</div>
 		</div>
 	);

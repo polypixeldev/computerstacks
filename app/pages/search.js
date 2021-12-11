@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 
-import SearchResult from '../components/searchresult';
+import Card from '../components/card';
 
 import HeadStyle from '../styles/Head.module.css';
 import SearchStyle from '../styles/Search.module.css';
@@ -50,7 +50,7 @@ function Search() {
 			return <p>There was an error fetching the results.</p>;
 		} else {
 			return results[type].map((result) => (
-				<SearchResult type={type} key={result.name} {...result} />
+				<Card noFavorite={true} key={result.name} {...result} />
 			));
 		}
 	}
