@@ -20,13 +20,15 @@
 .card {
 	background: #58587e;
 	border-radius: 20px;
-	width: calc(50vmin - 20px);
+	max-width: calc(75vmin - 20px);
 	min-height: calc(40vmin - 20px);
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	padding: 20px;
+	word-break: break-word;
+	margin: 10px;
 }
 
 .card p {

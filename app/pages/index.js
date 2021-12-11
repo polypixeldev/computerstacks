@@ -87,6 +87,16 @@ function Home(props) {
 						</Link>
 					</p>
 				</div>
+				<div className={styles.card}>
+					<p>
+						Fill out a quick survey to help improve ComputerStacks! See{' '}
+						<Link href="https://forms.office.com/r/jbPz5Y5fJW">
+							<a className="link" target="_blank">
+								https://forms.office.com/r/jbPz5Y5fJW
+							</a>
+						</Link>
+					</p>
+				</div>
 				{/* Card Carousel? */}
 			</section>
 		</main>
