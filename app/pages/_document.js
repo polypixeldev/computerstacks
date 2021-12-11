@@ -23,6 +23,10 @@ class MyDocument extends Document {
 					<meta name="theme-color" content="#23272a" />
 					<meta name="color-schema" content="dark light" />
 					<meta name="robots" content="index,follow" />
+					<meta
+						name="google-site-verification"
+						content="SzBZ_W2YLnR5bFcSt2D8GQkEAq_7-lwhNM4ObEmuyGc"
+					/>
 				</Head>
 				<body>
 					<Main />
