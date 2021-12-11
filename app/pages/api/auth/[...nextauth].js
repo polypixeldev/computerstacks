@@ -39,11 +39,12 @@ async function handler(req, res) {
 		pages: {
 			signIn: '/login',
 		},
+		secret: process.env.NEXTAUTH_SECRET,
 		jwt: {
 			signingKey: process.env.JWT_SIGNING_PRIVATE_KEY,
 			encryption: true,
 			encryptionKey: process.env.JWT_ENCRYPTION_KEY,
-			secret: process.env.JWT_SECRET,
+			secret: process.env.NEXTAUTH_SECRET,
 		},
 		callbacks: {
 			async jwt({ token, user, isNewUser }) {
