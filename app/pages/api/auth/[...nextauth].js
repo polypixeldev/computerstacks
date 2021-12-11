@@ -34,7 +34,7 @@ async function handler(req, res) {
 		],
 		adapter: adapter,
 		session: {
-			jwt: true,
+			strategy: 'jwt',
 		},
 		pages: {
 			signIn: '/login',
