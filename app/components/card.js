@@ -133,15 +133,13 @@ function Card(props) {
 						/>
 					) : null}
 				</div>
-				{props.noFavorite === true ? null : (
-					<Image
-						onClick={handleFavorite}
-						src={isFavorite ? favorite : notfavorite}
-						alt="Favorite button"
-						width={75}
-						height={75}
-					/>
-				)}
+				<Image
+					onClick={handleFavorite}
+					src={isFavorite ? favorite : notfavorite}
+					alt="Favorite button"
+					width={75}
+					height={75}
+				/>
 			</div>
 		</div>
 	);

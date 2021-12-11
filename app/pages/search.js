@@ -49,9 +49,18 @@ function Search() {
 		} else if (results === 'error') {
 			return <p>There was an error fetching the results.</p>;
 		} else {
-			return results[type].map((result) => (
-				<Card noFavorite={true} key={result.name} {...result} />
-			));
+			return results[type].map((result) => {
+				let resultObj = { ...result };
+
+				if (resultObj.parent.parent) {
+					resultObj.subcategory = resultObj.parent.uri;
+					resultObj.category = resultObj.parent.parent.uri;
+				} else if (resultObj.parent) {
+					resultObj.category = resultObj.parent.uri;
+				}
+
+				return <Card key={result.name} {...resultObj} />;
+			});
 		}
 	}
 
