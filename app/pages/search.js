@@ -49,6 +49,7 @@ function Search() {
 		} else if (results === 'error') {
 			return <p>There was an error fetching the results.</p>;
 		} else {
+			if (!results) return null;
 			return results[type].map((result) => {
 				let resultObj = { ...result };
 

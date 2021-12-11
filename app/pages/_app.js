@@ -1,3 +1,4 @@
+import axios from 'axios';
 import Link from 'next/link';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -19,6 +20,25 @@ function MyApp({ Component, pageProps }) {
 		return () =>
 			router.events.off('routeChangeStart', () => setMenuOpen(false));
 	}, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+	useEffect(() => {
+		const interceptor = axios.interceptors.response.use(
+			(res) => res,
+			(err) => {
+				console.log(err);
+
+				if (typeof window !== 'undefined') {
+					alert(
+						`An unexpected error occurred, please try again later. If the issue persists, file an issue on https://github.com/Poly-Pixel/computerstacks \n ${err}`
+					);
+				}
+
+				return err;
+			}
+		);
+
+		return () => axios.interceptors.response.eject(interceptor);
+	}, []);
 
 	return (
 		<SessionProvider session={pageProps.session}>

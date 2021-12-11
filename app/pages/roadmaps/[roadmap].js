@@ -65,15 +65,21 @@ function Roadmap(props) {
 		const ROADMAP_URL = `/api/user/roadmap`;
 
 		if (isRoadmap) {
-			setIsRoadmap(false);
-			axios.post(ROADMAP_URL, {
-				uri: router.query.roadmap,
-			});
+			axios
+				.post(ROADMAP_URL, {
+					uri: router.query.roadmap,
+				})
+				.then(() => {
+					setIsRoadmap(false);
+				});
 		} else {
-			setIsRoadmap(true);
-			axios.post(ROADMAP_URL, {
-				uri: router.query.roadmap,
-			});
+			axios
+				.post(ROADMAP_URL, {
+					uri: router.query.roadmap,
+				})
+				.then(() => {
+					setIsRoadmap(true);
+				});
 		}
 	}
 
@@ -103,7 +109,7 @@ function Roadmap(props) {
 
 		let res = await axios.get(ROADMAP_URL);
 
-		setComments(res.data.comments);
+		setComments(res?.data?.comments);
 	}
 
 	function listComments() {

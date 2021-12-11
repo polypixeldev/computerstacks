@@ -44,15 +44,21 @@ function ResourcePage(props) {
 		const FAVORITE_URL = `/api/user/favorite`;
 
 		if (isFavorite) {
-			setIsFavorite(false);
-			axios.post(FAVORITE_URL, {
-				uri: `${props.category}/${props.subcategory}/${props.resource}`,
-			});
+			axios
+				.post(FAVORITE_URL, {
+					uri: `${props.category}/${props.subcategory}/${props.resource}`,
+				})
+				.then(() => {
+					setIsFavorite(false);
+				});
 		} else {
-			setIsFavorite(true);
-			axios.post(FAVORITE_URL, {
-				uri: `${props.category}/${props.subcategory}/${props.resource}`,
-			});
+			axios
+				.post(FAVORITE_URL, {
+					uri: `${props.category}/${props.subcategory}/${props.resource}`,
+				})
+				.then(() => {
+					setIsFavorite(true);
+				});
 		}
 	}
 
@@ -82,10 +88,11 @@ function ResourcePage(props) {
 
 		let res = await axios.get(RESOURCE_URL);
 
-		setComments(res.data.comments);
+		setComments(res?.data?.comments);
 	}
 
 	function listComments() {
+		if (!comments) return null;
 		return comments.map((comment) => (
 			<Comment key={comment._id} data={comment} />
 		));

@@ -53,33 +53,45 @@ function Card(props) {
 			const ROADMAP_URL = `/api/user/roadmap`;
 
 			if (isFavorite) {
-				setIsFavorite(false);
-				axios.post(ROADMAP_URL, {
-					uri: props.uri,
-				});
+				axios
+					.post(ROADMAP_URL, {
+						uri: props.uri,
+					})
+					.then(() => {
+						setIsFavorite(false);
+					});
 			} else {
-				setIsFavorite(true);
-				axios.post(ROADMAP_URL, {
-					uri: props.uri,
-				});
+				axios
+					.post(ROADMAP_URL, {
+						uri: props.uri,
+					})
+					.then(() => {
+						setIsFavorite(true);
+					});
 			}
 		} else {
 			const FAVORITE_URL = `/api/user/favorite`;
 
 			if (isFavorite) {
-				setIsFavorite(false);
-				axios.post(FAVORITE_URL, {
-					uri: `${props.category ? `${props.category}/` : ''}${
-						props.subcategory ? `${props.subcategory}/` : ''
-					}${props.uri}`,
-				});
+				axios
+					.post(FAVORITE_URL, {
+						uri: `${props.category ? `${props.category}/` : ''}${
+							props.subcategory ? `${props.subcategory}/` : ''
+						}${props.uri}`,
+					})
+					.then(() => {
+						setIsFavorite(false);
+					});
 			} else {
-				setIsFavorite(true);
-				axios.post(FAVORITE_URL, {
-					uri: `${props.category ? `${props.category}/` : ''}${
-						props.subcategory ? `${props.subcategory}/` : ''
-					}${props.uri}`,
-				});
+				axios
+					.post(FAVORITE_URL, {
+						uri: `${props.category ? `${props.category}/` : ''}${
+							props.subcategory ? `${props.subcategory}/` : ''
+						}${props.uri}`,
+					})
+					.then(() => {
+						setIsFavorite(true);
+					});
 			}
 		}
 	}

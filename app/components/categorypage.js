@@ -47,19 +47,25 @@ function CategoryPage(props) {
 		const FAVORITE_URL = `/api/user/favorite`;
 
 		if (isFavorite) {
-			setIsFavorite(false);
-			axios.post(FAVORITE_URL, {
-				uri: `${props.category || ''}${
-					props.subcategory ? `/${props.subcategory}` : ''
-				}`,
-			});
+			axios
+				.post(FAVORITE_URL, {
+					uri: `${props.category || ''}${
+						props.subcategory ? `/${props.subcategory}` : ''
+					}`,
+				})
+				.then(() => {
+					setIsFavorite(false);
+				});
 		} else {
-			setIsFavorite(true);
-			axios.post(FAVORITE_URL, {
-				uri: `${props.category || ''}${
-					props.subcategory ? `/${props.subcategory}` : ''
-				}`,
-			});
+			axios
+				.post(FAVORITE_URL, {
+					uri: `${props.category || ''}${
+						props.subcategory ? `/${props.subcategory}` : ''
+					}`,
+				})
+				.then(() => {
+					setIsFavorite(true);
+				});
 		}
 	}
 	function handleShare() {

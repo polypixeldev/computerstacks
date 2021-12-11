@@ -14,6 +14,10 @@ function Settings() {
 		const DATA_EXPORT_URL = `/api/data/export`;
 		const data = await axios.get(DATA_EXPORT_URL);
 
+		if (!data?.data) {
+			return alert(`No data was fetched`);
+		}
+
 		alert(`Your data is: ${JSON.stringify(data.data)}`);
 	}
 
