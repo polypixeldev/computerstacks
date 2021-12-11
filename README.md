@@ -9,7 +9,7 @@ A digital collection of computer-related resources and support
 2. Run `git clone https://github.com/<YOUR_GITHUB_USERNAME>/computerstacks.git` to clone the source code onto your computer
 3. Run `cd computerstacks/app` to change your working directory to ComputerStack's source code folder
 4. Run `npm i` to install all dependencies
-5. Create a `.env` file in the current working directory and set your environment variable values
+5. Create a `.env` file in the current working directory and set your environment variable values from the sample enviroment file, .env.sample
 
 Congrats, the project is now set up on your computer! Here's a few commands to get going:
  - `npm run dev` to start the development server
