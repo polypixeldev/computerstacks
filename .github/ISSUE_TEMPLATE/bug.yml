@@ -30,11 +30,14 @@ body:
       label: Operating System
       description: What operating system did you see the bug on?
       placeholder: ex. Windows 10
+    validations:
+      required: true
   - type: input
     id: browser
     attributes:
       label: Web Browser
       description: What web browser did you see the bug on? Include the version
       placeholder: ex. Google Chrome 96
+    validations:
+      required: true
       
-    
