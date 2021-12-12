@@ -47,14 +47,12 @@ function Login() {
 		<main>
 			<section className="section1">
 				<h2>Login</h2>
-				<br />
 				<button
 					onClick={google}
 					className={`button ${LoginStyles.providerButton}`}
 				>
 					Sign in with Google
 				</button>
-				<br />
 				<button
 					onClick={github}
 					className={`button ${LoginStyles.providerButton}`}
@@ -78,8 +76,7 @@ function Login() {
 							onChange={handleChange}
 						/>
 					</label>
-					<br />
-					<br />
+
 					<button className={`button-small ${FormStyle.submit}`}>Login</button>
 				</form>
 			</section>

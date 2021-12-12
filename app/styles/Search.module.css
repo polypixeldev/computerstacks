@@ -49,13 +49,6 @@
 	margin-right: 5vw;
 }
 
-.result {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: flex-start;
-}
-
 .result p {
 	padding: 0px;
 }

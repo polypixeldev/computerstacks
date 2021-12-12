@@ -70,6 +70,7 @@ p {
 	justify-content: center;
 	align-items: center;
 	padding: 1vmin 3vmin;
+	margin: 10px;
 
 	min-width: 26vw;
 	min-height: 6vh;
@@ -90,6 +91,7 @@ p {
 	justify-content: center;
 	align-items: center;
 	padding: 0.5vmin 1.5vmin;
+	margin: 10px;
 
 	min-width: 13vw;
 	min-height: 3vh;
