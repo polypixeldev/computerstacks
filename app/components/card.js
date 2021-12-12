@@ -127,7 +127,7 @@ function Card(props) {
 					</div>
 				</a>
 			</Link>
-			<div className={HeadStyle.actionDiv}>
+			<div className={`${HeadStyle.actionDiv} ${CardStyle.side}`}>
 				<div style={{ position: 'relative' }}>
 					<Image
 						onClick={handleShare}
