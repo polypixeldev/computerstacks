@@ -49,6 +49,11 @@ function Card(props) {
 	]);
 
 	function handleFavorite() {
+		if (status !== 'authenticated') {
+			alert('You must be logged in to favorite something');
+			return;
+		}
+
 		if (props.roadmap === true) {
 			const ROADMAP_URL = `/api/user/roadmap`;
 

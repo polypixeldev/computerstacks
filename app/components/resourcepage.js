@@ -41,6 +41,10 @@ function ResourcePage(props) {
 	]);
 
 	function handleFavorite() {
+		if (status !== 'authenticated') {
+			alert('You must be logged in to favorite something');
+			return;
+		}
 		const FAVORITE_URL = `/api/user/favorite`;
 
 		if (isFavorite) {

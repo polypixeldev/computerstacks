@@ -62,6 +62,10 @@ function Roadmap(props) {
 	if (router.isFallback) return <Loading />;
 
 	function handleRoadmap() {
+		if (status !== 'authenticated') {
+			alert('You must be logged in to favorite something');
+			return;
+		}
 		const ROADMAP_URL = `/api/user/roadmap`;
 
 		if (isRoadmap) {
