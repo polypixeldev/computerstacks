@@ -5,3 +5,16 @@
 .category {
 	color: #bababa;
 }
+
+.linkA {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+
+.linkA svg {
+	width: 50px;
+	height: 25px;
+	margin: 10px;
+}
