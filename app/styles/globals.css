@@ -191,6 +191,11 @@ p {
 	text-decoration: none;
 }
 
+.link-underline {
+	color: #ffffff;
+	text-decoration: underline;
+}
+
 nav {
 	display: grid;
 	grid-template-rows: 1fr;

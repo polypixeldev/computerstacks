@@ -72,29 +72,31 @@ function Home(props) {
 				{listEvents()}
 				<p>
 					<Link href="/events">
-						<a className="link">View the entire event calendar</a>
+						<a className="link-underline">View the entire event calendar</a>
 					</Link>
 				</p>
 			</section>
 			<section className="section3" id="cards">
 				<div className={styles.card}>
 					<p>
-						Visit the ComputerStacks GitHub repository at{' '}
+						Visit the{' '}
 						<Link href="https://github.com/Poly-Pixel/computerstacks">
-							<a className="link" target="_blank">
-								https://github.com/Poly-Pixel/computerstacks
+							<a className="link-underline" target="_blank">
+								ComputerStacks GitHub repository
 							</a>
-						</Link>
+						</Link>{' '}
+						to learn more about the code powering this website
 					</p>
 				</div>
 				<div className={styles.card}>
 					<p>
-						Fill out a quick survey to help improve ComputerStacks! See{' '}
+						Fill out{' '}
 						<Link href="https://forms.office.com/r/jbPz5Y5fJW">
-							<a className="link" target="_blank">
-								https://forms.office.com/r/jbPz5Y5fJW
+							<a className="link-underline" target="_blank">
+								this quick survey
 							</a>
-						</Link>
+						</Link>{' '}
+						to help improve ComputerStacks!
 					</p>
 				</div>
 				{/* Card Carousel? */}
