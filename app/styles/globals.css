@@ -116,13 +116,28 @@ p {
 .search {
 	position: relative;
 	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
 	height: 5vh;
 
 	border: 1px solid var(--grey-4);
 	border-radius: 5px;
-	padding: 2px 2px 2px 30px;
+	padding: 5px;
 	outline: 0;
 	background-color: var(--grey-3);
+}
+
+.search svg {
+	width: 15px;
+	height: 15px;
+	padding: 5px;
+	margin: 5px;
+	fill: #d0d0d5;
+}
+
+.search svg:hover {
+	background-color: var(--grey-4);
 }
 
 .search input {
@@ -131,6 +146,8 @@ p {
 	border: none;
 	padding-left: 5px;
 	width: 100%;
+	height: 100%;
+	font-size: calc(2vmin + 5px);
 }
 
 @media screen and (max-width: 475px) {
