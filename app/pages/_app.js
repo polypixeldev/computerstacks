@@ -52,7 +52,16 @@ function MyApp({ Component, pageProps }) {
 				<div>
 					<h2>ComputerStacks</h2>
 					<p>
-						<strong>© 2021, Samuel Fernandez</strong>
+						<strong>
+							Made by{' '}
+							<Link href="https://github.com/Poly-Pixel">
+								<a className="link-underline">Poly-Pixel</a>
+							</Link>
+							,{' '}
+							<Link href="https://github.com/Poly-Pixel/computerstacks/blob/main/LICENSE">
+								<a className="link-underline">licensed under GPL-3.0</a>
+							</Link>
+						</strong>
 					</p>
 					<p>
 						Favicon &ldquo;Computer&rdquo; by Erin Standley from NounProject.com
