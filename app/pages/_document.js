@@ -11,7 +11,7 @@ class MyDocument extends Document {
 						rel="stylesheet"
 					/>
 					<meta name="application-name" content="ComputerStacks" />
-					<meta name="author" content="Samuel Fernandez" />
+					<meta name="author" content="Poly-Pixel" />
 					<meta
 						name="description"
 						content="A digital collection of computer-related resources and support"
