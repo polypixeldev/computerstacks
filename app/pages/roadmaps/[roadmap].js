@@ -96,6 +96,10 @@ function Roadmap(props) {
 	}
 
 	function handleComment() {
+		if (status !== 'authenticated') {
+			alert('You must be logged in to comment');
+			return;
+		}
 		const ROADMAPS_COMMENT_URL = `/api/roadmaps/comment`;
 
 		axios
