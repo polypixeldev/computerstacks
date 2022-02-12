@@ -11,17 +11,8 @@ import HeadStyles from '../../styles/Head.module.css';
 import CommentStyle from '../../styles/Comment.module.css';
 import Comment from '../../components/comment';
 
-import android from '../../public/android.png';
-import angular from '../../public/angular.png';
-import backend from '../../public/backend.png';
-import devops from '../../public/devops.png';
-import frontend from '../../public/frontend.png';
-import golang from '../../public/golang.png';
-import java from '../../public/java.png';
 import notroadmap from '../../public/notfavorite.svg';
 import profile from '../../public/profile.png';
-import python from '../../public/python.png';
-import react from '../../public/react.png';
 import roadmap from '../../public/favorite.svg';
 import shareIcon from '../../public/share.png';
 
@@ -29,17 +20,6 @@ import roadmapsMeta from '../../functions/roadmapsMeta';
 import roadmapsRoadmap from '../../functions/roadmapsRoadmap';
 
 function Roadmap(props) {
-	const images = {
-		android,
-		angular,
-		backend,
-		devops,
-		frontend,
-		golang,
-		java,
-		python,
-		react,
-	};
 	const router = useRouter();
 	const { data: session, status } = useSession();
 
@@ -164,7 +144,7 @@ function Roadmap(props) {
 			</section>
 			<section className="section1">
 				<h2>Roadmap</h2>
-				<Image src={images[props.data.image]} alt="The roadmap" />
+				<Image src={props.data.image} alt="The roadmap" />
 			</section>
 			<section className="section2">
 				<h2>Comments</h2>
