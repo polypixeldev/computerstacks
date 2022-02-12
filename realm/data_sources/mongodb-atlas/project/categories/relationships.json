@@ -1,8 +1,0 @@
-{
-    "subcategories": {
-        "ref": "#/relationship/mongodb-atlas/project/subcategories",
-        "source_key": "subcategories",
-        "foreign_key": "_id",
-        "is_list": true
-    }
-}

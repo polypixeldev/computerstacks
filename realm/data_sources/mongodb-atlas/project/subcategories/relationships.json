@@ -1,8 +1,0 @@
-{
-    "resources": {
-        "ref": "#/relationship/mongodb-atlas/project/resources",
-        "source_key": "resources",
-        "foreign_key": "_id",
-        "is_list": true
-    }
-}
