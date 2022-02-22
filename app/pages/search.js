@@ -53,7 +53,7 @@ function Search() {
 			return results[type].map((result) => {
 				let resultObj = { ...result };
 
-				if (resultObj.parent.parent) {
+				if (resultObj.parent?.parent) {
 					resultObj.subcategory = resultObj.parent.uri;
 					resultObj.category = resultObj.parent.parent.uri;
 				} else if (resultObj.parent) {
