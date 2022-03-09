@@ -15,7 +15,7 @@
 		"@prisma/client": "^3.10.0",
 		"axios": "^0.26.0",
 		"bcryptjs": "^2.4.3",
-		"mongoose": "^6.2.4",
+		"mongoose": "^6.2.5",
 		"next": "12.1.0",
 		"next-auth": "4.2.1",
 		"next-share": "^0.13.0",
