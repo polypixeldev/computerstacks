@@ -1,3 +1,4 @@
+import { withSentry } from "@sentry/nextjs";
 import { getSession } from 'next-auth/react';
 
 import getDb from '../../../db/mongoose';
@@ -24,4 +25,4 @@ async function favorite(req, res) {
 	return res.status(200).end();
 }
 
-export default favorite;
+export default withSentry(favorite);
