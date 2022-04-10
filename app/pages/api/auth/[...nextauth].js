@@ -50,6 +50,7 @@ async function handler(req, res) {
 		},
 		pages: {
 			signIn: '/login',
+			verifyRequest: '/checkemail'
 		},
 		secret: process.env.NEXTAUTH_SECRET,
 		jwt: {
