@@ -1,3 +1,4 @@
+import { withSentry } from "@sentry/nextjs";
 import { getSession } from 'next-auth/react';
 
 import prisma from '../../../db/prisma';
@@ -24,4 +25,4 @@ async function exportData(req, res) {
 	res.json(data);
 }
 
-export default exportData;
+export default withSentry(exportData);

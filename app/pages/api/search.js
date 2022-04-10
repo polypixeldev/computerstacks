@@ -1,3 +1,5 @@
+import { withSentry } from "@sentry/nextjs";
+
 import getDb from '../../db/mongoose';
 
 async function search(req, res) {
@@ -47,4 +49,4 @@ async function search(req, res) {
 	});
 }
 
-export default search;
+export default withSentry(search);

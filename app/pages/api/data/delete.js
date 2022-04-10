@@ -1,3 +1,4 @@
+import { withSentry } from "@sentry/nextjs";
 import { getSession } from 'next-auth/react';
 
 import prisma from '../../../db/prisma';
@@ -16,4 +17,4 @@ async function deleteData(req, res) {
 	res.status(200).end();
 }
 
-export default deleteData;
+export default withSentry(deleteData);
