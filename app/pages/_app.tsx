@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import { SessionProvider } from 'next-auth/react';
 
-import MenuScreen from '../components/menu.js';
+import MenuScreen from '../components/menu';
 import Navbar from '../components/navbar';
 
 import '../styles/globals.css';

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import Card from '../../components/card.js';
+import Card from '../../components/card';
 
 import HeadStyles from '../../styles/Head.module.css';
 
