@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 
 function Menu() {
-	const { data: session, status } = useSession();
+	const { status } = useSession();
 
 	return (
 		<main>

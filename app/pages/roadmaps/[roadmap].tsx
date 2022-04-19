@@ -107,7 +107,7 @@ function Roadmap(props: RoadmapProps) {
 	async function reloadComments() {
 		const ROADMAP_URL = `/api/roadmaps/roadmap?uri=${router.query.roadmap}`;
 
-		let res = await axios.get(ROADMAP_URL);
+		const res = await axios.get(ROADMAP_URL);
 
 		setComments(res?.data?.comments);
 	}
@@ -178,7 +178,7 @@ function Roadmap(props: RoadmapProps) {
 }
 
 async function getStaticPaths() {
-	let res = { paths: new Array<{ params: { roadmap: string }}>(), fallback: true };
+	const res = { paths: new Array<{ params: { roadmap: string }}>(), fallback: true };
 
 	const data = await roadmapsMeta();
 
@@ -193,7 +193,7 @@ async function getStaticPaths() {
 }
 
 const  getStaticProps: GetStaticProps = async ({ params }) => {
-	let res = { revalidate: 43200, props: { data: {}, error: false } };
+	const res = { revalidate: 43200, props: { data: {}, error: false } };
 
 	if(!params) {
 		throw Error("Category page parameters not found");

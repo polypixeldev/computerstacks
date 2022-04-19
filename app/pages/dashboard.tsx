@@ -31,10 +31,10 @@ function Dashboard() {
 	useEffect(() => {
 		if (status !== 'authenticated') return;
 
-		let newFavs: Array<(DbCategory | DbSubcategory | DbResource) & {uri: string}> = [];
-		let queries = [];
+		const newFavs: Array<(DbCategory | DbSubcategory | DbResource) & {uri: string}> = [];
+		const queries = [];
 
-		for (let fav of session.user.favorites) {
+		for (const fav of session.user.favorites) {
 			const split = fav.split('/');
 			const type =
 				split.length === 1
@@ -59,10 +59,10 @@ function Dashboard() {
 	useEffect(() => {
 		if (status !== 'authenticated') return;
 
-		let newRoadmaps: Array<DbRoadmap & { uri: string }> = [];
-		let queries = [];
+		const newRoadmaps: Array<DbRoadmap & { uri: string }> = [];
+		const queries = [];
 
-		for (let roadmap of session.user.roadmaps) {
+		for (const roadmap of session.user.roadmaps) {
 			const uri = roadmap;
 
 			queries.push(

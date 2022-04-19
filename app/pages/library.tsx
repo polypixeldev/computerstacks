@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 import Card from '../components/card';
 
 import HeadStyle from '../styles/Head.module.css';
@@ -41,7 +39,7 @@ function Library(props: LibraryProps) {
 }
 
 async function getStaticProps() {
-	let res = { revalidate: 43200, props: { data: {}, error: false } };
+	const res = { revalidate: 43200, props: { data: {}, error: false } };
 
 	const data = await libraryMeta();
 	if (!data) res.props.error = true;

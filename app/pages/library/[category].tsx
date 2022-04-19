@@ -33,21 +33,21 @@ function Category(props: CategoryProps) {
 }
 
 async function getStaticPaths() {
-	let res = { paths: new Array<{ params: { category: string }}>(), fallback: true };
+	const res = { paths: new Array<{ params: { category: string }}>(), fallback: true };
 
 	const data = await libraryMeta();
 
 	if (!data) return res;
 
-	for (let level of data.subjects)
-		for (let subject of level)
+	for (const level of data.subjects)
+		for (const subject of level)
 			res.paths.push({ params: { category: subject.uri } });
 
 	return res;
 }
 
 const getStaticProps: GetStaticProps = async ({ params }) =>  {
-	let res = { revalidate: 43200, props: { data: {}, error: false } };
+	const res = { revalidate: 43200, props: { data: {}, error: false } };
 
 	if(!params) {
 		throw Error("Category page parameters not found");

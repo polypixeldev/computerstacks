@@ -5,7 +5,7 @@ import Comment from '../interfaces/db/Comment';
 async function libraryResource(uri: string) {
 	const { resources } = await getDb();
 
-	let data = await resources.findOne(
+	const data = await resources.findOne(
 		{ uri: uri },
 		'-_id name description teamRating communityRating link author timestamp comments'
 	);
@@ -14,7 +14,7 @@ async function libraryResource(uri: string) {
 		throw new Error(`Resource URI ${uri} does not exist`);
 	}
 
-	let dataObj = (await data.populate<{ comments: Comment[] }>({
+	const dataObj = (await data.populate<{ comments: Comment[] }>({
 		path: 'comments',
 		populate: {
 			path: 'author',

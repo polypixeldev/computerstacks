@@ -5,7 +5,7 @@ import { DbResource } from '../interfaces/db/Resource';
 async function librarySubcategory(uri: string) {
 	const { subcategories } = await getDb();
 
-	let data = await subcategories.findOne(
+	const data = await subcategories.findOne(
 		{ uri: uri },
 		'name description resources'
 	);
@@ -14,7 +14,7 @@ async function librarySubcategory(uri: string) {
 		throw new Error(`Subcategory URI ${uri} does not exist`);
 	}
 
-	let dataObj = (await data.populate<{ resources: DbResource[] }>('resources', '-_id -parent name description uri level')).toObject();
+	const dataObj = (await data.populate<{ resources: DbResource[] }>('resources', '-_id -parent name description uri level')).toObject();
 
 	const level1 = dataObj.resources.filter((resource) => resource.level === 1);
 	const level2 = dataObj.resources.filter((resource) => resource.level === 2);

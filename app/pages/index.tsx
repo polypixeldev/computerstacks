@@ -1,4 +1,3 @@
-import axios from 'axios';
 import Link from 'next/link';
 import Image from 'next/image';
 import prettyMs from 'pretty-ms';
@@ -114,7 +113,7 @@ function Home(props: HomeProps) {
 }
 
 async function getStaticProps() {
-	let res = { revalidate: 43200, props: { data: {}, error: false } };
+	const res = { revalidate: 43200, props: { data: {}, error: false } };
 
 	const data = await eventsFetch();
 

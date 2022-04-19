@@ -66,7 +66,7 @@ function Events(props: EventsProps) {
 }
 
 async function getStaticProps() {
-	let res = { revalidate: 43200, props: { data: {}, error: false } };
+	const res = { revalidate: 43200, props: { data: {}, error: false } };
 
 	const data = await eventsFetch();
 	if (!data) res.props.error = true;

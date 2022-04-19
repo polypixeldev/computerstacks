@@ -9,7 +9,7 @@ async function search(req: NextApiRequest, res: NextApiResponse) {
 
 	const queryRegex = { $regex: req.query.query, $options: 'i' };
 
-	let queries = [
+	const queries = [
 		categories.find({
 			$or: [{ name: queryRegex }, { description: queryRegex }],
 		}),
@@ -28,7 +28,7 @@ async function search(req: NextApiRequest, res: NextApiResponse) {
 
 	const [category, subcategory, resource, roadmap] = await Promise.all(queries);
 
-	let populateQueries = [
+	const populateQueries = [
 		Promise.all(subcategory.map((subcat) => subcat.populate('parent'))),
 		Promise.all(
 			resource.map((res) =>

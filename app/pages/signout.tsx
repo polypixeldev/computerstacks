@@ -7,7 +7,7 @@ function Signout() {
 	const router = useRouter();
 
 	useEffect(() => {
-		signOut({ redirect: false }).then((data) => {
+		signOut({ redirect: false }).then(() => {
 			setSignedOut(true);
 			setTimeout(() => {
 				router.push('/login');

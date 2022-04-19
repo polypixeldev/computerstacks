@@ -15,7 +15,7 @@ import type { AppProps } from 'next/app';
 function MyApp({ Component, pageProps }: AppProps) {
 	const router = useRouter();
 
-	let [menuOpen, setMenuOpen] = useState(false);
+	const [menuOpen, setMenuOpen] = useState(false);
 
 	useEffect(() => {
 		router.events.on('routeChangeStart', () => setMenuOpen(false));

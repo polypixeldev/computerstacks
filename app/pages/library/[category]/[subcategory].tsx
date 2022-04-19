@@ -37,19 +37,19 @@ function Subcategory(props: SubcategoryProps) {
 }
 
 async function getStaticPaths() {
-	let res = { paths: new Array<{ params: { category: string, subcategory: string }}>(), fallback: true };
+	const res = { paths: new Array<{ params: { category: string, subcategory: string }}>(), fallback: true };
 
 	const data = await libraryMeta();
 
 	if (!data) return res;
 
-	for (let level of data.subjects)
-		for (let category of level) {
+	for (const level of data.subjects)
+		for (const category of level) {
 			const catdata = await libraryCategory(category.uri);
 			if (!catdata) return res;
 
-			for (let sublevel of catdata.subcategories)
-				for (let item of sublevel)
+			for (const sublevel of catdata.subcategories)
+				for (const item of sublevel)
 					res.paths.push({
 						params: { category: category.uri, subcategory: item.uri },
 					});
@@ -59,7 +59,7 @@ async function getStaticPaths() {
 }
 
 const getStaticProps: GetStaticProps = async ({ params }) => {
-	let res = { revalidate: 43200, props: { data: {}, error: false } };
+	const res = { revalidate: 43200, props: { data: {}, error: false } };
 
 	if(!params) {
 		throw Error("Subcategory page parameters not found");

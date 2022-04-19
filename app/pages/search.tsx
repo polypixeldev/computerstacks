@@ -16,8 +16,8 @@ import { ChangeEvent, MouseEvent, KeyboardEvent } from 'react';
 function Search() {
 	const router = useRouter();
 
-	let [query, setQuery] = useState('');
-	let [results, setResults] = useState<SearchData | "error" | null>(null);
+	const [query, setQuery] = useState('');
+	const [results, setResults] = useState<SearchData | "error" | null>(null);
 
 	useEffect(() => {
 		if (!router.query.query) return;
@@ -54,7 +54,7 @@ function Search() {
 		} else {
 			if (!results) return null;
 			return results[type].map((result) => {
-				let resultObj: (typeof result & { subcategory?: string, category?: string }) = { ...result };
+				const resultObj: (typeof result & { subcategory?: string, category?: string }) = { ...result };
 
 				if('parent' in resultObj) {
 					if ('parent' in resultObj.parent) {

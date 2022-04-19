@@ -15,7 +15,7 @@ interface NavbarProps {
 };
 
 function Navbar(props: NavbarProps) {
-	let [query, setQuery] = useState('');
+	const [query, setQuery] = useState('');
 
 	const { status } = useSession();
 	const router = useRouter();

@@ -31,7 +31,7 @@ function Explore(props: ExploreProps) {
 }
 
 async function getStaticProps() {
-	let res = { revalidate: 43200, props: { data: {}, error: false } };
+	const res = { revalidate: 43200, props: { data: {}, error: false } };
 
 	const data = await roadmapsMeta();
 

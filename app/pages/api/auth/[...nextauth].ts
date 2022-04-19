@@ -7,7 +7,6 @@ import GitHubProvider from 'next-auth/providers/github';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 
 import prisma from '../../../db/prisma';
-import checkEnvironment from '../../../functions/checkEnvironment';
 
 import type { NextApiRequest, NextApiResponse } from 'next';
 

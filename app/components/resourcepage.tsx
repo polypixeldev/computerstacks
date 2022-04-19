@@ -105,7 +105,7 @@ function ResourcePage(props: ResourcePageProps) {
 	async function reloadComments() {
 		const RESOURCE_URL = `/api/library/resource?uri=${props.resourceURI}`;
 
-		let res = await axios.get(RESOURCE_URL);
+		const res = await axios.get(RESOURCE_URL);
 
 		setComments(res?.data?.comments);
 	}
