@@ -6,6 +6,8 @@ import FormStyle from '../styles/Form.module.css';
 import HeadStyles from '../styles/Head.module.css';
 import LoginStyles from '../styles/Login.module.css';
 
+import { MouseEvent, ChangeEvent, FormEvent } from 'react';
+
 function Login() {
 	const router = useRouter();
 
@@ -17,17 +19,17 @@ function Login() {
 		});
 	});
 
-	function google(event) {
+	function google(event: MouseEvent) {
 		event.preventDefault();
 		signIn('google', { callbackUrl: 'http://localhost/dashboard' });
 	}
 
-	function github(event) {
+	function github(event: MouseEvent) {
 		event.preventDefault();
 		signIn('github', { callbackUrl: 'http://localhost/dashboard' });
 	}
 
-	function email(event) {
+	function email(event: FormEvent) {
 		event.preventDefault();
 		signIn('email', {
 			email: userEmail,
@@ -35,7 +37,7 @@ function Login() {
 		});
 	}
 
-	function handleChange(event) {
+	function handleChange(event: ChangeEvent<HTMLInputElement>) {
 		const target = event.target;
 		const value = target.value;
 		const name = target.name;

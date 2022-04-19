@@ -7,8 +7,11 @@ import GitHubProvider from 'next-auth/providers/github';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 
 import prisma from '../../../db/prisma';
+import checkEnvironment from '../../../functions/checkEnvironment';
 
-async function handler(req, res) {
+import type { NextApiRequest, NextApiResponse } from 'next';
+
+async function handler(req: NextApiRequest, res: NextApiResponse) {
 	// Temporary fix for email auth?
 	const adapter = PrismaAdapter(prisma);
 	adapter.updateUser = (data) => {
@@ -22,8 +25,8 @@ async function handler(req, res) {
 	return await NextAuth(req, res, {
 		providers: [
 			GoogleProvider({
-				clientId: process.env.GOOGLE_ID,
-				clientSecret: process.env.GOOGLE_SECRET,
+				clientId: process.env.GOOGLE_ID ?? '',
+				clientSecret: process.env.GOOGLE_SECRET ?? '',
 			}),
 			GitHubProvider({
 				clientId: process.env.GITHUB_ID,
@@ -53,19 +56,13 @@ async function handler(req, res) {
 			verifyRequest: '/checkemail'
 		},
 		secret: process.env.NEXTAUTH_SECRET,
-		jwt: {
-			signingKey: process.env.JWT_SIGNING_PRIVATE_KEY,
-			encryption: true,
-			encryptionKey: process.env.JWT_ENCRYPTION_KEY,
-			secret: process.env.NEXTAUTH_SECRET,
-		},
 		callbacks: {
 			async jwt({ token, user, isNewUser }) {
 				if (user) {
 					token._id = user.id;
 				}
 
-				if (isNewUser) {
+				if (isNewUser && user) {
 					await prisma.user.update({
 						where: {
 							id: user.id,
@@ -101,6 +98,10 @@ async function handler(req, res) {
 					},
 				});
 
+				if (!dbUser) {
+					throw new Error("Unable to fetch session user document");
+				}
+
 				session.user._id = token._id;
 				session.user.favorites = dbUser.favorites;
 				session.user.roadmaps = dbUser.roadmaps;
@@ -112,7 +113,7 @@ async function handler(req, res) {
 	});
 }
 
-function html({ url, email }) {
+function html({ url, email }: { url: string, email: string}) {
 	// Insert invisible space into domains and email address to prevent both the
 	// email address and the domain from being turned into a hyperlink by email
 	// clients like Outlook and Apple mail, as this is confusing because it seems

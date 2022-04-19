@@ -3,7 +3,9 @@ import { getSession } from 'next-auth/react';
 
 import prisma from '../../../db/prisma';
 
-async function deleteData(req, res) {
+import type { NextApiRequest, NextApiResponse } from 'next';
+
+async function deleteData(req: NextApiRequest, res: NextApiResponse) {
 	const session = await getSession({ req });
 
 	if (!session) return res.status(401).end();

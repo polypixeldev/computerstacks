@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 
-function Menu({ onLink }) {
+function Menu() {
 	const { data: session, status } = useSession();
 
 	return (

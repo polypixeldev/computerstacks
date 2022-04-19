@@ -7,22 +7,37 @@ import libraryMeta from '../../../functions/libraryMeta';
 import libraryCategory from '../../../functions/libraryCategory';
 import librarySubcategory from '../../../functions/librarySubcategory';
 
-function Subcategory(props) {
+import { GetStaticProps } from 'next'
+import { Subcategory } from '../../../interfaces/db/Subcategory';
+
+interface SubcategoryProps {
+	data: Subcategory
+}
+
+function Subcategory(props: SubcategoryProps) {
 	const router = useRouter();
 
 	if (router.isFallback) return <Loading />;
 
+	if(!router.query.category || typeof router.query.category === 'object') {
+		throw new Error(`Invalid category URI ${router.query.category}`);
+	}
+
+	if(!router.query.subcategory || typeof router.query.subcategory === 'object') {
+		throw new Error(`Invalid subcategory URI ${router.query.subcategory}`);
+	} 
+
 	return (
 		<CategoryPage
 			data={props.data}
-			category={router.query.category}
-			subcategory={router.query.subcategory}
+			categoryURI={router.query.category}
+			subcategoryURI={router.query.subcategory}
 		/>
 	);
 }
 
 async function getStaticPaths() {
-	let res = { paths: [], fallback: true };
+	let res = { paths: new Array<{ params: { category: string, subcategory: string }}>(), fallback: true };
 
 	const data = await libraryMeta();
 
@@ -43,8 +58,16 @@ async function getStaticPaths() {
 	return res;
 }
 
-async function getStaticProps({ params }) {
+const getStaticProps: GetStaticProps = async ({ params }) => {
 	let res = { revalidate: 43200, props: { data: {}, error: false } };
+
+	if(!params) {
+		throw Error("Subcategory page parameters not found");
+	}
+
+	if(!params.subcategory || typeof params.subcategory === 'object') {
+		throw Error(`Invalid resource URI ${params.subcategory}`);
+	}
 
 	const data = await librarySubcategory(params.subcategory);
 	if (!data) res.props.error = true;

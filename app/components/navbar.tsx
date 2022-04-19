@@ -5,16 +5,22 @@ import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 
 import OpenMenu from '../public/openMenu.png';
-import SearchIcon from '../public/search.png';
 import CloseMenu from '../public/closeMenu.png';
 
-function Navbar(props) {
+import { ChangeEvent, MouseEvent, KeyboardEvent, Dispatch, SetStateAction } from 'react';
+
+interface NavbarProps {
+	menuOpen: boolean,
+	setMenuOpen: Dispatch<SetStateAction<boolean>>
+};
+
+function Navbar(props: NavbarProps) {
 	let [query, setQuery] = useState('');
 
 	const { status } = useSession();
 	const router = useRouter();
 
-	function handleChange(event) {
+	function handleChange(event: ChangeEvent<HTMLInputElement>) {
 		const target = event.target;
 		const value = target.value;
 		const name = target.name;
@@ -22,8 +28,8 @@ function Navbar(props) {
 		if (name === 'query') setQuery(value);
 	}
 
-	function handleSearch(event) {
-		if (event.key && event.key !== 'Enter') return;
+	function handleSearch(event: MouseEvent | KeyboardEvent) {
+		if ('key' in event && event.key !== 'Enter') return;
 		setQuery('');
 		router.push(`/search?query=${query}`);
 	}

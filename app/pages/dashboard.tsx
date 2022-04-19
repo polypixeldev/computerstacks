@@ -11,9 +11,14 @@ import styles from '../styles/Dashboard.module.css';
 
 import profile from '../public/profile.png';
 
+import { DbCategory } from '../interfaces/db/Category';
+import { DbSubcategory } from '../interfaces/db/Subcategory';
+import { DbResource } from '../interfaces/db/Resource';
+import { DbRoadmap } from '../interfaces/db/Roadmap';
+
 function Dashboard() {
-	const [favorites, setFavorites] = useState([]);
-	const [roadmaps, setRoadmaps] = useState([]);
+	const [favorites, setFavorites] = useState<Array<(DbCategory | DbSubcategory | DbResource) & {uri: string}>>([]);
+	const [roadmaps, setRoadmaps] = useState<Array<DbRoadmap & { uri: string }>>([]);
 
 	const router = useRouter();
 	const { data: session, status } = useSession({
@@ -26,7 +31,7 @@ function Dashboard() {
 	useEffect(() => {
 		if (status !== 'authenticated') return;
 
-		let newFavs = [];
+		let newFavs: Array<(DbCategory | DbSubcategory | DbResource) & {uri: string}> = [];
 		let queries = [];
 
 		for (let fav of session.user.favorites) {
@@ -54,7 +59,7 @@ function Dashboard() {
 	useEffect(() => {
 		if (status !== 'authenticated') return;
 
-		let newRoadmaps = [];
+		let newRoadmaps: Array<DbRoadmap & { uri: string }> = [];
 		let queries = [];
 
 		for (let roadmap of session.user.roadmaps) {
@@ -79,7 +84,7 @@ function Dashboard() {
 			<h3 key={favorite.uri}>
 				<Link href={`/library/${favorite.uri}`}>
 					<a className="link">
-						{favorite.category || favorite.subcategory || favorite.name}
+						{favorite.name}
 					</a>
 				</Link>
 			</h3>

@@ -3,7 +3,9 @@ import { getSession } from 'next-auth/react';
 
 import prisma from '../../../db/prisma';
 
-async function exportData(req, res) {
+import type { NextApiRequest, NextApiResponse } from 'next';
+
+async function exportData(req: NextApiRequest, res: NextApiResponse) {
 	const session = await getSession({ req });
 
 	if (!session) return res.status(401).end();

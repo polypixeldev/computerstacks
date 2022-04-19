@@ -10,7 +10,15 @@ import Icons from '../public/icons.png';
 
 import eventsFetch from '../functions/eventsFetch';
 
-function Home(props) {
+import Event from '../interfaces/db/Event';
+
+interface HomeProps {
+	data: {
+		events: Event[]
+	}
+}
+
+function Home(props: HomeProps) {
 	function listEvents() {
 		const events = props.data?.events.filter((event) => {
 			const eventDate = new Date(event.date).getTime();

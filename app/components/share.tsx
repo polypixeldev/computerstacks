@@ -10,11 +10,16 @@ import {
 	EmailShareButton,
 	EmailIcon,
 } from 'next-share';
-import { useRouter } from 'next/router';
 
 import ShareStyle from '../styles/Share.module.css';
 
-function Share(props) {
+interface ShareProps {
+	href?: string,
+	name: string,
+	toggle: () => void
+};
+
+function Share(props: ShareProps) {
 	let href = props.href;
 	if (!href) {
 		if (typeof window === 'undefined') {

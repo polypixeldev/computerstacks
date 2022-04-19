@@ -5,8 +5,16 @@ import HomeStyles from '../styles/Home.module.css';
 
 import eventsFetch from '../functions/eventsFetch';
 
-function Events(props) {
-	function listEvents(rel) {
+import Event from '../interfaces/db/Event';
+
+interface EventsProps {
+	data: {
+		events: Event[]
+	}
+}
+
+function Events(props: EventsProps) {
+	function listEvents(rel: string) {
 		const events = props.data?.events.filter((event) => {
 			const eventDate = new Date(event.date).getTime();
 			const now = Date.now();

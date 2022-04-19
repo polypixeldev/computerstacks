@@ -8,15 +8,34 @@ import libraryCategory from '../../../../functions/libraryCategory';
 import librarySubcategory from '../../../../functions/librarySubcategory';
 import libraryResource from '../../../../functions/libraryResource';
 
-function Resource(props) {
+import { GetStaticProps } from 'next';
+import { Resource } from '../../../../interfaces/db/Resource';
+
+interface ResourceProps {
+	data: Resource
+}
+
+function Resource(props: ResourceProps) {
 	const router = useRouter();
 	if (router.isFallback) return <Loading />;
 
-	return <ResourcePage data={props.data} {...router.query} />;
+	if(!router.query.category || typeof router.query.category === 'object') {
+		throw new Error(`Invalid category URI ${router.query.category}`);
+	}
+
+	if(!router.query.subcategory || typeof router.query.subcategory === 'object') {
+		throw new Error(`Invalid subcategory URI ${router.query.subcategory}`);
+	} 
+
+	if(!router.query.resource || typeof router.query.resource === 'object') {
+		throw new Error(`Invalid resource URI ${router.query.resource}`);
+	} 
+
+	return <ResourcePage data={props.data} categoryURI={router.query.category} subcategoryURI={router.query.subcategory} resourceURI={router.query.resource} />;
 }
 
 async function getStaticPaths() {
-	let res = { paths: [], fallback: true };
+	let res = { paths: new Array<{ params: { category: string, subcategory: string, resource: string }}>(), fallback: true };
 
 	const data = await libraryMeta();
 
@@ -47,8 +66,16 @@ async function getStaticPaths() {
 	return res;
 }
 
-async function getStaticProps({ params }) {
+const  getStaticProps: GetStaticProps = async ({ params }) => {
 	let res = { revalidate: 43200, props: { data: {}, error: false } };
+
+	if(!params) {
+		throw Error("Resource page parameters not found");
+	}
+
+	if(!params.resource || typeof params.resource === 'object') {
+		throw Error(`Invalid resource URI ${params.resource}`);
+	}
 
 	const data = await libraryResource(params.resource);
 	if (!data) res.props.error = true;

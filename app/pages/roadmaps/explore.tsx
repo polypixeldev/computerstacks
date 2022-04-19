@@ -1,13 +1,17 @@
-import axios from 'axios';
-
 import Card from '../../components/card';
 
 import HeadStyles from '../../styles/Head.module.css';
 
 import roadmapsMeta from '../../functions/roadmapsMeta';
 
-function Explore(props) {
-	function getLevel(level) {
+import RoadmapsMeta from '../../interfaces/api/RoadmapsMeta';
+
+interface ExploreProps {
+	data: RoadmapsMeta 
+}
+
+function Explore(props: ExploreProps) {
+	function getLevel(level: number) {
 		return props.data.roadmaps[level].map((item) => (
 			<Card {...item} key={item.uri} roadmap={true} />
 		));

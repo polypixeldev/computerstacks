@@ -16,7 +16,17 @@ import profile from '../public/profile.png';
 import favorite from '../public/favorite.svg';
 import notfavorite from '../public/notfavorite.svg';
 
-function ResourcePage(props) {
+import { ChangeEvent } from 'react';
+import { Resource } from '../interfaces/db/Resource';
+
+interface ResourcePageProps {
+	categoryURI: string,
+	subcategoryURI: string,
+	resourceURI: string,
+	data: Resource
+};
+
+function ResourcePage(props: ResourcePageProps) {
 	const [isFavorite, setIsFavorite] = useState(false);
 	const [comment, setComment] = useState('');
 	const [comments, setComments] = useState(props.data.comments);
@@ -28,16 +38,16 @@ function ResourcePage(props) {
 
 		if (
 			session.user.favorites.includes(
-				`${props.category}/${props.subcategory}/${props.resource}`
+				`${props.categoryURI}/${props.subcategoryURI}/${props.resourceURI}`
 			)
 		)
 			setIsFavorite(true);
 	}, [
 		session?.user.favorites,
 		status,
-		props.category,
-		props.subcategory,
-		props.resource,
+		props.categoryURI,
+		props.subcategoryURI,
+		props.resourceURI,
 	]);
 
 	function handleFavorite() {
@@ -50,7 +60,7 @@ function ResourcePage(props) {
 		if (isFavorite) {
 			axios
 				.post(FAVORITE_URL, {
-					uri: `${props.category}/${props.subcategory}/${props.resource}`,
+					uri: `${props.categoryURI}/${props.subcategoryURI}/${props.resourceURI}`,
 				})
 				.then(() => {
 					setIsFavorite(false);
@@ -58,7 +68,7 @@ function ResourcePage(props) {
 		} else {
 			axios
 				.post(FAVORITE_URL, {
-					uri: `${props.category}/${props.subcategory}/${props.resource}`,
+					uri: `${props.categoryURI}/${props.subcategoryURI}/${props.resourceURI}`,
 				})
 				.then(() => {
 					setIsFavorite(true);
@@ -66,7 +76,7 @@ function ResourcePage(props) {
 		}
 	}
 
-	function handleChange(event) {
+	function handleChange(event: ChangeEvent<HTMLTextAreaElement>) {
 		const target = event.target;
 		const value = target.value;
 		const name = target.name;
@@ -84,7 +94,7 @@ function ResourcePage(props) {
 
 		axios
 			.post(RESOURCE_COMMENT_URL, {
-				uri: props.resource,
+				uri: props.resourceURI,
 				content: comment,
 			})
 			.then(reloadComments);
@@ -93,7 +103,7 @@ function ResourcePage(props) {
 	}
 
 	async function reloadComments() {
-		const RESOURCE_URL = `/api/library/resource?uri=${props.resource}`;
+		const RESOURCE_URL = `/api/library/resource?uri=${props.resourceURI}`;
 
 		let res = await axios.get(RESOURCE_URL);
 
@@ -119,13 +129,13 @@ function ResourcePage(props) {
 		<main>
 			<section className={HeadStyle.head} id="head">
 				<h4>
-					<Link href={`/library/${props.category}`}>
-						<a className={`link ${styles.category}`}>{props.category}</a>
+					<Link href={`/library/${props.categoryURI}`}>
+						<a className={`link ${styles.category}`}>{props.categoryURI}</a>
 					</Link>
 				</h4>
 				<h3>
-					<Link href={`/library/${props.category}/${props.subcategory}`}>
-						<a className={`link ${styles.subcategory}`}>{props.subcategory}</a>
+					<Link href={`/library/${props.categoryURI}/${props.subcategoryURI}`}>
+						<a className={`link ${styles.subcategory}`}>{props.subcategoryURI}</a>
 					</Link>
 				</h3>
 				<h2>

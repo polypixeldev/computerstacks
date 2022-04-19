@@ -5,6 +5,13 @@
 
 const { withSentryConfig } = require('@sentry/nextjs');
 
+const checkEnvironment = require('./functions/checkEnvironment.js');
+
+const missingEnvVars = checkEnvironment();
+if (missingEnvVars.length !== 0) {
+	throw new Error(`Environment variables \` ${missingEnvVars.join("`, `")} missing`);
+}
+
 const moduleExports = {
   reactStrictMode: true,
 	images: {

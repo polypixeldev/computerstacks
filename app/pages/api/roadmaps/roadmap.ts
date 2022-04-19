@@ -2,7 +2,13 @@ import { withSentry } from "@sentry/nextjs";
 
 import roadmapsRoadmap from '../../../functions/roadmapsRoadmap';
 
-async function roadmap(req, res) {
+import type { NextApiRequest, NextApiResponse } from 'next';
+
+async function roadmap(req: NextApiRequest, res: NextApiResponse) {
+	if (typeof req.query.uri === 'object') {
+		throw new Error("Invalid roadmap URI");
+	}
+
 	return res.json(await roadmapsRoadmap(req.query.uri));
 }
 

@@ -7,10 +7,8 @@ async function eventsFetch() {
 		lean: true,
 	});
 
-	data = data.map((event) => ({ ...event, date: event.date.toISOString() }));
-
 	return {
-		events: data,
+		events: data.map((event) => ({ ...event, date: event.date.toISOString() })),
 	};
 }
 

@@ -1,15 +1,24 @@
 import mongoose from 'mongoose';
 
+import User from '../interfaces/db/User';
+import Event from '../interfaces/db/Event';
+import Comment from '../interfaces/db/Comment';
+import { DbRoadmap } from '../interfaces/db/Roadmap';
+import { DbCategory } from '../interfaces/db/Category';
+import { DbResource } from '../interfaces/db/Resource';
+import { DbSubcategory} from '../interfaces/db/Subcategory';
+
+if (!process.env.MONGODB_URI) {
+	throw new Error("The MongoDB URI is missing from the environment variables");
+}
+
 const connection =
 	global.mongoose ||
-	mongoose.connect(process.env.MONGODB_URI, {
-		useNewUrlParser: true,
-		useUnifiedTopology: true,
-	});
+	mongoose.connect(process.env.MONGODB_URI);
 
 if (process.env.NODE_ENV !== 'production') global.mongoose = connection;
 
-const categorySchema = new mongoose.Schema(
+const categorySchema = new mongoose.Schema<DbCategory>(
 	{
 		name: String,
 		description: String,
@@ -28,7 +37,7 @@ categorySchema.virtual('subcategories', {
 	foreignField: 'parent',
 });
 
-const subcategorySchema = new mongoose.Schema(
+const subcategorySchema = new mongoose.Schema<DbSubcategory>(
 	{
 		name: String,
 		description: String,
@@ -48,7 +57,7 @@ subcategorySchema.virtual('resources', {
 	foreignField: 'parent',
 });
 
-const resourceSchema = new mongoose.Schema(
+const resourceSchema = new mongoose.Schema<DbResource>(
 	{
 		name: String,
 		description: String,
@@ -73,7 +82,7 @@ resourceSchema.virtual('comments', {
 	foreignField: 'parent',
 });
 
-const roadmapSchema = new mongoose.Schema(
+const roadmapSchema = new mongoose.Schema<DbRoadmap>(
 	{
 		name: String,
 		description: String,
@@ -93,7 +102,7 @@ roadmapSchema.virtual('comments', {
 	foreignField: 'parent',
 });
 
-const eventSchema = new mongoose.Schema({
+const eventSchema = new mongoose.Schema<Event>({
 	name: String,
 	description: String,
 	uri: String,
@@ -101,21 +110,21 @@ const eventSchema = new mongoose.Schema({
 	duration: Number,
 });
 
-const resourceCommentSchema = new mongoose.Schema({
+const resourceCommentSchema = new mongoose.Schema<Comment>({
 	content: String,
 	author: { type: String, ref: 'user' },
 	timestamp: Date,
 	parent: { type: mongoose.Schema.Types.ObjectId, ref: 'resources' },
 });
 
-const roadmapCommentSchema = new mongoose.Schema({
+const roadmapCommentSchema = new mongoose.Schema<Comment>({
 	content: String,
 	author: { type: String, ref: 'user' },
 	timestamp: Date,
 	parent: { type: mongoose.Schema.Types.ObjectId, ref: 'roadmaps' },
 });
 
-const userSchema = new mongoose.Schema(
+const userSchema = new mongoose.Schema<User>(
 	{
 		_id: String,
 		name: String,
@@ -129,22 +138,22 @@ const userSchema = new mongoose.Schema(
 );
 
 const categories =
-	mongoose.models.categories || mongoose.model('categories', categorySchema);
+	mongoose.models.categories as mongoose.Model<DbCategory> || mongoose.model<DbCategory>('categories', categorySchema);
 const subcategories =
-	mongoose.models.subcategories ||
-	mongoose.model('subcategories', subcategorySchema);
+	mongoose.models.subcategories as mongoose.Model<DbSubcategory> ||
+	mongoose.model<DbSubcategory>('subcategories', subcategorySchema);
 const resources =
-	mongoose.models.resources || mongoose.model('resources', resourceSchema);
+	mongoose.models.resources as mongoose.Model<DbResource> || mongoose.model<DbResource>('resources', resourceSchema);
 const roadmaps =
-	mongoose.models.roadmaps || mongoose.model('roadmaps', roadmapSchema);
-const events = mongoose.models.events || mongoose.model('events', eventSchema);
+	mongoose.models.roadmaps as mongoose.Model<DbRoadmap> || mongoose.model<DbRoadmap>('roadmaps', roadmapSchema);
+const events = mongoose.models.events as mongoose.Model<Event> || mongoose.model<Event>('events', eventSchema);
 const resourceComments =
-	mongoose.models.resourceComments ||
-	mongoose.model('resourceComments', resourceCommentSchema, 'resourceComments');
+	mongoose.models.resourceComments as mongoose.Model<Comment> ||
+	mongoose.model<Comment>('resourceComments', resourceCommentSchema, 'resourceComments');
 const roadmapComments =
-	mongoose.models.roadmapComments ||
-	mongoose.model('roadmapComments', roadmapCommentSchema, 'roadmapComments');
-const user = mongoose.models.user || mongoose.model('user', userSchema);
+	mongoose.models.roadmapComments as mongoose.Model<Comment> ||
+	mongoose.model<Comment>('roadmapComments', roadmapCommentSchema, 'roadmapComments');
+const user = mongoose.models.user as mongoose.Model<User> || mongoose.model<User>('user', userSchema);
 
 async function getDb() {
 	await connection;

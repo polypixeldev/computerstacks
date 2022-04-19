@@ -2,7 +2,9 @@ import { withSentry } from "@sentry/nextjs";
 
 import getDb from '../../db/mongoose';
 
-async function search(req, res) {
+import type { NextApiRequest, NextApiResponse } from 'next';
+
+async function search(req: NextApiRequest, res: NextApiResponse) {
 	const { categories, subcategories, resources, roadmaps } = await getDb();
 
 	const queryRegex = { $regex: req.query.query, $options: 'i' };
@@ -26,7 +28,7 @@ async function search(req, res) {
 
 	const [category, subcategory, resource, roadmap] = await Promise.all(queries);
 
-	queries = [
+	let populateQueries = [
 		Promise.all(subcategory.map((subcat) => subcat.populate('parent'))),
 		Promise.all(
 			resource.map((res) =>
@@ -40,7 +42,7 @@ async function search(req, res) {
 		),
 	];
 
-	await Promise.all(queries);
+	await Promise.all(populateQueries);
 
 	res.json({
 		category: [...category, ...subcategory],

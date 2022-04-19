@@ -6,7 +6,15 @@ import CategoryPage from '../../components/categorypage';
 import libraryMeta from '../../functions/libraryMeta';
 import libraryCategory from '../../functions/libraryCategory';
 
-function Category(props) {
+import { Category } from '../../interfaces/db/Category';
+import { GetStaticProps } from 'next';
+
+interface CategoryProps {
+	data: Category,
+	error: boolean
+}
+
+function Category(props: CategoryProps) {
 	const router = useRouter();
 
 	if (router.isFallback) {
@@ -17,11 +25,15 @@ function Category(props) {
 		return null;
 	}
 
-	return <CategoryPage data={props.data} category={router.query.category} />;
+	if(!router.query.category || typeof router.query.category === 'object') {
+		throw new Error(`Invalid category URI ${router.query.category}`);
+	}
+
+	return <CategoryPage data={props.data} categoryURI={router.query.category} />;
 }
 
 async function getStaticPaths() {
-	let res = { paths: [], fallback: true };
+	let res = { paths: new Array<{ params: { category: string }}>(), fallback: true };
 
 	const data = await libraryMeta();
 
@@ -34,8 +46,16 @@ async function getStaticPaths() {
 	return res;
 }
 
-async function getStaticProps({ params }) {
+const getStaticProps: GetStaticProps = async ({ params }) =>  {
 	let res = { revalidate: 43200, props: { data: {}, error: false } };
+
+	if(!params) {
+		throw Error("Category page parameters not found");
+	}
+
+	if(!params.category || typeof params.category === 'object') {
+		throw Error(`Invalid category URI ${params.category}`);
+	}
 
 	const data = await libraryCategory(params.category);
 	if (!data) res.props.error = true;

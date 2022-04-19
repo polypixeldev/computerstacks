@@ -19,7 +19,15 @@ import shareIcon from '../../public/share.png';
 import roadmapsMeta from '../../functions/roadmapsMeta';
 import roadmapsRoadmap from '../../functions/roadmapsRoadmap';
 
-function Roadmap(props) {
+import { ChangeEvent } from 'react';
+import { GetStaticProps } from 'next';
+import { Roadmap } from '../../interfaces/db/Roadmap';
+
+interface RoadmapProps {
+	data: Roadmap
+}
+
+function Roadmap(props: RoadmapProps) {
 	const router = useRouter();
 	const { data: session, status } = useSession();
 
@@ -30,6 +38,10 @@ function Roadmap(props) {
 
 	useEffect(() => {
 		if (status !== 'authenticated') return;
+
+		if(!router.query.roadmap || typeof router.query.roadmap === 'object') {
+			throw new Error(`Invalid roadmap URI ${router.query.roadmap}`);
+		}
 
 		if (session.user.roadmaps.includes(router.query.roadmap))
 			setIsRoadmap(true);
@@ -67,7 +79,7 @@ function Roadmap(props) {
 		}
 	}
 
-	function handleChange(event) {
+	function handleChange(event: ChangeEvent<HTMLTextAreaElement>) {
 		const target = event.target;
 		const value = target.value;
 		const name = target.name;
@@ -166,7 +178,7 @@ function Roadmap(props) {
 }
 
 async function getStaticPaths() {
-	let res = { paths: [], fallback: true };
+	let res = { paths: new Array<{ params: { roadmap: string }}>(), fallback: true };
 
 	const data = await roadmapsMeta();
 
@@ -180,8 +192,17 @@ async function getStaticPaths() {
 	return res;
 }
 
-async function getStaticProps({ params }) {
+const  getStaticProps: GetStaticProps = async ({ params }) => {
 	let res = { revalidate: 43200, props: { data: {}, error: false } };
+
+	if(!params) {
+		throw Error("Category page parameters not found");
+	}
+
+	if(!params.roadmap || typeof params.roadmap === 'object') {
+		throw Error(`Invalid roadmap URI ${params.roadmap}`);
+	}
+
 	const data = await roadmapsRoadmap(params.roadmap);
 
 	if (!data) res.props.error = true;

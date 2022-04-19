@@ -4,7 +4,17 @@ import CommentStyle from '../styles/Comment.module.css';
 
 import profile from '../public/profile.png';
 
-function Comment(props) {
+import User from '../interfaces/db/User';
+
+interface CommentProps {
+	data: {
+		timestamp: string,
+		author: User
+		content: string
+	}
+};
+
+function Comment(props: CommentProps) {
 	const time = new Date(props.data.timestamp);
 	return (
 		<div className={CommentStyle.comment}>

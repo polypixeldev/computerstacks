@@ -10,7 +10,9 @@ import Navbar from '../components/navbar';
 
 import '../styles/globals.css';
 
-function MyApp({ Component, pageProps }) {
+import type { AppProps } from 'next/app';
+
+function MyApp({ Component, pageProps }: AppProps) {
 	const router = useRouter();
 
 	let [menuOpen, setMenuOpen] = useState(false);

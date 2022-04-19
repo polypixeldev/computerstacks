@@ -1,13 +1,20 @@
 import axios from 'axios';
 
-import Card from '../components/card.jsx';
+import Card from '../components/card';
 
 import HeadStyle from '../styles/Head.module.css';
 
 import libraryMeta from '../functions/libraryMeta';
 
-function Library(props) {
-	function getLevel(level) {
+import LibraryMeta from '../interfaces/api/LibraryMeta';
+
+interface LibraryProps {
+	data: LibraryMeta,
+	error: boolean
+}
+
+function Library(props: LibraryProps) {
+	function getLevel(level: number) {
 		if (props.error) {
 			return <code>ERROR</code>;
 		}

@@ -13,7 +13,18 @@ import favorite from '../public/favorite.svg';
 import notfavorite from '../public/notfavorite.svg';
 import shareIcon from '../public/share.png';
 
-function Card(props) {
+interface CardProps {
+	key: string,
+	noFavorite?: boolean,
+	roadmap?: boolean,
+	uri: string,
+	category?: string,
+	subcategory?: string,
+	name: string,
+	description: string
+};
+
+function Card(props: CardProps) {
 	const [isFavorite, setIsFavorite] = useState(false);
 	const [isShare, setIsShare] = useState(false);
 	const { data: session, status } = useSession();
@@ -21,6 +32,7 @@ function Card(props) {
 	useEffect(() => {
 		if (status !== 'authenticated') return;
 		if (props.noFavorite === true) return;
+		if (!session.user) return;
 
 		if (props.roadmap === true) {
 			if (session.user.roadmaps.includes(props.uri)) {
@@ -38,8 +50,7 @@ function Card(props) {
 			}
 		}
 	}, [
-		session?.user.favorites,
-		session?.user.roadmaps,
+		session?.user,
 		status,
 		props.category,
 		props.subcategory,

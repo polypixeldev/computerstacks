@@ -3,7 +3,9 @@ import { getSession } from 'next-auth/react';
 
 import getDb from '../../../db/mongoose';
 
-async function favorite(req, res) {
+import type { NextApiRequest, NextApiResponse } from 'next';
+
+async function favorite(req: NextApiRequest, res: NextApiResponse) {
 	const { user } = await getDb();
 
 	const session = await getSession({ req });

@@ -10,11 +10,14 @@ import SearchStyle from '../styles/Search.module.css';
 
 import SearchIcon from '../public/search.png';
 
+import SearchData from '../interfaces/api/Search';
+import { ChangeEvent, MouseEvent, KeyboardEvent } from 'react';
+
 function Search() {
 	const router = useRouter();
 
 	let [query, setQuery] = useState('');
-	let [results, setResults] = useState(null);
+	let [results, setResults] = useState<SearchData | "error" | null>(null);
 
 	useEffect(() => {
 		if (!router.query.query) return;
@@ -29,7 +32,7 @@ function Search() {
 			});
 	}, [router.query.query]);
 
-	function handleChange(event) {
+	function handleChange(event: ChangeEvent<HTMLInputElement>) {
 		const target = event.target;
 		const value = target.value;
 		const name = target.name;
@@ -37,13 +40,13 @@ function Search() {
 		if (name === 'query') setQuery(value);
 	}
 
-	function handleSearch(event) {
-		if (event.key && event.key !== 'Enter') return;
+	function handleSearch(event: MouseEvent | KeyboardEvent) {
+		if ('key' in event && event.key !== 'Enter') return;
 		setQuery('');
 		router.push(`/search?query=${query}`);
 	}
 
-	function listResults(type) {
+	function listResults(type: keyof SearchData) {
 		if (results === null) {
 			return <p>Loading....</p>;
 		} else if (results === 'error') {
@@ -51,13 +54,15 @@ function Search() {
 		} else {
 			if (!results) return null;
 			return results[type].map((result) => {
-				let resultObj = { ...result };
+				let resultObj: (typeof result & { subcategory?: string, category?: string }) = { ...result };
 
-				if (resultObj.parent?.parent) {
-					resultObj.subcategory = resultObj.parent.uri;
-					resultObj.category = resultObj.parent.parent.uri;
-				} else if (resultObj.parent) {
-					resultObj.category = resultObj.parent.uri;
+				if('parent' in resultObj) {
+					if ('parent' in resultObj.parent) {
+						resultObj.subcategory = resultObj.parent.uri;
+						resultObj.category = resultObj.parent.parent.uri;
+					} else  {
+						resultObj.category = resultObj.parent.uri;
+					}
 				}
 
 				return <Card key={result.name} {...resultObj} />;

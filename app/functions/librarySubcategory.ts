@@ -1,21 +1,27 @@
 import getDb from '../db/mongoose';
 
-async function librarySubcategory(uri) {
+import { DbResource } from '../interfaces/db/Resource';
+
+async function librarySubcategory(uri: string) {
 	const { subcategories } = await getDb();
 
 	let data = await subcategories.findOne(
 		{ uri: uri },
 		'name description resources'
 	);
-	await data.populate('resources', '-_id -parent name description uri level');
-	data = data.toObject();
 
-	const level1 = data.resources.filter((resource) => resource.level === 1);
-	const level2 = data.resources.filter((resource) => resource.level === 2);
-	const level3 = data.resources.filter((resource) => resource.level === 3);
+	if (!data) {
+		throw new Error(`Subcategory URI ${uri} does not exist`);
+	}
+
+	let dataObj = (await data.populate<{ resources: DbResource[] }>('resources', '-_id -parent name description uri level')).toObject();
+
+	const level1 = dataObj.resources.filter((resource) => resource.level === 1);
+	const level2 = dataObj.resources.filter((resource) => resource.level === 2);
+	const level3 = dataObj.resources.filter((resource) => resource.level === 3);
 
 	return {
-		subcategory: data.name,
+		name: data.name,
 		description: data.description,
 		resources: [level1, level2, level3],
 	};

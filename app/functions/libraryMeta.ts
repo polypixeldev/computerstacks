@@ -9,6 +9,10 @@ async function libraryMeta() {
 	];
 	const [numResources, numSubjects, subjects] = await Promise.all(queries);
 
+	if (typeof subjects === 'number') {
+		throw new Error("Library subjects not found");
+	}
+
 	const level1 = subjects.filter((subject) => subject.level === 1);
 	const level2 = subjects.filter((subject) => subject.level === 2);
 	const level3 = subjects.filter((subject) => subject.level === 3);

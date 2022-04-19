@@ -13,7 +13,21 @@ import favorite from '../public/favorite.svg';
 import notfavorite from '../public/notfavorite.svg';
 import shareIcon from '../public/share.png';
 
-function CategoryPage(props) {
+import { Category } from '../interfaces/db/Category';
+import { Subcategory } from '../interfaces/db/Subcategory';
+
+interface CategoryPageProps {
+	categoryURI: string,
+	data: Category
+}
+
+interface SubcategoryPageProps {
+	categoryURI: string,
+	subcategoryURI: string,
+	data: Subcategory
+}
+
+function CategoryPage(props: CategoryPageProps | SubcategoryPageProps) {
 	const [isFavorite, setIsFavorite] = useState(false);
 	const [isShare, setIsShare] = useState(false);
 	const { data: session, status } = useSession();
@@ -23,22 +37,22 @@ function CategoryPage(props) {
 
 		if (
 			session.user.favorites.includes(
-				`${props.category || ''}${
-					props.subcategory ? `/${props.subcategory}` : ''
+				`${'categoryURI' in props ? props.categoryURI : ''}${
+					'subcategoryURI' in props ? `/${props.subcategoryURI}` : ''
 				}`
 			)
 		)
 			setIsFavorite(true);
-	}, [session?.user.favorites, status, props.category, props.subcategory]);
+	}, [props, session?.user.favorites, status]);
 
-	const items = props.data.subcategories || props.data.resources;
-	function getLevel(level) {
+	const items = 'subcategories' in props.data ? props.data.subcategories : props.data.resources;
+	function getLevel(level: number) {
 		return items[level].map((item) => (
 			<Card
 				{...item}
 				key={item.uri}
-				category={props.category}
-				subcategory={props.subcategory}
+				category={'categoryURI' in props ? props.categoryURI : undefined}
+				subcategory={'subcategoryURI' in props ? props.subcategoryURI : undefined}
 			/>
 		));
 	}
@@ -53,8 +67,8 @@ function CategoryPage(props) {
 		if (isFavorite) {
 			axios
 				.post(FAVORITE_URL, {
-					uri: `${props.category || ''}${
-						props.subcategory ? `/${props.subcategory}` : ''
+					uri: `${'categoryURI' in props ? props.categoryURI : ''}${
+						'subcategoryURI' in props ? `/${props.subcategoryURI}` : ''
 					}`,
 				})
 				.then(() => {
@@ -63,8 +77,8 @@ function CategoryPage(props) {
 		} else {
 			axios
 				.post(FAVORITE_URL, {
-					uri: `${props.category || ''}${
-						props.subcategory ? `/${props.subcategory}` : ''
+					uri: `${'categoryURI' in props ? props.categoryURI : ''}${
+						'subcategoryURI' in props ? `/${props.subcategoryURI}` : ''
 					}`,
 				})
 				.then(() => {
@@ -83,18 +97,14 @@ function CategoryPage(props) {
 	return (
 		<main>
 			<section className={HeadStyle.head} id="head">
-				{props.subcategory ? (
+				{'subcategoryURI' in props ? (
 					<h3>
-						<Link href={`/library/${props.category}`}>
-							<a className="link">{props.category}</a>
+						<Link href={`/library/${props.categoryURI}`}>
+							<a className="link">{props.categoryURI}</a>
 						</Link>
 					</h3>
 				) : null}
-				{props.data.subcategory ? (
-					<h2>{props.data.subcategory}</h2>
-				) : (
-					<h2>{props.data.category}</h2>
-				)}
+				<h2>{props.data.name}</h2>
 				<p>{props.data.description}</p>
 				<div className={HeadStyle.actionDiv}>
 					<div style={{ position: 'relative' }}>
@@ -107,7 +117,7 @@ function CategoryPage(props) {
 						/>
 						{isShare ? (
 							<Share
-								name={props.data.subcategory || props.data.category}
+								name={props.data.name}
 								toggle={handleShare}
 							/>
 						) : null}
