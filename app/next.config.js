@@ -3,7 +3,16 @@
 // https://nextjs.org/docs/api-reference/next.config.js/introduction
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 
+/* eslint-disable @typescript-eslint/no-var-requires */
+
 const { withSentryConfig } = require('@sentry/nextjs');
+
+const checkEnvironment = require('./functions/checkEnvironment.js');
+
+const missingEnvVars = checkEnvironment();
+if (missingEnvVars.length !== 0) {
+	throw new Error(`Environment variables \` ${missingEnvVars.join("`, `")} missing`);
+}
 
 const moduleExports = {
   reactStrictMode: true,
