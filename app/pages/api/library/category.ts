@@ -5,7 +5,7 @@ import libraryCategory from '../../../functions/libraryCategory';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 async function category(req: NextApiRequest, res: NextApiResponse) {
-	if (typeof req.query.uri === 'object') {
+	if (typeof req.query.uri === 'object' || typeof req.query.uri === 'undefined') {
 		throw new Error("Invalid category URI");
 	}
 

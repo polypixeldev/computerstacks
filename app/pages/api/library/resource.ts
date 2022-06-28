@@ -5,7 +5,7 @@ import libraryResource from '../../../functions/libraryResource';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 async function resource(req: NextApiRequest, res: NextApiResponse) {
-	if (typeof req.query.uri === 'object') {
+	if (typeof req.query.uri === 'object' || typeof req.query.uri === 'undefined') {
 		throw new Error("Invalid resource URI");
 	}
 
