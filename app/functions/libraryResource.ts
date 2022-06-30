@@ -38,7 +38,13 @@ async function libraryResource(uri: string) {
 	dataObj.comments.reverse();
 
 	return {
-		...dataObj,
+		name: dataObj.name,
+		description: dataObj.description,
+		teamRating: dataObj.teamRating,
+		communityRating: dataObj.communityRating,
+		link: dataObj.link,
+		author: dataObj.author,
+		comments: dataObj.comments,
 		timestamp: dataObj.timestamp.toISOString()
 	};
 }
