@@ -14,7 +14,7 @@ async function librarySubcategory(uri: string) {
 		throw new Error(`Subcategory URI ${uri} does not exist`);
 	}
 
-	const dataObj = (await data.populate<{ resources: DbResource[] }>('resources', '-_id -parent name description uri level')).toObject();
+	const dataObj = (await data.populate<{ resources: DbResource[] }>('resources', '-_id -parent name description uri level'));
 
 	const level1 = dataObj.resources.filter((resource) => resource.level === 1);
 	const level2 = dataObj.resources.filter((resource) => resource.level === 2);

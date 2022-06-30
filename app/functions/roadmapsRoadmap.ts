@@ -19,7 +19,7 @@ async function roadmapsRoadmap(uri: string) {
 		populate: {
 			path: 'author',
 		},
-	})).toObject();
+	}));
 
 	dataObj.comments.reverse();
 

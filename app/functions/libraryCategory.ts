@@ -17,7 +17,7 @@ async function libraryCategory(uri: string) {
 	const dataObj = (await data.populate<{ subcategories: DbSubcategory[] }>(
 		'subcategories',
 		'-_id -parent name description uri level'
-	)).toObject();
+	));
 
 	const level1 = dataObj.subcategories.filter((subcat) => subcat.level === 1);
 	const level2 = dataObj.subcategories.filter((subcat) => subcat.level === 2);

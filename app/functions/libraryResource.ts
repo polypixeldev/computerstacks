@@ -19,7 +19,7 @@ async function libraryResource(uri: string) {
 		populate: {
 			path: 'author',
 		},
-	})).toObject();
+	}));
 
 	dataObj.comments.reverse();
 
