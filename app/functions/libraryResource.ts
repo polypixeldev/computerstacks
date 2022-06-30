@@ -19,12 +19,32 @@ async function libraryResource(uri: string) {
 		populate: {
 			path: 'author',
 		},
-	})).toObject();
+	}));
+
+	dataObj.comments = dataObj.comments.map((comment) => ({
+		_id: comment._id,
+		content: comment.content,
+		author: {
+			emailVerified: comment.author.emailVerified,
+			name: comment.author.name,
+			email: comment.author.email,
+			image: comment.author.image,
+			roadmaps: comment.author.roadmaps,
+			favorites: comment.author.favorites
+		},
+		timestamp: comment.timestamp
+	}));
 
 	dataObj.comments.reverse();
 
 	return {
-		...dataObj,
+		name: dataObj.name,
+		description: dataObj.description,
+		teamRating: dataObj.teamRating,
+		communityRating: dataObj.communityRating,
+		link: dataObj.link,
+		author: dataObj.author,
+		comments: dataObj.comments,
 		timestamp: dataObj.timestamp.toISOString()
 	};
 }

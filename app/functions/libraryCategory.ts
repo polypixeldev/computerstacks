@@ -16,12 +16,26 @@ async function libraryCategory(uri: string) {
 
 	const dataObj = (await data.populate<{ subcategories: DbSubcategory[] }>(
 		'subcategories',
-		'-_id -parent name description uri level'
-	)).toObject();
+		'-_id name description uri level parent'
+	));
 
-	const level1 = dataObj.subcategories.filter((subcat) => subcat.level === 1);
-	const level2 = dataObj.subcategories.filter((subcat) => subcat.level === 2);
-	const level3 = dataObj.subcategories.filter((subcat) => subcat.level === 3);
+	const subcategories = dataObj.subcategories.map((subcat) => ({
+		name: subcat.name,
+		description: subcat.description,
+		uri: subcat.uri,
+		level: subcat.level
+	}));
+
+	const newDataObj = {
+		name: dataObj.name,
+		description: dataObj.description,
+		subcategories: subcategories,
+		level: dataObj.level
+	}
+
+	const level1 = newDataObj.subcategories.filter((subcat) => subcat.level === 1);
+	const level2 = newDataObj.subcategories.filter((subcat) => subcat.level === 2);
+	const level3 = newDataObj.subcategories.filter((subcat) => subcat.level === 3);
 
 	return {
 		name: data.name,
