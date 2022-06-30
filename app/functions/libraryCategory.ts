@@ -19,6 +19,14 @@ async function libraryCategory(uri: string) {
 		'-_id -parent name description uri level'
 	));
 
+	dataObj.subcategories = dataObj.subcategories.map((subcat) => ({
+		name: subcat.name,
+		description: subcat.description,
+		uri: subcat.uri,
+		level: subcat.level,
+		parent: subcat.parent
+	}));
+
 	const level1 = dataObj.subcategories.filter((subcat) => subcat.level === 1);
 	const level2 = dataObj.subcategories.filter((subcat) => subcat.level === 2);
 	const level3 = dataObj.subcategories.filter((subcat) => subcat.level === 3);

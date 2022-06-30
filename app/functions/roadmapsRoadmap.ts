@@ -21,6 +21,20 @@ async function roadmapsRoadmap(uri: string) {
 		},
 	}));
 
+	dataObj.comments = dataObj.comments.map((comment) => ({
+		_id: comment._id,
+		content: comment.content,
+		author: {
+			emailVerified: comment.author.emailVerified,
+			name: comment.author.name,
+			email: comment.author.email,
+			image: comment.author.image,
+			roadmaps: comment.author.roadmaps,
+			favorites: comment.author.favorites
+		},
+		timestamp: comment.timestamp
+	}));
+
 	dataObj.comments.reverse();
 
 	return dataObj;
