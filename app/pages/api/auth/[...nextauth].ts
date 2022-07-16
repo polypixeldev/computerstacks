@@ -28,8 +28,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 				clientSecret: process.env.GOOGLE_SECRET ?? '',
 			}),
 			GitHubProvider({
-				clientId: process.env.GITHUB_ID,
-				clientSecret: process.env.GITHUB_SECRET,
+				clientId: process.env.GITHUB_ID ?? '',
+				clientSecret: process.env.GITHUB_SECRET ?? '',
 			}),
 			EmailProvider({
 				server: process.env.EMAIL_SERVER,
