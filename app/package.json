@@ -17,7 +17,7 @@
 		"axios": "^0.27.2",
 		"bcryptjs": "^2.4.3",
 		"mongoose": "^6.5.1",
-		"next": "12.2.3",
+		"next": "12.2.4",
 		"next-auth": "4.10.3",
 		"next-share": "^0.18.0",
 		"nodemailer": "^6.7.7",
