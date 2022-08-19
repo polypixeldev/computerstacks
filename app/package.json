@@ -13,7 +13,7 @@
 	"dependencies": {
 		"@next-auth/prisma-adapter": "^1.0.4",
 		"@prisma/client": "^4.2.1",
-		"@sentry/nextjs": "^7.10.0",
+		"@sentry/nextjs": "^7.11.1",
 		"axios": "^0.27.2",
 		"bcryptjs": "^2.4.3",
 		"mongoose": "^6.5.2",
