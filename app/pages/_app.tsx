@@ -11,8 +11,13 @@ import Navbar from '../components/navbar';
 import '../styles/globals.css';
 
 import type { AppProps } from 'next/app';
+import type { Session } from 'next-auth';
 
-function MyApp({ Component, pageProps }: AppProps) {
+type PageProps = {
+	session?: Session
+}
+
+function MyApp({ Component, pageProps }: AppProps<PageProps>) {
 	const router = useRouter();
 
 	const [menuOpen, setMenuOpen] = useState(false);
