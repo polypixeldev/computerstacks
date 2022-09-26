@@ -16,7 +16,7 @@
 		"@sentry/nextjs": "^7.13.0",
 		"axios": "^0.27.2",
 		"bcryptjs": "^2.4.3",
-		"mongoose": "^6.6.1",
+		"mongoose": "^6.6.2",
 		"next": "12.3.1",
 		"next-auth": "4.10.3",
 		"next-share": "^0.18.1",
