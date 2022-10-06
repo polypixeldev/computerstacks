@@ -18,7 +18,7 @@
 		"bcryptjs": "^2.4.3",
 		"mongoose": "^6.6.5",
 		"next": "12.3.1",
-		"next-auth": "4.12.2",
+		"next-auth": "4.12.3",
 		"next-share": "^0.18.1",
 		"nodemailer": "^6.8.0",
 		"pretty-ms": "^8.0.0",
