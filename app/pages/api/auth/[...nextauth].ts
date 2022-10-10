@@ -11,15 +11,7 @@ import prisma from '../../../db/prisma';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
-	// Temporary fix for email auth?
 	const adapter = PrismaAdapter(prisma);
-	adapter.updateUser = (data) => {
-		const newData = { ...data };
-
-		newData.id = undefined;
-
-		return prisma.user.update({ where: { id: data.id }, data: newData });
-	};
 
 	return await NextAuth(req, res, {
 		providers: [
