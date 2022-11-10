@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
@@ -42,12 +42,14 @@ function Navbar(props: NavbarProps) {
         <nav>
 			<div className="imageWrap" onClick={toggleMenu}>
 				<Image
-					src={props.menuOpen ? CloseMenu : OpenMenu}
-					alt="menu button"
-					layout="fill"
-					objectFit="contain"
-					objectPosition="25% 50%"
-				/>
+                    src={props.menuOpen ? CloseMenu : OpenMenu}
+                    alt="menu button"
+                    fill
+                    sizes="100vw"
+                    style={{
+                        objectFit: "contain",
+                        objectPosition: "25% 50%"
+                    }} />
 			</div>
 			<div className="search">
 				<svg

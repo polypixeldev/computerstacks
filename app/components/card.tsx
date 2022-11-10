@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Link from 'next/link';
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 
@@ -141,12 +141,15 @@ function Card(props: CardProps) {
 			<div className={`${HeadStyle.actionDiv} ${CardStyle.side}`}>
 				<div style={{ position: 'relative' }}>
 					<Image
-						onClick={handleShare}
-						src={shareIcon}
-						alt="Share Icon"
-						width={50}
-						height={50}
-					/>
+                        onClick={handleShare}
+                        src={shareIcon}
+                        alt="Share Icon"
+                        width={50}
+                        height={50}
+                        style={{
+                            maxWidth: "100%",
+                            height: "auto"
+                        }} />
 					{isShare ? (
 						<Share
 							href={
@@ -162,12 +165,15 @@ function Card(props: CardProps) {
 					) : null}
 				</div>
 				<Image
-					onClick={handleFavorite}
-					src={isFavorite ? favorite : notfavorite}
-					alt="Favorite button"
-					width={75}
-					height={75}
-				/>
+                    onClick={handleFavorite}
+                    src={isFavorite ? favorite : notfavorite}
+                    alt="Favorite button"
+                    width={75}
+                    height={75}
+                    style={{
+                        maxWidth: "100%",
+                        height: "auto"
+                    }} />
 			</div>
 		</div>
     );

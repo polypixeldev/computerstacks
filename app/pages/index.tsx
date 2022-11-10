@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import Image from "next/legacy/image";
+import Image from "next/image";
 import prettyMs from 'pretty-ms';
 
 import styles from '../styles/Home.module.css';
@@ -47,13 +47,22 @@ function Home(props: HomeProps) {
         <main>
 			<section className="top">
 				<Image
-					priority={true}
-					src={Background}
-					alt="background"
-					layout="fill"
-					objectFit="fill"
-				/>
-				<Image src={Icons} alt="Computer Icons" className={styles.icons} />
+                    priority={true}
+                    src={Background}
+                    alt="background"
+                    fill
+                    sizes="100vw"
+                    style={{
+                        objectFit: "fill"
+                    }} />
+				<Image
+                    src={Icons}
+                    alt="Computer Icons"
+                    className={styles.icons}
+                    style={{
+                        maxWidth: "100%",
+                        height: "auto"
+                    }} />
 				<p className={styles.blurb}>
 					<strong>
 						<em>The universal collection of computer-related resources</em>

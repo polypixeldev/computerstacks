@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Link from 'next/link';
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
@@ -102,16 +102,19 @@ function Dashboard() {
 	}
 
 	return (
-		<main>
+        <main>
 			<section className="section1">
 				<h2>{session.user.name ?? session.user.email}</h2>
 				<Image
-					className={styles.pfp}
-					src={session.user.image || profile}
-					alt="User Profile Picture"
-					width={200}
-					height={200}
-				/>
+                    className={styles.pfp}
+                    src={session.user.image || profile}
+                    alt="User Profile Picture"
+                    width={200}
+                    height={200}
+                    style={{
+                        maxWidth: "100%",
+                        height: "auto"
+                    }} />
 			</section>
 			<section className="section2">
 				<h2>Roadmaps</h2>
@@ -122,7 +125,7 @@ function Dashboard() {
 				{listFavorites()}
 			</section>
 		</main>
-	);
+    );
 }
 
 export default Dashboard;

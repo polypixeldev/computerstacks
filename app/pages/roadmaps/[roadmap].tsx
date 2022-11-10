@@ -1,5 +1,5 @@
 import axios from 'axios';
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
@@ -128,53 +128,68 @@ function Roadmap(props: RoadmapProps) {
 	}
 
 	return (
-		<main>
+        <main>
 			<section className={HeadStyles.head}>
 				<h2>{props.data.name}</h2>
 				<p>{props.data.description}</p>
 				<div className={HeadStyles.actionDiv}>
 					<div style={{ position: 'relative' }}>
 						<Image
-							onClick={handleShare}
-							src={shareIcon}
-							alt="Share Icon"
-							width={50}
-							height={50}
-						/>
+                            onClick={handleShare}
+                            src={shareIcon}
+                            alt="Share Icon"
+                            width={50}
+                            height={50}
+                            style={{
+                                maxWidth: "100%",
+                                height: "auto"
+                            }} />
 						{isShare ? (
 							<Share name={props.data.name} toggle={handleShare} />
 						) : null}
 					</div>
 					<Image
-						onClick={handleRoadmap}
-						src={isRoadmap ? roadmap : notroadmap}
-						alt="Favorite button"
-						width={75}
-						height={75}
-					/>
+                        onClick={handleRoadmap}
+                        src={isRoadmap ? roadmap : notroadmap}
+                        alt="Favorite button"
+                        width={75}
+                        height={75}
+                        style={{
+                            maxWidth: "100%",
+                            height: "auto"
+                        }} />
 				</div>
 			</section>
 			<section className="section1">
 				<h2>Roadmap</h2>
-				<Image src={props.data.image} alt="The roadmap" />
+				<Image
+                    src={props.data.image}
+                    alt="The roadmap"
+                    style={{
+                        maxWidth: "100%",
+                        height: "auto"
+                    }} />
 			</section>
 			<section className="section2">
 				<h2>Comments</h2>
 				<div className={CommentStyle.newCommentBox}>
 					<Image
-						src={session?.user?.image || profile}
-						className={CommentStyle.authorImg}
-						width={40}
-						height={40}
-						alt="Profile picture"
-					/>
+                        src={session?.user?.image || profile}
+                        className={CommentStyle.authorImg}
+                        width={40}
+                        height={40}
+                        alt="Profile picture"
+                        style={{
+                            maxWidth: "100%",
+                            height: "auto"
+                        }} />
 					<textarea name="comment" value={comment} onChange={handleChange} />
 					<button onClick={handleComment}>Comment</button>
 				</div>
 				<div className={CommentStyle.commentDiv}>{listComments()}</div>
 			</section>
 		</main>
-	);
+    );
 }
 
 async function getStaticPaths() {

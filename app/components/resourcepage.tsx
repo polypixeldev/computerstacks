@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Link from 'next/link';
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 
@@ -196,35 +196,44 @@ function ResourcePage(props: ResourcePageProps) {
 				<div className={HeadStyle.actionDiv}>
 					<div style={{ position: 'relative' }}>
 						<Image
-							onClick={handleShare}
-							src={shareIcon}
-							alt="Share Icon"
-							width={50}
-							height={50}
-						/>
+                            onClick={handleShare}
+                            src={shareIcon}
+                            alt="Share Icon"
+                            width={50}
+                            height={50}
+                            style={{
+                                maxWidth: "100%",
+                                height: "auto"
+                            }} />
 						{isShare ? (
 							<Share name={props.data.name} toggle={handleShare} />
 						) : null}
 					</div>
 					<Image
-						onClick={handleFavorite}
-						src={isFavorite ? favorite : notfavorite}
-						alt="Favorite button"
-						width={75}
-						height={75}
-					/>
+                        onClick={handleFavorite}
+                        src={isFavorite ? favorite : notfavorite}
+                        alt="Favorite button"
+                        width={75}
+                        height={75}
+                        style={{
+                            maxWidth: "100%",
+                            height: "auto"
+                        }} />
 				</div>
 			</section>
 			<section className="section1">
 				<h2>Comments</h2>
 				<div className={CommentStyle.newCommentBox}>
 					<Image
-						src={session?.user?.image || profile}
-						className={CommentStyle.authorImg}
-						width={40}
-						height={40}
-						alt="Profile picture"
-					/>
+                        src={session?.user?.image || profile}
+                        className={CommentStyle.authorImg}
+                        width={40}
+                        height={40}
+                        alt="Profile picture"
+                        style={{
+                            maxWidth: "100%",
+                            height: "auto"
+                        }} />
 					<textarea name="comment" value={comment} onChange={handleChange} />
 					<button onClick={handleComment}>Comment</button>
 				</div>

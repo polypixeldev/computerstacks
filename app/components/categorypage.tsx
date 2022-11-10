@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Link from 'next/link';
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 
@@ -109,12 +109,15 @@ function CategoryPage(props: CategoryPageProps | SubcategoryPageProps) {
 				<div className={HeadStyle.actionDiv}>
 					<div style={{ position: 'relative' }}>
 						<Image
-							onClick={handleShare}
-							src={shareIcon}
-							alt="Share Icon"
-							width={50}
-							height={50}
-						/>
+                            onClick={handleShare}
+                            src={shareIcon}
+                            alt="Share Icon"
+                            width={50}
+                            height={50}
+                            style={{
+                                maxWidth: "100%",
+                                height: "auto"
+                            }} />
 						{isShare ? (
 							<Share
 								name={props.data.name}
@@ -123,12 +126,15 @@ function CategoryPage(props: CategoryPageProps | SubcategoryPageProps) {
 						) : null}
 					</div>
 					<Image
-						onClick={handleFavorite}
-						src={isFavorite ? favorite : notfavorite}
-						alt="Favorite button"
-						width={75}
-						height={75}
-					/>
+                        onClick={handleFavorite}
+                        src={isFavorite ? favorite : notfavorite}
+                        alt="Favorite button"
+                        width={75}
+                        height={75}
+                        style={{
+                            maxWidth: "100%",
+                            height: "auto"
+                        }} />
 				</div>
 			</section>
 			<section className="section1">{getLevel(0)}</section>
