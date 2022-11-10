@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Link from 'next/link';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 
@@ -95,12 +95,12 @@ function CategoryPage(props: CategoryPageProps | SubcategoryPageProps) {
 	}
 
 	return (
-		<main>
+        <main>
 			<section className={HeadStyle.head} id="head">
 				{'subcategoryURI' in props ? (
 					<h3>
-						<Link href={`/library/${props.categoryURI}`}>
-							<a className="link">{props.categoryURI}</a>
+						<Link href={`/library/${props.categoryURI}`} className="link">
+							{props.categoryURI}
 						</Link>
 					</h3>
 				) : null}
@@ -135,7 +135,7 @@ function CategoryPage(props: CategoryPageProps | SubcategoryPageProps) {
 			<section className="section2">{getLevel(1)}</section>
 			<section className="section3">{getLevel(2)}</section>
 		</main>
-	);
+    );
 }
 
 export default CategoryPage;

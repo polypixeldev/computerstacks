@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
@@ -39,7 +39,7 @@ function Navbar(props: NavbarProps) {
 	}
 
 	return (
-		<nav>
+        <nav>
 			<div className="imageWrap" onClick={toggleMenu}>
 				<Image
 					src={props.menuOpen ? CloseMenu : OpenMenu}
@@ -67,11 +67,11 @@ function Navbar(props: NavbarProps) {
 					onKeyDown={handleSearch}
 				/>
 			</div>
-			<Link href="/">
-				<a className="link">
-					<h1>ComputerStacks</h1>
-				</a>
-			</Link>
+			<Link href="/" className="link">
+
+                <h1>ComputerStacks</h1>
+
+            </Link>
 			{status !== 'authenticated' ? (
 				<button
 					className="button-small"
@@ -90,7 +90,7 @@ function Navbar(props: NavbarProps) {
 				</button>
 			)}
 		</nav>
-	);
+    );
 }
 
 export default Navbar;

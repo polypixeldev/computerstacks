@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Link from 'next/link';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
@@ -82,11 +82,11 @@ function Dashboard() {
 	function listFavorites() {
 		return favorites.map((favorite) => (
 			<h3 key={favorite.uri}>
-				<Link href={`/library/${favorite.uri}`}>
-					<a className="link">
-						{favorite.name}
-					</a>
-				</Link>
+				<Link href={`/library/${favorite.uri}`} className="link">
+
+                    {favorite.name}
+
+                </Link>
 			</h3>
 		));
 	}
@@ -94,8 +94,8 @@ function Dashboard() {
 	function listRoadmaps() {
 		return roadmaps.map((roadmap) => (
 			<h3 key={roadmap.uri}>
-				<Link href={`/roadmaps/${roadmap.uri}`}>
-					<a className="link">{roadmap.name}</a>
+				<Link href={`/roadmaps/${roadmap.uri}`} className="link">
+					{roadmap.name}
 				</Link>
 			</h3>
 		));

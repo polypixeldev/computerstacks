@@ -48,7 +48,7 @@ function MyApp({ Component, pageProps }: AppProps<PageProps>) {
 	}, []);
 
 	return (
-		<SessionProvider session={pageProps.session}>
+        <SessionProvider session={pageProps.session}>
 			<Head>
 				<title>ComputerStacks</title>
 				<link rel="icon" href="/favicon.ico" />
@@ -61,12 +61,14 @@ function MyApp({ Component, pageProps }: AppProps<PageProps>) {
 					<p>
 						<strong>
 							Made by{' '}
-							<Link href="https://github.com/Poly-Pixel">
-								<a className="link-underline">Poly-Pixel</a>
+							<Link href="https://github.com/Poly-Pixel" className="link-underline">
+								Poly-Pixel
 							</Link>
 							,{' '}
-							<Link href="https://github.com/Poly-Pixel/computerstacks/blob/main/LICENSE">
-								<a className="link-underline">licensed under GPL-3.0</a>
+							<Link
+                                href="https://github.com/Poly-Pixel/computerstacks/blob/main/LICENSE"
+                                className="link-underline">
+								licensed under GPL-3.0
 							</Link>
 						</strong>
 					</p>
@@ -77,42 +79,42 @@ function MyApp({ Component, pageProps }: AppProps<PageProps>) {
 				<div>
 					<h3>Library</h3>
 					<div>
-						<Link href="/library">
-							<a className="link">The Library</a>
+						<Link href="/library" className="link">
+							The Library
 						</Link>
 					</div>
 				</div>
 				<div>
 					<h3>Roadmaps</h3>
 					<div>
-						<Link href="/roadmaps">
-							<a className="link">Roadmaps Home Page</a>
+						<Link href="/roadmaps" className="link">
+							Roadmaps Home Page
 						</Link>
 						<br />
-						<Link href="/roadmaps/explore">
-							<a className="link">Explore Roadmaps</a>
+						<Link href="/roadmaps/explore" className="link">
+							Explore Roadmaps
 						</Link>
 						<br />
-						<Link href="/roadmaps/discover">
-							<a className="link">Discover Roadmaps</a>
+						<Link href="/roadmaps/discover" className="link">
+							Discover Roadmaps
 						</Link>
 					</div>
 				</div>
 				<div>
 					<h3>Account</h3>
 					<div>
-						<Link href="/settings">
-							<a className="link">Account Settings</a>
+						<Link href="/settings" className="link">
+							Account Settings
 						</Link>
 						<br />
-						<Link href="/login">
-							<a className="link">Login</a>
+						<Link href="/login" className="link">
+							Login
 						</Link>
 					</div>
 				</div>
 			</footer>
 		</SessionProvider>
-	);
+    );
 }
 
 export default MyApp;
