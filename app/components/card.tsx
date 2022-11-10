@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Link from 'next/link';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 
@@ -121,23 +121,23 @@ function Card(props: CardProps) {
 	}
 
 	return (
-		<div className={CardStyle.card}>
+        <div className={CardStyle.card}>
 			<Link
-				href={
+                href={
 					props.roadmap
 						? `/roadmaps/${props.uri}`
 						: `/library/${props.category ? `${props.category}/` : ''}${
 								props.subcategory ? `${props.subcategory}/` : ''
 						  }${props.uri}`
 				}
-			>
-				<a className="link">
-					<div>
-						<p className={CardStyle.name}>{props.name}</p>
-						<p className={CardStyle.desc}>{props.description}</p>
-					</div>
-				</a>
-			</Link>
+                className="link">
+
+                <div>
+                    <p className={CardStyle.name}>{props.name}</p>
+                    <p className={CardStyle.desc}>{props.description}</p>
+                </div>
+
+            </Link>
 			<div className={`${HeadStyle.actionDiv} ${CardStyle.side}`}>
 				<div style={{ position: 'relative' }}>
 					<Image
@@ -170,7 +170,7 @@ function Card(props: CardProps) {
 				/>
 			</div>
 		</div>
-	);
+    );
 }
 
 export default Card;

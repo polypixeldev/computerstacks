@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 import prettyMs from 'pretty-ms';
 
 import styles from '../styles/Home.module.css';
@@ -44,7 +44,7 @@ function Home(props: HomeProps) {
 	}
 
 	return (
-		<main>
+        <main>
 			<section className="top">
 				<Image
 					priority={true}
@@ -69,8 +69,8 @@ function Home(props: HomeProps) {
 					in the search bar above.
 				</p>
 				<button className="button">
-					<Link href="/library">
-						<a className="link">Browse now</a>
+					<Link href="/library" className="link">
+						Browse now
 					</Link>
 				</button>
 			</section>
@@ -78,8 +78,8 @@ function Home(props: HomeProps) {
 				<h2>Events</h2>
 				{listEvents()}
 				<p>
-					<Link href="/events">
-						<a className="link-underline">View the entire event calendar</a>
+					<Link href="/events" className="link-underline">
+						View the entire event calendar
 					</Link>
 				</p>
 			</section>
@@ -87,10 +87,13 @@ function Home(props: HomeProps) {
 				<div className={styles.card}>
 					<p>
 						Visit the{' '}
-						<Link href="https://github.com/Poly-Pixel/computerstacks">
-							<a className="link-underline" target="_blank">
+						<Link
+                            href="https://github.com/Poly-Pixel/computerstacks"
+                            className="link-underline"
+                            target="_blank">
+							
 								ComputerStacks GitHub repository
-							</a>
+							
 						</Link>{' '}
 						to learn more about the code powering this website
 					</p>
@@ -98,10 +101,13 @@ function Home(props: HomeProps) {
 				<div className={styles.card}>
 					<p>
 						Fill out{' '}
-						<Link href="https://forms.office.com/r/jbPz5Y5fJW">
-							<a className="link-underline" target="_blank">
+						<Link
+                            href="https://forms.office.com/r/jbPz5Y5fJW"
+                            className="link-underline"
+                            target="_blank">
+							
 								this quick survey
-							</a>
+							
 						</Link>{' '}
 						to help improve ComputerStacks!
 					</p>
@@ -109,7 +115,7 @@ function Home(props: HomeProps) {
 				{/* Card Carousel? */}
 			</section>
 		</main>
-	);
+    );
 }
 
 async function getStaticProps() {
