@@ -1,6 +1,6 @@
 .head {
 	background: #0259a0;
-	font-family: 'Dosis', sans-serif;
+	font-family: var(--font-dosis), sans-serif;
 }
 
 .head h2 {

@@ -32,11 +32,11 @@
 }
 
 .card p {
-	font-family: 'Dosis', sans-serif;
+	font-family: var(--font-dosis), sans-serif;
 	font-size: calc(2vmin + 20px);
 }
 
 .blurb {
-	font-family: 'Zilla Slab', sans-serif;
+	font-family: var(--font-zilla-slab), sans-serif;
 	font-size: calc(2vmin + 20px);
 }

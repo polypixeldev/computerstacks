@@ -6,10 +6,6 @@ class MyDocument extends Document {
 		return (
 			<Html lang="en">
 				<Head>
-					<link
-						href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Zilla+Slab&family=Dosis:wght@300&display=swap"
-						rel="stylesheet"
-					/>
 					<meta name="application-name" content="ComputerStacks" />
 					<meta name="author" content="Poly-Pixel" />
 					<meta

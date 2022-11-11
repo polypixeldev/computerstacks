@@ -37,11 +37,11 @@
 }
 
 .name {
-	font-family: 'Dosis', sans-serif;
+	font-family: var(--font-dosis), sans-serif;
 	font-size: calc(2vmin + 15px);
 }
 
 .desc {
-	font-family: 'Dosis', sans-serif;
+	font-family: var(--font-dosis), sans-serif;
 	font-size: calc(2vmin + 5px);
 }
