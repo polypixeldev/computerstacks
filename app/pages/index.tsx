@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from "next/image";
+import LegacyImage from "next/legacy/image";
 import prettyMs from 'pretty-ms';
 
 import styles from '../styles/Home.module.css';
@@ -55,14 +56,10 @@ function Home(props: HomeProps) {
                     style={{
                         objectFit: "fill"
                     }} />
-				<Image
+				<LegacyImage
                     src={Icons}
                     alt="Computer Icons"
-                    className={styles.icons}
-                    style={{
-                        maxWidth: "100%",
-                        height: "auto"
-                    }} />
+                    className={styles.icons} />
 				<p className={styles.blurb}>
 					<strong>
 						<em>The universal collection of computer-related resources</em>
