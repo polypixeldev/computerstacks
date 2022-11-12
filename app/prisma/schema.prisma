@@ -14,7 +14,7 @@ datasource db {
 
 model Account {
   id                 Int     @id @default(autoincrement())
-  userId             Int
+  userId             String
   type               String
   provider           String
   providerAccountId  String
@@ -23,7 +23,7 @@ model Account {
   expires_at         Int?
   token_type         String?
   scope              String?
-  id_token           String?
+  id_token           String? @db.Text
   session_state      String?
   oauth_token_secret String?
   oauth_token        String?
@@ -33,7 +33,7 @@ model Account {
 }
 
 model User {
-  id                 Int               @id @default(autoincrement())
+  id                 String            @id @default(cuid())
   name               String?
   email              String?           @unique
   emailVerified      DateTime?
@@ -50,7 +50,7 @@ model User {
 model Session {
   id           Int      @id @default(autoincrement())
   sessionToken String   @unique
-  userId       Int
+  userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
@@ -69,31 +69,31 @@ model Category {
 }
 
 model Resource {
-  uri             String @id
-  name            String
-  description     String
-  level           Int
-  link            String
-  author          String
-  timestamp       DateTime
-  users           User[]
-  parentId        String
-  parent          Category          @relation(fields: [parentId], references: [uri])
-  comments ResourceComment[]
+  uri         String            @id
+  name        String
+  description String
+  level       Int
+  link        String
+  author      String
+  timestamp   DateTime
+  users       User[]
+  parentId    String
+  parent      Category          @relation(fields: [parentId], references: [uri])
+  comments    ResourceComment[]
 }
 
 model Roadmap {
-  uri            String @id
-  name           String
-  description    String
-  level          Int
-  image          String
-  users          User[]
-  comments RoadmapComment[]
+  uri         String           @id
+  name        String
+  description String
+  level       Int
+  image       String
+  users       User[]
+  comments    RoadmapComment[]
 }
 
 model Event {
-  uri         String @id
+  uri         String   @id
   name        String
   description String
   date        DateTime
@@ -101,22 +101,22 @@ model Event {
 }
 
 model ResourceComment {
-  id         Int   @id @default(autoincrement())
+  id         Int      @id @default(autoincrement())
   content    String
   timestamp  DateTime
   author     User     @relation(fields: [userId], references: [id])
   parent     Resource @relation(fields: [resourceId], references: [uri])
-  userId     Int
+  userId     String
   resourceId String
 }
 
 model RoadmapComment {
-  id        Int   @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   content   String
   timestamp DateTime
   author    User     @relation(fields: [userId], references: [id])
   parent    Roadmap  @relation(fields: [roadmapId], references: [uri])
-  userId    Int
+  userId    String
   roadmapId String
 }
 
