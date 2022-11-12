@@ -1,8 +1,11 @@
 import { publicProcedure, router } from "../trpc";
-import eventsFetch from '../../functions/eventsFetch';
 
 export const eventsRouter = router({
 	fetch: publicProcedure.query(async () => {
-		return await eventsFetch();
+		const data = await prisma.event.findMany();
+
+		return {
+			events: data.map((event) => ({ ...event, date: event.date.toISOString() })),
+		};
 	})
 });

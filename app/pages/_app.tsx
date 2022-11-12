@@ -8,6 +8,7 @@ import { Zilla_Slab, Open_Sans, Dosis } from '@next/font/google'
 
 import MenuScreen from '../components/menu';
 import Navbar from '../components/navbar';
+import { trpc } from '../util/trpc';
 
 import '../styles/globals.css';
 
@@ -135,4 +136,4 @@ function MyApp({ Component, pageProps }: AppProps<PageProps>) {
     );
 }
 
-export default MyApp;
+export default trpc.withTRPC(MyApp);
