@@ -31,21 +31,26 @@ function Dashboard() {
 	useEffect(() => {
 		if (status !== 'authenticated') return;
 
-		const newFavs: Array<(DbCategory | DbSubcategory | DbResource) & {uri: string}> = [];
+		const newFavs: Array<(DbCategory | DbResource) & {uri: string}> = [];
 		const queries = [];
 
-		for (const fav of session.user.favorites) {
+		for (const fav of session.user.favoriteCategories) {
 			const split = fav.split('/');
-			const type =
-				split.length === 1
-					? 'category'
-					: split.length === 2
-					? 'subcategory'
-					: 'resource';
 			const uri = split[split.length - 1];
 
 			queries.push(
-				axios.get(`/api/library/${type}?uri=${uri}`).then((res) => {
+				axios.get(`/api/library/category?uri=${uri}`).then((res) => {
+					newFavs.push({ ...res.data, uri: fav });
+				})
+			);
+		}
+
+		for (const fav of session.user.favoriteResources) {
+			const split = fav.split('/');
+			const uri = split[split.length - 1];
+
+			queries.push(
+				axios.get(`/api/library/resource?uri=${uri}`).then((res) => {
 					newFavs.push({ ...res.data, uri: fav });
 				})
 			);
@@ -54,7 +59,7 @@ function Dashboard() {
 		Promise.all(queries).then(() => {
 			setFavorites(newFavs);
 		});
-	}, [status, session?.user.favorites]);
+	}, [status, session?.user.favoriteCategories, session?.user.favoriteResources]);
 
 	useEffect(() => {
 		if (status !== 'authenticated') return;
