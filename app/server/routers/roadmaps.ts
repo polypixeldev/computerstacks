@@ -2,7 +2,6 @@ import { z } from 'zod';
 
 import { publicProcedure, protectedProcedure, router } from "../trpc";
 import prisma from '../../db/prisma';
-import roadmapsMeta from '../../functions/roadmapsMeta';
 import roadmapsRoadmap from '../../functions/roadmapsRoadmap';
 
 export const roadmapsRouter = router({
@@ -37,7 +36,14 @@ export const roadmapsRouter = router({
 		}),
 	meta: publicProcedure
 		.query(async () => {
-			return await roadmapsMeta();
+			const roadmapCountQuery = prisma.roadmap.count();
+			const roadmapsQuery = prisma.roadmap.findMany();
+			const [numRoadmaps, roadmaps] = await Promise.all([roadmapCountQuery, roadmapsQuery]);
+		
+			return {
+				numRoadmaps,
+				roadmaps
+			};
 		}),
 	roadmap: publicProcedure
 		.input(z.object({

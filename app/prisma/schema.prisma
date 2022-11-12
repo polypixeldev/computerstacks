@@ -87,7 +87,7 @@ model Roadmap {
   name        String
   description String
   level       Int
-  image       String
+  image       String           @db.Text
   users       User[]
   comments    RoadmapComment[]
 }
