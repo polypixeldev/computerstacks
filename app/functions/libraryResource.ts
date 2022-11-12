@@ -1,52 +1,46 @@
-import getDb from '../db/mongoose';
-
-import Comment from '../interfaces/db/Comment';
+import prisma from '../db/prisma';
 
 async function libraryResource(uri: string) {
-	const { resources } = await getDb();
-
-	const data = await resources.findOne(
-		{ uri: uri },
-		'-_id name description teamRating communityRating link author timestamp comments'
-	);
+	let data = await prisma.resource.findUnique({
+		where: {
+			uri: uri
+		},
+		include: {
+			comments: {
+				include: {
+					author: true
+				}
+			}
+		}
+	});
 
 	if (!data) {
 		throw new Error(`Resource URI ${uri} does not exist`);
 	}
 
-	const dataObj = (await data.populate<{ comments: Comment[] }>({
-		path: 'comments',
-		populate: {
-			path: 'author',
-		},
-	}));
+	data = computeISOTimestamp(data);
+	data.comments = data.comments.map((comment) => computeISOTimestamp(comment));
 
-	dataObj.comments = dataObj.comments.map((comment) => ({
-		_id: comment._id,
-		content: comment.content,
-		author: {
-			emailVerified: comment.author.emailVerified,
-			name: comment.author.name,
-			email: comment.author.email,
-			image: comment.author.image,
-			roadmaps: comment.author.roadmaps,
-			favorites: comment.author.favorites
-		},
-		timestamp: comment.timestamp
-	}));
+	data.comments.reverse();
 
-	dataObj.comments.reverse();
+	return data;
+}
 
+type DateTimestamp = {
+	timestamp: Date
+}
+
+type WithISOTimestamp<T> = T & {
+	timestamp: string
+}
+
+function computeISOTimestamp<Resource extends DateTimestamp>(
+	resource: Resource
+): WithISOTimestamp<Resource> {
 	return {
-		name: dataObj.name,
-		description: dataObj.description,
-		teamRating: dataObj.teamRating,
-		communityRating: dataObj.communityRating,
-		link: dataObj.link,
-		author: dataObj.author,
-		comments: dataObj.comments,
-		timestamp: dataObj.timestamp.toISOString()
-	};
+		...resource,
+		timestamp: resource.timestamp.toISOString(),
+	}
 }
 
 export default libraryResource;

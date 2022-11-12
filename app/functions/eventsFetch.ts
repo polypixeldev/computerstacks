@@ -1,11 +1,7 @@
-import getDb from '../db/mongoose';
+import prisma from '../db/prisma';
 
 async function eventsFetch() {
-	const { events } = await getDb();
-
-	const data = await events.find({}, '-_id name description uri date duration', {
-		lean: true,
-	});
+	const data = await prisma.event.findMany();
 
 	return {
 		events: data.map((event) => ({ ...event, date: event.date.toISOString() })),

@@ -5,18 +5,18 @@ import prisma from '../../../db/prisma';
 
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-async function roadmap(req: NextApiRequest, res: NextApiResponse) {
+async function favoriteResource(req: NextApiRequest, res: NextApiResponse) {
 	const session = await getSession({ req });
 
 	if (!session) return res.status(401).end();
 
-	if (session.user.roadmaps.includes(req.body.uri)) {
+	if (session.user.favorites.includes(req.body.uri)) {
 		await prisma.user.update({
 			where: {
 				id: session.user.id
 			},
 			data: {
-				roadmaps: {
+				favoriteResources: {
 					disconnect: { uri: req.body.uri }
 				}
 			}
@@ -27,7 +27,7 @@ async function roadmap(req: NextApiRequest, res: NextApiResponse) {
 				id: session.user.id
 			},
 			data: {
-				roadmaps: {
+				favoriteResources: {
 					connect: { uri: req.body.uri }
 				}
 			}
@@ -37,4 +37,4 @@ async function roadmap(req: NextApiRequest, res: NextApiResponse) {
 	return res.status(200).end();
 }
 
-export default withSentry(roadmap);
+export default withSentry(favoriteResource);

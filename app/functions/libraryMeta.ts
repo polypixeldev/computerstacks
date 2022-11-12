@@ -1,26 +1,15 @@
-import getDb from '../db/mongoose';
+import prisma from '../db/prisma';
 
 async function libraryMeta() {
-	const { categories, resources } = await getDb();
-	const queries = [
-		resources.estimatedDocumentCount(),
-		categories.estimatedDocumentCount(),
-		categories.find({}, '-_id name description uri level', { lean: true }),
-	];
-	const [numResources, numSubjects, subjects] = await Promise.all(queries);
-
-	if (typeof subjects === 'number') {
-		throw new Error("Library subjects not found");
-	}
-
-	const level1 = subjects.filter((subject) => subject.level === 1);
-	const level2 = subjects.filter((subject) => subject.level === 2);
-	const level3 = subjects.filter((subject) => subject.level === 3);
+	const numResourcesQuery = prisma.resource.count()
+	const numCategoriesQuery = prisma.category.count()
+	const categoriesQuery = prisma.category.findMany()
+	const [numResources, numCategories, categories] = await Promise.all([numResourcesQuery, numCategoriesQuery, categoriesQuery]);
 
 	return {
 		numResources,
-		numSubjects,
-		subjects: [level1, level2, level3],
+		numCategories,
+		categories
 	};
 }
 
