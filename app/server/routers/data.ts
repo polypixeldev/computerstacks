@@ -9,7 +9,7 @@ export const dataRouter = router({
 			},
 		});
 	}),
-	export: protectedProcedure.mutation(async ({ ctx }) => {
+	export: protectedProcedure.query(async ({ ctx }) => {
 		const data = await prisma.user.findUnique({
 			where: {
 				id: ctx.session.user.id,
