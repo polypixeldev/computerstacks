@@ -1,11 +1,18 @@
 import axios from 'axios';
 import Image from "next/image";
+import { ChangeEvent } from 'react';
+import { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
+import { createProxySSGHelpers } from '@trpc/react-query/ssg';
+import superjson from 'superjson';
 
 import Loading from '../../components/loading';
 import Share from '../../components/share';
+import { appRouter } from '../../server/routers/_app';
+import { intoLevels } from '../../util/intoLevels';
+import { trpc } from '../../util/trpc';
 
 import HeadStyles from '../../styles/Head.module.css';
 import CommentStyle from '../../styles/Comment.module.css';
@@ -16,24 +23,16 @@ import profile from '../../public/profile.png';
 import roadmap from '../../public/favorite.svg';
 import shareIcon from '../../public/share.png';
 
-import roadmapsMeta from '../../functions/roadmapsMeta';
-import roadmapsRoadmap from '../../functions/roadmapsRoadmap';
-
-import { ChangeEvent } from 'react';
-import { GetStaticProps } from 'next';
-import { Roadmap } from '../../interfaces/db/Roadmap';
-
-interface RoadmapProps {
-	data: Roadmap
-}
-
-function Roadmap(props: RoadmapProps) {
+function Roadmap() {
 	const router = useRouter();
 	const { data: session, status } = useSession();
 
+	const roadmapsQuery = trpc.roadmaps.roadmap.useQuery({ uri: typeof router.query.roadmap !== 'string' ? '' : router.query.roadmap });
+	const commentMutation = trpc.roadmaps.comment.useMutation();
+
 	const [isRoadmap, setIsRoadmap] = useState(false);
 	const [comment, setComment] = useState('');
-	const [comments, setComments] = useState(props?.data?.comments);
+	const [comments, setComments] = useState(roadmapsQuery?.data?.comments);
 	const [isShare, setIsShare] = useState(false);
 
 	useEffect(() => {
@@ -48,8 +47,8 @@ function Roadmap(props: RoadmapProps) {
 	}, [session?.user.roadmaps, status, router.query.roadmap]);
 
 	useEffect(() => {
-		setComments(props?.data?.comments);
-	}, [props?.data?.comments]);
+		setComments(roadmapsQuery?.data?.comments);
+	}, [roadmapsQuery?.data?.comments]);
 
 	if (router.isFallback) return <Loading />;
 
@@ -92,31 +91,25 @@ function Roadmap(props: RoadmapProps) {
 			alert('You must be logged in to comment');
 			return;
 		}
-		const ROADMAPS_COMMENT_URL = `/api/roadmaps/comment`;
 
-		axios
-			.post(ROADMAPS_COMMENT_URL, {
-				uri: router.query.roadmap,
-				content: comment,
-			})
-			.then(reloadComments);
+		commentMutation.mutateAsync({ uri: typeof router.query.roadmap !== 'string' ? '' : router.query.roadmap, content: comment })
+		.then(reloadComments);
 
 		setComment('');
 	}
 
 	async function reloadComments() {
-		const ROADMAP_URL = `/api/roadmaps/roadmap?uri=${router.query.roadmap}`;
+		await roadmapsQuery.refetch();
 
-		const res = await axios.get(ROADMAP_URL);
-
-		setComments(res?.data?.comments);
+		setComments(roadmapsQuery?.data?.comments);
 	}
 
 	function listComments() {
 		if (!comments) return null;
 		return comments.map((comment) => (
-			<Comment key={comment._id} data={comment} />
-		));
+				<Comment key={comment.id} data={comment} />
+			)
+		);
 	}
 
 	function handleShare() {
@@ -130,8 +123,8 @@ function Roadmap(props: RoadmapProps) {
 	return (
         <main>
 			<section className={HeadStyles.head}>
-				<h2>{props.data.name}</h2>
-				<p>{props.data.description}</p>
+				<h2>{roadmapsQuery.data?.name}</h2>
+				<p>{roadmapsQuery.data?.description}</p>
 				<div className={HeadStyles.actionDiv}>
 					<div style={{ position: 'relative' }}>
 						<Image
@@ -145,7 +138,7 @@ function Roadmap(props: RoadmapProps) {
                                 height: "auto"
                             }} />
 						{isShare ? (
-							<Share name={props.data.name} toggle={handleShare} />
+							<Share name={roadmapsQuery.data?.name ?? ''} toggle={handleShare} />
 						) : null}
 					</div>
 					<Image
@@ -163,7 +156,9 @@ function Roadmap(props: RoadmapProps) {
 			<section className="section1">
 				<h2>Roadmap</h2>
 				<Image
-                    src={props.data.image}
+                    src={roadmapsQuery.data?.image ?? ''}
+					width={1000}
+					height={1000}
                     alt="The roadmap"
                     style={{
                         maxWidth: "100%",
@@ -195,11 +190,15 @@ function Roadmap(props: RoadmapProps) {
 async function getStaticPaths() {
 	const res = { paths: new Array<{ params: { roadmap: string }}>(), fallback: true };
 
-	const data = await roadmapsMeta();
+	const caller = appRouter.createCaller({ session: null });
+
+	const data = await caller.roadmaps.meta();
 
 	if (!data) return res;
 
-	for (const level of data.roadmaps) {
+	const levels = intoLevels(data.roadmaps);
+
+	for (const level of levels) {
 		for (const roadmap of level)
 			res.paths.push({ params: { roadmap: roadmap.uri } });
 	}
@@ -207,9 +206,7 @@ async function getStaticPaths() {
 	return res;
 }
 
-const  getStaticProps: GetStaticProps = async ({ params }) => {
-	const res = { revalidate: 43200, props: { data: {}, error: false } };
-
+const getStaticProps: GetStaticProps = async ({ params }) => {
 	if(!params) {
 		throw Error("Category page parameters not found");
 	}
@@ -218,12 +215,22 @@ const  getStaticProps: GetStaticProps = async ({ params }) => {
 		throw Error(`Invalid roadmap URI ${params.roadmap}`);
 	}
 
-	const data = await roadmapsRoadmap(params.roadmap);
+	const ssg = await createProxySSGHelpers({
+		router: appRouter,
+		ctx: {
+			session: null
+		},
+		transformer: superjson
+	});
 
-	if (!data) res.props.error = true;
-	else res.props.data = data;
+	await ssg.roadmaps.roadmap.prefetch({ uri: params.roadmap });
 
-	return res;
+	return {
+		revalidate: 86400,
+		props: {
+			trpcState: ssg.dehydrate()
+		}
+	};
 }
 
 export { getStaticPaths, getStaticProps };

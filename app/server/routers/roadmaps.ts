@@ -2,7 +2,6 @@ import { z } from 'zod';
 
 import { publicProcedure, protectedProcedure, router } from "../trpc";
 import prisma from '../../db/prisma';
-import roadmapsRoadmap from '../../functions/roadmapsRoadmap';
 
 export const roadmapsRouter = router({
 	comment: protectedProcedure
@@ -30,7 +29,7 @@ export const roadmapsRouter = router({
 					parent: {
 						connect: { uri: target.uri }
 					},
-					timestamp: Date()
+					timestamp: new Date()
 				}
 			});
 		}),
@@ -50,6 +49,25 @@ export const roadmapsRouter = router({
 			uri: z.string()
 		}))
 		.query(async ({ input }) => {
-			return await roadmapsRoadmap(input.uri);
+			let data = await prisma.roadmap.findUnique({
+				where: {
+					uri: input.uri
+				},
+				include: {
+					comments: {
+						include: {
+							author: true
+						}
+					}
+				}
+			});
+		
+			if (!data) {
+				throw new Error(`Roadmap URI ${input.uri} not found`);
+			}
+		
+			data.comments.reverse();
+		
+			return data;
 		})
 });

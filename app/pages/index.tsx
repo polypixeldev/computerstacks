@@ -3,6 +3,7 @@ import Image from "next/image";
 import LegacyImage from "next/legacy/image";
 import prettyMs from 'pretty-ms';
 import { createProxySSGHelpers } from '@trpc/react-query/ssg';
+import superjson from 'superjson';
 
 import styles from '../styles/Home.module.css';
 
@@ -126,6 +127,7 @@ async function getStaticProps() {
 		ctx: {
 			session: null
 		},
+		transformer: superjson
 	});
 
 	await ssg.events.fetch.prefetch();

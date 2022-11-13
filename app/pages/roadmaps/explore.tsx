@@ -1,8 +1,10 @@
 import { createProxySSGHelpers } from '@trpc/react-query/ssg';
+import superjson from 'superjson';
 
 import Card from '../../components/card';
 import { appRouter } from '../../server/routers/_app';
 import { trpc } from '../../util/trpc';
+import { intoLevels } from '../../util/intoLevels';
 
 import HeadStyles from '../../styles/Head.module.css';
 
@@ -12,11 +14,9 @@ function Explore() {
 	function getLevel(level: number) {
 		const roadmaps = roadmapsMetaQuery.data?.roadmaps;
 
-		const roadmapLevels = [
-			roadmaps?.filter((roadmap) => roadmap.level === 1),
-			roadmaps?.filter((roadmap) => roadmap.level === 2),
-			roadmaps?.filter((roadmap) => roadmap.level === 3),
-		];
+		if (!roadmaps) return [];
+
+		const roadmapLevels = intoLevels(roadmaps);
 
 		return roadmapLevels[level]?.map((item) => (
 			<Card {...item} key={item.uri} roadmap={true} />
@@ -42,6 +42,7 @@ async function getStaticProps() {
 		ctx: {
 			session: null
 		},
+		transformer: superjson
 	});
 
 	await ssg.roadmaps.meta.prefetch();

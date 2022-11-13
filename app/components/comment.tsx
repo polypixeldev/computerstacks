@@ -4,18 +4,13 @@ import CommentStyle from '../styles/Comment.module.css';
 
 import profile from '../public/profile.png';
 
-import User from '../interfaces/db/User';
+import type { RoadmapComment, User } from '@prisma/client';
 
 interface CommentProps {
-	data: {
-		timestamp: string,
-		author: User
-		content: string
-	}
+	data: RoadmapComment & { author: User }
 };
 
 function Comment(props: CommentProps) {
-	const time = new Date(props.data.timestamp);
 	return (
         <div className={CommentStyle.comment}>
 			<div className={CommentStyle.inner}>
@@ -34,7 +29,7 @@ function Comment(props: CommentProps) {
 			<div className={CommentStyle.inner}>
 				<p className={CommentStyle.commentText}>{props.data.content}</p>
 				<p className={CommentStyle.timestamp}>
-					Sent on {time.toDateString()} at {time.toTimeString()}
+					Sent on {props.data.timestamp.toDateString()} at {props.data.timestamp.toTimeString()}
 				</p>
 			</div>
 		</div>
