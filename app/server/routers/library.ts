@@ -1,10 +1,8 @@
-import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 
 import { publicProcedure, protectedProcedure, router } from "../trpc";
 import prisma from '../../db/prisma';
 import libraryCategory from '../../functions/libraryCategory';
-import libraryMeta from '../../functions/libraryMeta';
 import libraryResource from '../../functions/libraryResource';
 
 export const libraryRouter = router({
@@ -48,7 +46,16 @@ export const libraryRouter = router({
 		}),
 	meta: publicProcedure
 		.query(async () => {
-			return await libraryMeta();
+			const numResourcesQuery = prisma.resource.count()
+			const numCategoriesQuery = prisma.category.count()
+			const categoriesQuery = prisma.category.findMany()
+			const [numResources, numCategories, categories] = await Promise.all([numResourcesQuery, numCategoriesQuery, categoriesQuery]);
+		
+			return {
+				numResources,
+				numCategories,
+				categories
+			};
 		}),
 	resource: publicProcedure
 		.input(z.object({
