@@ -1,8 +1,8 @@
 import { z } from 'zod';
+import { Prisma } from '@prisma/client';
 
 import { publicProcedure, protectedProcedure, router } from "../trpc";
 import prisma from '../../db/prisma';
-import libraryCategory from '../../functions/libraryCategory';
 import libraryResource from '../../functions/libraryResource';
 
 export const libraryRouter = router({
@@ -13,7 +13,22 @@ export const libraryRouter = router({
 			})
 		)
 		.query(async ({ input }) => {
-			return await libraryCategory(input.uri);
+			const data = await prisma.category.findUnique({
+				where: {
+					uri: input.uri
+				},
+				include: {
+					categoryChildren: true,
+					resourceChildren: true,
+					parent: true
+				}
+			});
+
+			if (!data) {
+				throw new Error(`Category URII ${input.uri} does not exist!`);
+			}
+
+			return data;
 		}),
 	comment: protectedProcedure
 		.input(z.object({
@@ -26,11 +41,11 @@ export const libraryRouter = router({
 					uri: input.uri
 				}
 			});
-		
+
 			if (!target) {
 				throw new Error("Invalid target document URI for commenting");
 			}
-		
+
 			await prisma.resourceComment.create({
 				data: {
 					content: input.content,
@@ -46,16 +61,65 @@ export const libraryRouter = router({
 		}),
 	meta: publicProcedure
 		.query(async () => {
-			const numResourcesQuery = prisma.resource.count()
-			const numCategoriesQuery = prisma.category.count()
-			const categoriesQuery = prisma.category.findMany()
-			const [numResources, numCategories, categories] = await Promise.all([numResourcesQuery, numCategoriesQuery, categoriesQuery]);
-		
+			const numResourcesQuery = prisma.resource.count();
+			const numCategoriesQuery = prisma.category.count();
+			const [numResources, numCategories] = await Promise.all([numResourcesQuery, numCategoriesQuery]);
+
 			return {
 				numResources,
-				numCategories,
-				categories
+				numCategories
 			};
+		}),
+	allCategories: publicProcedure
+		.query(async () => {
+			const categoriesQuery = await prisma.category.findMany();
+
+			return categoriesQuery;
+		}),
+	rootCategories: publicProcedure
+		.query(async () => {
+			const categoriesQuery = await prisma.category.findMany({
+				where: {
+					parentId: null
+				}
+			});
+
+			return categoriesQuery;
+		}),
+	allResources: publicProcedure
+		.query(async () => {
+			const resourcesQuery = await prisma.resource.findMany();
+
+			return resourcesQuery;
+		}),
+	getFullCategoryPath: publicProcedure
+		.input(z.object({
+			uri: z.string()
+		}))
+		.query(async ({ input }) => {
+			let currentCategory = await prisma.category.findUnique({
+				where: {
+					uri: input.uri
+				}
+			});
+
+			if (currentCategory === null) throw new Error(`Category URI ${input.uri} does not exist`);
+
+			const path = [currentCategory.uri];
+
+			while (currentCategory.parentId) {
+				currentCategory = await prisma.category.findUnique({
+					where: {
+						uri: currentCategory.parentId
+					}
+				});
+
+				if (!currentCategory) throw new Error(`Category URI ${input.uri} does not exist`);
+
+				path.push(currentCategory.uri);
+			}
+
+			return path.reverse();
 		}),
 	resource: publicProcedure
 		.input(z.object({

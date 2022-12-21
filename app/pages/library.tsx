@@ -10,9 +10,10 @@ import HeadStyle from '../styles/Head.module.css';
 
 function Library() {
 	const metaQuery = trpc.library.meta.useQuery();
+	const categoriesQuery = trpc.library.rootCategories.useQuery();
 
 	function getLevel(level: number) {
-		const categoryLevels = intoLevels(metaQuery.data?.categories ?? []);
+		const categoryLevels = intoLevels(categoriesQuery.data ?? []);
 		return categoryLevels[level].map((subject) => (
 			<Card {...subject} key={subject.uri} />
 		));
@@ -44,6 +45,7 @@ async function getStaticProps() {
 	});
 
 	await ssg.library.meta.prefetch();
+	await ssg.library.rootCategories.prefetch();
 
 	return {
 		revalidate: 86400,

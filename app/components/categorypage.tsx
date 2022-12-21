@@ -6,6 +6,8 @@ import { useSession } from 'next-auth/react';
 
 import Card from './card';
 import Share from './share';
+import { intoLevels } from '../util/intoLevels';
+import { trpc } from '../util/trpc';
 
 import HeadStyle from '../styles/Head.module.css';
 
@@ -13,48 +15,60 @@ import favorite from '../public/favorite.svg';
 import notfavorite from '../public/notfavorite.svg';
 import shareIcon from '../public/share.png';
 
-import { Category } from '../interfaces/db/Category';
-import { Subcategory } from '../interfaces/db/Subcategory';
+import type { Category, Resource } from '@prisma/client';
 
 interface CategoryPageProps {
 	categoryURI: string,
-	data: Category
+	data: Category & { categoryChildren: Category[], resourceChildren: Resource[], parent: Category | null }
 }
 
-interface SubcategoryPageProps {
-	categoryURI: string,
-	subcategoryURI: string,
-	data: Subcategory
-}
-
-function CategoryPage(props: CategoryPageProps | SubcategoryPageProps) {
+function CategoryPage(props: CategoryPageProps) {
 	const [isFavorite, setIsFavorite] = useState(false);
 	const [isShare, setIsShare] = useState(false);
 	const { data: session, status } = useSession();
+
+	const favoriteMutation = trpc.user.favoriteCategory.useMutation();
 
 	useEffect(() => {
 		if (status !== 'authenticated') return;
 
 		if (
-			session.user.favorites.includes(
-				`${'categoryURI' in props ? props.categoryURI : ''}${
-					'subcategoryURI' in props ? `/${props.subcategoryURI}` : ''
-				}`
-			)
+			session.user.favoriteCategories.includes(props.categoryURI)
 		)
 			setIsFavorite(true);
-	}, [props, session?.user.favorites, status]);
+	}, [props, session?.user.favoriteCategories, status]);
 
-	const items = 'subcategories' in props.data ? props.data.subcategories : props.data.resources;
+	const items = [...props.data.categoryChildren, ...props.data.resourceChildren];
+
 	function getLevel(level: number) {
-		return items[level].map((item) => (
+		const categoryLevels = intoLevels(props.data.categoryChildren);
+		const resourceLevels = intoLevels(props.data.resourceChildren);
+
+		const categoryCards = categoryLevels[level].map((item) => (
 			<Card
 				{...item}
 				key={item.uri}
-				category={'categoryURI' in props ? props.categoryURI : undefined}
-				subcategory={'subcategoryURI' in props ? props.subcategoryURI : undefined}
+				category={true}
+				uri={item.uri}
+				resource={false}
+				description={item.description}
+				name={item.name}
+				roadmap={false}
 			/>
 		));
+		const resourceCards = resourceLevels[level].map((item) => (
+			<Card
+				{...item}
+				key={item.uri}
+				category={false}
+				uri={item.uri}
+				resource={true}
+				description={item.description}
+				name={item.name}
+				roadmap={false}
+			/>
+		));
+		return [...categoryCards, ...resourceCards];
 	}
 
 	function handleFavorite() {
@@ -62,28 +76,15 @@ function CategoryPage(props: CategoryPageProps | SubcategoryPageProps) {
 			alert('You must be logged in to favorite something');
 			return;
 		}
-		const FAVORITE_URL = `/api/user/favorite`;
 
 		if (isFavorite) {
-			axios
-				.post(FAVORITE_URL, {
-					uri: `${'categoryURI' in props ? props.categoryURI : ''}${
-						'subcategoryURI' in props ? `/${props.subcategoryURI}` : ''
-					}`,
-				})
-				.then(() => {
-					setIsFavorite(false);
-				});
+			favoriteMutation.mutateAsync({ uri: props.categoryURI }).then(() => {
+				setIsFavorite(false);
+			});
 		} else {
-			axios
-				.post(FAVORITE_URL, {
-					uri: `${'categoryURI' in props ? props.categoryURI : ''}${
-						'subcategoryURI' in props ? `/${props.subcategoryURI}` : ''
-					}`,
-				})
-				.then(() => {
-					setIsFavorite(true);
-				});
+			favoriteMutation.mutateAsync({ uri: props.categoryURI }).then(() => {
+				setIsFavorite(true);
+			});
 		}
 	}
 	function handleShare() {
@@ -95,12 +96,12 @@ function CategoryPage(props: CategoryPageProps | SubcategoryPageProps) {
 	}
 
 	return (
-        <main>
+		<main>
 			<section className={HeadStyle.head} id="head">
-				{'subcategoryURI' in props ? (
+				{props.data.parent ? (
 					<h3>
-						<Link href={`/library/${props.categoryURI}`} className="link">
-							{props.categoryURI}
+						<Link href={`/library/${props.data.parent.uri}`} className="link">
+							{props.data.parent.name}
 						</Link>
 					</h3>
 				) : null}
@@ -109,15 +110,15 @@ function CategoryPage(props: CategoryPageProps | SubcategoryPageProps) {
 				<div className={HeadStyle.actionDiv}>
 					<div style={{ position: 'relative' }}>
 						<Image
-                            onClick={handleShare}
-                            src={shareIcon}
-                            alt="Share Icon"
-                            width={50}
-                            height={50}
-                            style={{
-                                maxWidth: "100%",
-                                height: "auto"
-                            }} />
+							onClick={handleShare}
+							src={shareIcon}
+							alt="Share Icon"
+							width={50}
+							height={50}
+							style={{
+								maxWidth: "100%",
+								height: "auto"
+							}} />
 						{isShare ? (
 							<Share
 								name={props.data.name}
@@ -126,22 +127,22 @@ function CategoryPage(props: CategoryPageProps | SubcategoryPageProps) {
 						) : null}
 					</div>
 					<Image
-                        onClick={handleFavorite}
-                        src={isFavorite ? favorite : notfavorite}
-                        alt="Favorite button"
-                        width={75}
-                        height={75}
-                        style={{
-                            maxWidth: "100%",
-                            height: "auto"
-                        }} />
+						onClick={handleFavorite}
+						src={isFavorite ? favorite : notfavorite}
+						alt="Favorite button"
+						width={75}
+						height={75}
+						style={{
+							maxWidth: "100%",
+							height: "auto"
+						}} />
 				</div>
 			</section>
 			<section className="section1">{getLevel(0)}</section>
 			<section className="section2">{getLevel(1)}</section>
 			<section className="section3">{getLevel(2)}</section>
 		</main>
-    );
+	);
 }
 
 export default CategoryPage;

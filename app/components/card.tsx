@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 
 import Share from './share';
+import  { trpc } from  '../util/trpc' ;
 
 import CardStyle from '../styles/Card.module.css';
 import HeadStyle from '../styles/Head.module.css';
@@ -17,9 +18,9 @@ interface CardProps {
 	key: string,
 	noFavorite?: boolean,
 	roadmap?: boolean,
+	category?: boolean,
+	resource?: boolean,
 	uri: string,
-	category?: string,
-	subcategory?: string,
 	name: string,
 	description: string
 };
@@ -28,6 +29,10 @@ function Card(props: CardProps) {
 	const [isFavorite, setIsFavorite] = useState(false);
 	const [isShare, setIsShare] = useState(false);
 	const { data: session, status } = useSession();
+
+	const favoriteCategoryMutation = trpc.user.favoriteCategory.useMutation();
+	const favoriteResourceMutation = trpc.user.favoriteResource.useMutation();
+	const roadmapMutation = trpc.user.roadmap.useMutation();
 
 	useEffect(() => {
 		if (status !== 'authenticated') return;
@@ -38,14 +43,12 @@ function Card(props: CardProps) {
 			if (session.user.roadmaps.includes(props.uri)) {
 				setIsFavorite(true);
 			}
+		} else if (props.category === true) {
+			if (session.user.favoriteCategories.includes(props.uri)) {
+				setIsFavorite(true);
+			}
 		} else {
-			if (
-				session.user.favorites.includes(
-					`${props.category ? `${props.category}/` : ''}${
-						props.subcategory ? `${props.subcategory}/` : ''
-					}${props.uri}`
-				)
-			) {
+			if (session.user.favoriteResources.includes(props.uri)) {
 				setIsFavorite(true);
 			}
 		}
@@ -53,7 +56,6 @@ function Card(props: CardProps) {
 		session?.user,
 		status,
 		props.category,
-		props.subcategory,
 		props.uri,
 		props.roadmap,
 		props.noFavorite,
@@ -66,48 +68,34 @@ function Card(props: CardProps) {
 		}
 
 		if (props.roadmap === true) {
-			const ROADMAP_URL = `/api/user/roadmap`;
-
 			if (isFavorite) {
-				axios
-					.post(ROADMAP_URL, {
-						uri: props.uri,
-					})
-					.then(() => {
-						setIsFavorite(false);
-					});
+				roadmapMutation.mutateAsync({ uri: props.uri }).then(() => {
+					setIsFavorite(false);
+				});
 			} else {
-				axios
-					.post(ROADMAP_URL, {
-						uri: props.uri,
-					})
-					.then(() => {
-						setIsFavorite(true);
-					});
+				roadmapMutation.mutateAsync({ uri: props.uri }).then(() => {
+					setIsFavorite(true);
+				});
+			}
+		} else if (props.category == true) {
+			if (isFavorite) {
+				favoriteCategoryMutation.mutateAsync({ uri: props.uri }).then(() => {
+					setIsFavorite(false);
+				});
+			} else {
+				favoriteCategoryMutation.mutateAsync({ uri: props.uri }).then(() => {
+					setIsFavorite(true);
+				});
 			}
 		} else {
-			const FAVORITE_URL = `/api/user/favorite`;
-
 			if (isFavorite) {
-				axios
-					.post(FAVORITE_URL, {
-						uri: `${props.category ? `${props.category}/` : ''}${
-							props.subcategory ? `${props.subcategory}/` : ''
-						}${props.uri}`,
-					})
-					.then(() => {
-						setIsFavorite(false);
-					});
+				favoriteResourceMutation.mutateAsync({ uri: props.uri }).then(() => {
+					setIsFavorite(false);
+				});
 			} else {
-				axios
-					.post(FAVORITE_URL, {
-						uri: `${props.category ? `${props.category}/` : ''}${
-							props.subcategory ? `${props.subcategory}/` : ''
-						}${props.uri}`,
-					})
-					.then(() => {
-						setIsFavorite(true);
-					});
+				favoriteResourceMutation.mutateAsync({ uri: props.uri }).then(() => {
+					setIsFavorite(true);
+				});
 			}
 		}
 	}
@@ -126,9 +114,7 @@ function Card(props: CardProps) {
                 href={
 					props.roadmap
 						? `/roadmaps/${props.uri}`
-						: `/library/${props.category ? `${props.category}/` : ''}${
-								props.subcategory ? `${props.subcategory}/` : ''
-						  }${props.uri}`
+						: `/library/${props.uri}`
 				}
                 className="link">
 
@@ -155,9 +141,7 @@ function Card(props: CardProps) {
 							href={
 								props.roadmap
 									? `/roadmaps/${props.uri}`
-									: `/library/${props.category ? `${props.category}/` : ''}${
-											props.subcategory ? `${props.subcategory}/` : ''
-									  }${props.uri}`
+									: `/library/${props.uri}`
 							}
 							name={props.name}
 							toggle={handleShare}
