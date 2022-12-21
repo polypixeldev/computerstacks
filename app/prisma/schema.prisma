@@ -60,7 +60,6 @@ model Category {
   name             String
   description      String
   level            Int
-  root             Boolean
   parentId         String?
   favoriteUsers    User[]
   parent           Category?  @relation(name: "categories", fields: [parentId], references: [uri], onDelete: NoAction, onUpdate: NoAction)
