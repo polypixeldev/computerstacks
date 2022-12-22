@@ -25,5 +25,5 @@ export const trpc = createTRPCNext<AppRouter>({
       transformer: superjson
     };
   },
-  ssr: true,
+  ssr: false,
 });

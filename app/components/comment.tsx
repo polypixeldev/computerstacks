@@ -4,26 +4,26 @@ import CommentStyle from '../styles/Comment.module.css';
 
 import profile from '../public/profile.png';
 
-import type { RoadmapComment, User } from '@prisma/client';
+import type { RoadmapComment, ResourceComment, User } from '@prisma/client';
 
 interface CommentProps {
-	data: RoadmapComment & { author: User }
+	data: (RoadmapComment | ResourceComment) & { author: User }
 };
 
 function Comment(props: CommentProps) {
 	return (
-        <div className={CommentStyle.comment}>
+		<div className={CommentStyle.comment}>
 			<div className={CommentStyle.inner}>
 				<Image
-                    src={props.data.author.image || profile}
-                    className={CommentStyle.authorImg}
-                    width={40}
-                    height={40}
-                    alt="Profile picture"
-                    style={{
-                        maxWidth: "100%",
-                        height: "auto"
-                    }} />
+					src={props.data.author.image || profile}
+					className={CommentStyle.authorImg}
+					width={40}
+					height={40}
+					alt="Profile picture"
+					style={{
+						maxWidth: "100%",
+						height: "auto"
+					}} />
 				<p>{props.data.author.name}</p>
 			</div>
 			<div className={CommentStyle.inner}>
@@ -33,7 +33,7 @@ function Comment(props: CommentProps) {
 				</p>
 			</div>
 		</div>
-    );
+	);
 }
 
 export default Comment;

@@ -1,9 +1,7 @@
 import { z } from 'zod';
-import { Prisma } from '@prisma/client';
 
 import { publicProcedure, protectedProcedure, router } from "../trpc";
 import prisma from '../../db/prisma';
-import libraryResource from '../../functions/libraryResource';
 
 export const libraryRouter = router({
 	category: publicProcedure
@@ -25,7 +23,7 @@ export const libraryRouter = router({
 			});
 
 			if (!data) {
-				throw new Error(`Category URII ${input.uri} does not exist!`);
+				return null;
 			}
 
 			return data;
@@ -126,6 +124,74 @@ export const libraryRouter = router({
 			uri: z.string()
 		}))
 		.query(async ({ input }) => {
-			return await libraryResource(input.uri);
+			let data = await prisma.resource.findUnique({
+				where: {
+					uri: input.uri
+				},
+			});
+
+			return data;
+		}),
+	isCategory: publicProcedure
+		.input(z.object({
+			uri: z.string()
+		}))
+		.query(async ({ input }) => {
+			const categoryUri = await prisma.category.findUnique({
+				where: {
+					uri: input.uri
+				},
+				select: {
+					uri: true
+				}
+			});
+
+			return categoryUri !== null;
+		}),
+	resourceComments: publicProcedure
+		.input(z.object({
+			uri: z.string()
+		}))
+		.query(async ({ input }) => {
+			let data = await prisma.resource.findUnique({
+				where: {
+					uri: input.uri
+				},
+				include: {
+					comments: {
+						include: {
+							author: true
+						}
+					}
+				}
+			});
+
+			if (!data) {
+				throw new Error(`Resource URI ${input.uri} does not exist`);
+			}
+
+			data = computeISOTimestamp(data);
+			data.comments = data.comments.map((comment) => computeISOTimestamp(comment));
+
+			data.comments.reverse();
+
+			return data.comments;
 		}),
 });
+
+type DateTimestamp = {
+	timestamp: Date
+}
+
+type WithISOTimestamp<T> = T & {
+	timestamp: string
+}
+
+function computeISOTimestamp<Resource extends DateTimestamp>(
+	resource: Resource
+): WithISOTimestamp<Resource> {
+	return {
+		...resource,
+		timestamp: resource.timestamp.toISOString(),
+	}
+}

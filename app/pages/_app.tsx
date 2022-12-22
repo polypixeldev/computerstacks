@@ -133,7 +133,8 @@ function MyApp({ Component, pageProps }: AppProps<PageProps>) {
 				</footer>
 			</SessionProvider>
 		</div>
-    );
+	);
 }
 
 export default trpc.withTRPC(MyApp);
+// THE CULPRIT!!!!

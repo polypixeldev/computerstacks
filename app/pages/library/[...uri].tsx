@@ -1,31 +1,43 @@
+import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { createProxySSGHelpers } from '@trpc/react-query/ssg';
 import superjson from 'superjson';
 
 import Loading from '../../components/loading';
 import CategoryPage from '../../components/categorypage';
+import ResourcePage from '../../components/resourcepage';
 import { appRouter } from '../../server/routers/_app';
 import { trpc } from '../../util/trpc';
-import { intoLevels } from '../../util/intoLevels';
 
-import type { GetStaticProps } from 'next';
+import type { GetStaticProps, InferGetStaticPropsType } from 'next';
 
-
-function LibraryPage() {
+function LibraryPage(props: InferGetStaticPropsType<typeof getStaticProps>) {
 	const router = useRouter();
 
 	if (!router.query.uri || typeof router.query.uri === 'string') {
-		throw new Error(`Invalid category URI ${router.query.uri}`);
-	}
-
-	const lastUri = router.query.uri[router.query.uri.length - 1];
-	const categoryQuery = trpc.library.category.useQuery({ uri: lastUri });
-
-	if (router.isFallback || !categoryQuery.data) {
 		return <Loading />;
 	}
 
-	return <CategoryPage data={categoryQuery.data} categoryURI={lastUri} />;
+	const lastUri = router.query.uri[router.query.uri.length - 1];
+
+	const categoryQuery = trpc.library.category.useQuery({ uri: lastUri }, { enabled: props.isCategory });
+	const resourceQuery = trpc.library.resource.useQuery({ uri: lastUri }, { enabled: !props.isCategory });
+
+	useEffect(() => {
+		if (categoryQuery.data === null || resourceQuery.data === null) {
+			router.push('/404');
+		}
+	}, [categoryQuery.data, resourceQuery.data]);
+
+	if (router.isFallback || (!categoryQuery.data && !resourceQuery.data)) {
+		return <Loading />;
+	}
+
+	if (props.isCategory) {
+		return <CategoryPage data={categoryQuery.data!} fullURI={router.query.uri.join('/')} categoryURI={lastUri} />;
+	} else {
+		return <ResourcePage data={resourceQuery.data!} fullCategoryURI={router.query.uri.slice(0, router.query.uri.length - 1)} resourceURI={lastUri} />
+	}
 }
 
 async function getStaticPaths() {
@@ -39,16 +51,21 @@ async function getStaticPaths() {
 	for (const category of categories)
 		res.paths.push({ params: { uri: await caller.library.getFullCategoryPath({ uri: category.uri }) } });
 
+	for (const resource of resources) {
+		const resourceCategoryPath = await caller.library.getFullCategoryPath({ uri: resource.parentId });
+		res.paths.push({ params: { uri: [...resourceCategoryPath, resource.uri] } });
+	}
+
 	return res;
 }
 
 const getStaticProps: GetStaticProps = async ({ params }) => {
 	if (!params) {
-		throw Error("Category page parameters not found");
+		throw Error("Library page parameters not found");
 	}
 
 	if (!params.uri || typeof params.uri !== 'object') {
-		throw Error(`Invalid categorry URI ${params.uri}`);
+		throw Error(`Invalid library URI ${params.uri}`);
 	}
 
 	const ssg = await createProxySSGHelpers({
@@ -59,11 +76,18 @@ const getStaticProps: GetStaticProps = async ({ params }) => {
 		transformer: superjson
 	});
 
-	await ssg.library.category.prefetch({ uri: params.uri[params.uri.length - 1] });
+	const isCategory = await ssg.library.isCategory.fetch({ uri: params.uri[params.uri.length - 1] });
+
+	if (isCategory) {
+		await ssg.library.category.prefetch({ uri: params.uri[params.uri.length - 1] });
+	} else {
+		await ssg.library.resource.prefetch({ uri: params.uri[params.uri.length - 1] });
+	}
 
 	return {
 		revalidate: 86400,
 		props: {
+			isCategory,
 			trpcState: ssg.dehydrate()
 		}
 	};

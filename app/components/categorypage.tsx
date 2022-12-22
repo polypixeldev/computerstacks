@@ -1,4 +1,3 @@
-import axios from 'axios';
 import Link from 'next/link';
 import Image from "next/image";
 import { useState, useEffect } from 'react';
@@ -18,6 +17,7 @@ import shareIcon from '../public/share.png';
 import type { Category, Resource } from '@prisma/client';
 
 interface CategoryPageProps {
+	fullURI: string,
 	categoryURI: string,
 	data: Category & { categoryChildren: Category[], resourceChildren: Resource[], parent: Category | null }
 }
@@ -38,8 +38,6 @@ function CategoryPage(props: CategoryPageProps) {
 			setIsFavorite(true);
 	}, [props, session?.user.favoriteCategories, status]);
 
-	const items = [...props.data.categoryChildren, ...props.data.resourceChildren];
-
 	function getLevel(level: number) {
 		const categoryLevels = intoLevels(props.data.categoryChildren);
 		const resourceLevels = intoLevels(props.data.resourceChildren);
@@ -49,7 +47,7 @@ function CategoryPage(props: CategoryPageProps) {
 				{...item}
 				key={item.uri}
 				category={true}
-				uri={item.uri}
+				uri={`${props.fullURI}/${item.uri}`}
 				resource={false}
 				description={item.description}
 				name={item.name}
@@ -61,7 +59,7 @@ function CategoryPage(props: CategoryPageProps) {
 				{...item}
 				key={item.uri}
 				category={false}
-				uri={item.uri}
+				uri={`${props.fullURI}/${item.uri}`}
 				resource={true}
 				description={item.description}
 				name={item.name}
