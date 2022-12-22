@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { signOut } from 'next-auth/react';

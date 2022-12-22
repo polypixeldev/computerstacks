@@ -11,7 +11,7 @@ export const userRouter = router({
 			})
 		)
 		.mutation(async ({ ctx, input }) => {
-			if (ctx.session.user.favorites.includes(input.uri)) {
+			if (ctx.session.user.favoriteCategories.includes(input.uri)) {
 				await prisma.user.update({
 					where: {
 						id: ctx.session.user.id
@@ -42,7 +42,7 @@ export const userRouter = router({
 			})
 		)
 		.mutation(async ({ ctx, input }) => {
-			if (ctx.session.user.favorites.includes(input.uri)) {
+			if (ctx.session.user.favoriteResources.includes(input.uri)) {
 				await prisma.user.update({
 					where: {
 						id: ctx.session.user.id

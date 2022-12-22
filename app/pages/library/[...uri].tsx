@@ -14,11 +14,13 @@ import type { GetStaticProps, InferGetStaticPropsType } from 'next';
 function LibraryPage(props: InferGetStaticPropsType<typeof getStaticProps>) {
 	const router = useRouter();
 
-	if (!router.query.uri || typeof router.query.uri === 'string') {
-		return <Loading />;
+	let fullURI = router.query.uri;
+
+	if (!Array.isArray(fullURI)) {
+		fullURI = [""];
 	}
 
-	const lastUri = router.query.uri[router.query.uri.length - 1];
+	const lastUri = fullURI[fullURI.length - 1];
 
 	const categoryQuery = trpc.library.category.useQuery({ uri: lastUri }, { enabled: props.isCategory });
 	const resourceQuery = trpc.library.resource.useQuery({ uri: lastUri }, { enabled: !props.isCategory });
@@ -27,16 +29,16 @@ function LibraryPage(props: InferGetStaticPropsType<typeof getStaticProps>) {
 		if (categoryQuery.data === null || resourceQuery.data === null) {
 			router.push('/404');
 		}
-	}, [categoryQuery.data, resourceQuery.data]);
+	}, [categoryQuery.data, resourceQuery.data, router]);
 
-	if (router.isFallback || (!categoryQuery.data && !resourceQuery.data)) {
+	if (router.isFallback || (!categoryQuery.data && !resourceQuery.data) || fullURI[0] === "") {
 		return <Loading />;
 	}
 
 	if (props.isCategory) {
-		return <CategoryPage data={categoryQuery.data!} fullURI={router.query.uri.join('/')} categoryURI={lastUri} />;
+		return <CategoryPage data={categoryQuery.data!} fullURI={fullURI.join('/')} categoryURI={lastUri} />;
 	} else {
-		return <ResourcePage data={resourceQuery.data!} fullCategoryURI={router.query.uri.slice(0, router.query.uri.length - 1)} resourceURI={lastUri} />
+		return <ResourcePage data={resourceQuery.data!} fullCategoryURI={fullURI.slice(0, fullURI.length - 1)} resourceURI={lastUri} />
 	}
 }
 

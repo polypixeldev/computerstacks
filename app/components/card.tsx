@@ -1,11 +1,10 @@
-import axios from 'axios';
 import Link from 'next/link';
 import Image from "next/image";
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 
 import Share from './share';
-import  { trpc } from  '../util/trpc' ;
+import { trpc } from '../util/trpc';
 
 import CardStyle from '../styles/Card.module.css';
 import HeadStyle from '../styles/Head.module.css';
@@ -109,33 +108,33 @@ function Card(props: CardProps) {
 	}
 
 	return (
-        <div className={CardStyle.card}>
+		<div className={CardStyle.card}>
 			<Link
-                href={
+				href={
 					props.roadmap
 						? `/roadmaps/${props.uri}`
 						: `/library/${props.uri}`
 				}
-                className="link">
+				className="link">
 
-                <div>
-                    <p className={CardStyle.name}>{props.name}</p>
-                    <p className={CardStyle.desc}>{props.description}</p>
-                </div>
+				<div>
+					<p className={CardStyle.name}>{props.name}</p>
+					<p className={CardStyle.desc}>{props.description}</p>
+				</div>
 
-            </Link>
+			</Link>
 			<div className={`${HeadStyle.actionDiv} ${CardStyle.side}`}>
 				<div style={{ position: 'relative' }}>
 					<Image
-                        onClick={handleShare}
-                        src={shareIcon}
-                        alt="Share Icon"
-                        width={50}
-                        height={50}
-                        style={{
-                            maxWidth: "100%",
-                            height: "auto"
-                        }} />
+						onClick={handleShare}
+						src={shareIcon}
+						alt="Share Icon"
+						width={50}
+						height={50}
+						style={{
+							maxWidth: "100%",
+							height: "auto"
+						}} />
 					{isShare ? (
 						<Share
 							href={
@@ -149,18 +148,18 @@ function Card(props: CardProps) {
 					) : null}
 				</div>
 				<Image
-                    onClick={handleFavorite}
-                    src={isFavorite ? favorite : notfavorite}
-                    alt="Favorite button"
-                    width={75}
-                    height={75}
-                    style={{
-                        maxWidth: "100%",
-                        height: "auto"
-                    }} />
+					onClick={handleFavorite}
+					src={isFavorite ? favorite : notfavorite}
+					alt="Favorite button"
+					width={75}
+					height={75}
+					style={{
+						maxWidth: "100%",
+						height: "auto"
+					}} />
 			</div>
 		</div>
-    );
+	);
 }
 
 export default Card;

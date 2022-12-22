@@ -11,14 +11,11 @@ import styles from '../styles/Dashboard.module.css';
 
 import profile from '../public/profile.png';
 
-import { DbCategory } from '../interfaces/db/Category';
-import { DbSubcategory } from '../interfaces/db/Subcategory';
-import { DbResource } from '../interfaces/db/Resource';
-import { DbRoadmap } from '../interfaces/db/Roadmap';
+import type { Category, Resource, Roadmap } from '@prisma/client';
 
 function Dashboard() {
-	const [favorites, setFavorites] = useState<Array<(DbCategory | DbSubcategory | DbResource) & {uri: string}>>([]);
-	const [roadmaps, setRoadmaps] = useState<Array<DbRoadmap & { uri: string }>>([]);
+	const [favorites, setFavorites] = useState<Array<(Category | Resource) & { uri: string }>>([]);
+	const [roadmaps, setRoadmaps] = useState<Array<Roadmap & { uri: string }>>([]);
 
 	const router = useRouter();
 	const { data: session, status } = useSession({
@@ -31,7 +28,7 @@ function Dashboard() {
 	useEffect(() => {
 		if (status !== 'authenticated') return;
 
-		const newFavs: Array<(DbCategory | DbResource) & {uri: string}> = [];
+		const newFavs: Array<(Category | Resource) & { uri: string }> = [];
 		const queries = [];
 
 		for (const fav of session.user.favoriteCategories) {
@@ -64,7 +61,7 @@ function Dashboard() {
 	useEffect(() => {
 		if (status !== 'authenticated') return;
 
-		const newRoadmaps: Array<DbRoadmap & { uri: string }> = [];
+		const newRoadmaps: Array<Roadmap & { uri: string }> = [];
 		const queries = [];
 
 		for (const roadmap of session.user.roadmaps) {
@@ -89,9 +86,9 @@ function Dashboard() {
 			<h3 key={favorite.uri}>
 				<Link href={`/library/${favorite.uri}`} className="link">
 
-                    {favorite.name}
+					{favorite.name}
 
-                </Link>
+				</Link>
 			</h3>
 		));
 	}
@@ -107,19 +104,19 @@ function Dashboard() {
 	}
 
 	return (
-        <main>
+		<main>
 			<section className="section1">
 				<h2>{session.user.name ?? session.user.email}</h2>
 				<Image
-                    className={styles.pfp}
-                    src={session.user.image || profile}
-                    alt="User Profile Picture"
-                    width={200}
-                    height={200}
-                    style={{
-                        maxWidth: "100%",
-                        height: "auto"
-                    }} />
+					className={styles.pfp}
+					src={session.user.image || profile}
+					alt="User Profile Picture"
+					width={200}
+					height={200}
+					style={{
+						maxWidth: "100%",
+						height: "auto"
+					}} />
 			</section>
 			<section className="section2">
 				<h2>Roadmaps</h2>
@@ -130,7 +127,7 @@ function Dashboard() {
 				{listFavorites()}
 			</section>
 		</main>
-    );
+	);
 }
 
 export default Dashboard;

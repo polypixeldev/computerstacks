@@ -10,14 +10,13 @@ import SearchStyle from '../styles/Search.module.css';
 
 import SearchIcon from '../public/search.png';
 
-import SearchData from '../interfaces/api/Search';
 import { ChangeEvent, MouseEvent, KeyboardEvent } from 'react';
 
 function Search() {
 	const router = useRouter();
 
 	const [query, setQuery] = useState('');
-	const [results, setResults] = useState<SearchData | "error" | null>(null);
+	const [results, setResults] = useState<any | "error" | null>(null);
 
 	useEffect(() => {
 		if (!router.query.query) return;
@@ -46,21 +45,21 @@ function Search() {
 		router.push(`/search?query=${query}`);
 	}
 
-	function listResults(type: keyof SearchData) {
+	function listResults(type: any) {
 		if (results === null) {
 			return <p>Loading....</p>;
 		} else if (results === 'error') {
 			return <p>There was an error fetching the results.</p>;
 		} else {
 			if (!results) return null;
-			return results[type].map((result) => {
+			return results[type].map((result: any) => {
 				const resultObj: (typeof result & { subcategory?: string, category?: string }) = { ...result };
 
-				if('parent' in resultObj) {
+				if ('parent' in resultObj) {
 					if ('parent' in resultObj.parent) {
 						resultObj.subcategory = resultObj.parent.uri;
 						resultObj.category = resultObj.parent.parent.uri;
-					} else  {
+					} else {
 						resultObj.category = resultObj.parent.uri;
 					}
 				}
@@ -71,7 +70,7 @@ function Search() {
 	}
 
 	return (
-        <main>
+		<main>
 			<section className={HeadStyle.head}>
 				<h2>Search {router.query.query ? 'Results' : null}</h2>
 				<div className={SearchStyle.searchBar}>
@@ -87,16 +86,16 @@ function Search() {
 					<div>
 						<div>
 							<Image
-                                onClick={handleSearch}
-                                height={36}
-                                width={36}
-                                src={SearchIcon}
-                                alt="search"
-                                className="searchIcon"
-                                style={{
-                                    maxWidth: "100%",
-                                    height: "auto"
-                                }} />
+								onClick={handleSearch}
+								height={36}
+								width={36}
+								src={SearchIcon}
+								alt="search"
+								className="searchIcon"
+								style={{
+									maxWidth: "100%",
+									height: "auto"
+								}} />
 						</div>
 					</div>
 				</div>
@@ -115,7 +114,7 @@ function Search() {
 				<div className={SearchStyle.results}>{listResults('category')}</div>
 			</section>
 		</main>
-    );
+	);
 }
 
 export default Search;
