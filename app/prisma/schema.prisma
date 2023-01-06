@@ -70,6 +70,7 @@ model Category {
   resourceChildren Resource[]
 
   @@index([parentId])
+  @@fulltext([name, description])
 }
 
 model Resource {
@@ -86,6 +87,7 @@ model Resource {
   comments    ResourceComment[]
 
   @@index([parentId])
+  @@fulltext([name, description, author])
 }
 
 model Roadmap {
@@ -96,6 +98,8 @@ model Roadmap {
   image       String           @db.Text
   users       User[]
   comments    RoadmapComment[]
+
+  @@fulltext([name, description])
 }
 
 model Event {

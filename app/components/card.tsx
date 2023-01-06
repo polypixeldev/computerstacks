@@ -19,7 +19,7 @@ interface CardProps {
 	roadmap?: boolean,
 	category?: boolean,
 	resource?: boolean,
-	path: string,
+	path?: string,
 	uri: string,
 	name: string,
 	description: string
@@ -33,6 +33,10 @@ function Card(props: CardProps) {
 	const favoriteCategoryMutation = trpc.user.favoriteCategory.useMutation();
 	const favoriteResourceMutation = trpc.user.favoriteResource.useMutation();
 	const roadmapMutation = trpc.user.roadmap.useMutation();
+
+	const resourceQuery = trpc.library.resource.useQuery({ uri: props.uri }, { enabled: props.resource === true && !props.path });
+	const categoryPathQuery = trpc.library.getFullCategoryPath.useQuery({ uri: props.uri }, { enabled: props.category === true && !props.path });
+	const resourcePathQuery = trpc.library.getFullCategoryPath.useQuery({ uri: resourceQuery.data?.parentId ?? '' }, { enabled: !!resourceQuery.data });
 
 	useEffect(() => {
 		if (status !== 'authenticated') return;
@@ -108,13 +112,15 @@ function Card(props: CardProps) {
 		}
 	}
 
+	const path = props.path ? props.path : props.resource ? `${resourcePathQuery.data?.join('/')}/${props.uri}` : categoryPathQuery.data?.join('/');
+
 	return (
 		<div className={CardStyle.card}>
 			<Link
 				href={
 					props.roadmap
 						? `/roadmaps/${props.uri}`
-						: `/library/${props.uri}`
+						: `/library/${path}`
 				}
 				className="link">
 
@@ -141,7 +147,7 @@ function Card(props: CardProps) {
 							href={
 								props.roadmap
 									? `/roadmaps/${props.uri}`
-									: `/library/${props.uri}`
+									: `/library/${path}`
 							}
 							name={props.name}
 							toggle={handleShare}

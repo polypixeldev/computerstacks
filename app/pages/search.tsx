@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 
 import Card from '../components/card';
+import { trpc } from '../util/trpc';
 
 import HeadStyle from '../styles/Head.module.css';
 import SearchStyle from '../styles/Search.module.css';
@@ -16,19 +17,12 @@ function Search() {
 	const router = useRouter();
 
 	const [query, setQuery] = useState('');
-	const [results, setResults] = useState<any | "error" | null>(null);
+
+	const searchQuery = trpc.search.useQuery({ query: typeof router.query.query === 'string' ? router.query.query : '' }, { enabled: !!router.query.query });
 
 	useEffect(() => {
 		if (!router.query.query) return;
-		const SEARCH_URL = `/api/search`;
-		axios
-			.get(SEARCH_URL, { params: { query: router.query.query } })
-			.then((res) => {
-				setResults(res.data);
-			})
-			.catch(() => {
-				setResults('error');
-			});
+		searchQuery.refetch();
 	}, [router.query.query]);
 
 	function handleChange(event: ChangeEvent<HTMLInputElement>) {
@@ -45,26 +39,29 @@ function Search() {
 		router.push(`/search?query=${query}`);
 	}
 
-	function listResults(type: any) {
-		if (results === null) {
+	function listResults(type: 'resource' | 'category' | 'roadmap') {
+		if (!searchQuery.data) {
 			return <p>Loading....</p>;
-		} else if (results === 'error') {
+		} else if (searchQuery.isError) {
 			return <p>There was an error fetching the results.</p>;
 		} else {
-			if (!results) return null;
-			return results[type].map((result: any) => {
-				const resultObj: (typeof result & { subcategory?: string, category?: string }) = { ...result };
+			console.log(searchQuery.data);
+			return searchQuery.data[type]?.map((result) => {
+				const isResource = type === 'resource';
+				const isCategory = type === 'category';
+				const isRoadmap = type === 'roadmap';
 
-				if ('parent' in resultObj) {
-					if ('parent' in resultObj.parent) {
-						resultObj.subcategory = resultObj.parent.uri;
-						resultObj.category = resultObj.parent.parent.uri;
-					} else {
-						resultObj.category = resultObj.parent.uri;
-					}
-				}
 
-				return <Card key={result.name} {...resultObj} />;
+
+				return <Card
+					key={result.name}
+					uri={result.uri}
+					name={result.name}
+					description={result.description}
+					resource={isResource}
+					category={isCategory}
+					roadmap={isRoadmap}
+				/>;
 			});
 		}
 	}
@@ -109,7 +106,7 @@ function Search() {
 				<hr />
 				<div className={SearchStyle.results}>{listResults('roadmap')}</div>
 				<br />
-				<h3>Categories &amp; Subcategories</h3>
+				<h3>Categories</h3>
 				<hr />
 				<div className={SearchStyle.results}>{listResults('category')}</div>
 			</section>
