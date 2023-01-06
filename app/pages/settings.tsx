@@ -1,29 +1,36 @@
-import axios from 'axios';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { signOut } from 'next-auth/react';
+
+import { trpc } from '../util/trpc';
 
 import HeadStyles from '../styles/Head.module.css';
 import SettingsStyles from '../styles/Settings.module.css';
 
 function Settings() {
 	const [modal, setModal] = useState(false);
+	const [runExport, setRunExport] = useState(false);
 	const router = useRouter();
 
-	async function handleDataExport() {
-		const DATA_EXPORT_URL = `/api/data/export`;
-		const data = await axios.get(DATA_EXPORT_URL);
+	const exportQuery = trpc.data.export.useQuery(undefined, {
+		enabled: runExport
+	});
 
-		if (!data?.data) {
-			return alert(`No data was fetched`);
+	const deleteMutation = trpc.data.delete.useMutation();
+
+	useEffect(() => {
+		if (exportQuery.data && runExport) {
+			alert(`Your data is: ${JSON.stringify(exportQuery.data)}`);
+			setRunExport(false);
 		}
+	}, [exportQuery.data, runExport]);
 
-		alert(`Your data is: ${JSON.stringify(data.data)}`);
+	async function handleDataExport() {
+		setRunExport(true);
 	}
 
 	async function handleDataDelete() {
-		const DATA_DELETE_URL = `/api/data/delete`;
-		await axios.post(DATA_DELETE_URL);
+		await deleteMutation.mutateAsync();
 
 		await signOut({ redirect: false });
 

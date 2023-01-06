@@ -50,20 +50,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 		callbacks: {
 			async jwt({ token, user, isNewUser }) {
 				if (user) {
-					token._id = user.id;
+					token.id = user.id;
 				}
 
 				if (isNewUser && user) {
-					await prisma.user.update({
-						where: {
-							id: user.id,
-						},
-						data: {
-							favorites: [],
-							roadmaps: [],
-						},
-					});
-
 					if (!user.email) {
 						await prisma.user.update({
 							where: {
@@ -81,11 +71,24 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 			async session({ session, token }) {
 				const dbUser = await prisma.user.findUnique({
 					where: {
-						id: token._id,
+						id: token.id,
 					},
 					select: {
-						favorites: true,
-						roadmaps: true,
+						favoriteCategories: {
+							select: {
+								uri: true
+							}
+						},
+						favoriteResources: {
+							select: {
+								uri: true
+							}
+						},
+						roadmaps: {
+							select: {
+								uri: true
+							}
+						},
 					},
 				});
 
@@ -93,9 +96,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 					throw new Error("Unable to fetch session user document");
 				}
 
-				session.user._id = token._id;
-				session.user.favorites = dbUser.favorites;
-				session.user.roadmaps = dbUser.roadmaps;
+				session.user.id = token.id;
+				session.user.favoriteCategories = dbUser.favoriteCategories.map((category) => category.uri);
+				session.user.favoriteResources = dbUser.favoriteResources.map((resource) => resource.uri);
+				session.user.roadmaps = dbUser.roadmaps.map((roadmap) => roadmap.uri);
 
 				return session;
 			},

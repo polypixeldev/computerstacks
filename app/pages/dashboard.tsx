@@ -1,25 +1,16 @@
-import axios from 'axios';
 import Link from 'next/link';
 import Image from "next/image";
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 
 import Loading from '../components/loading';
+import { trpc } from '../util/trpc';
 
 import styles from '../styles/Dashboard.module.css';
 
 import profile from '../public/profile.png';
 
-import { DbCategory } from '../interfaces/db/Category';
-import { DbSubcategory } from '../interfaces/db/Subcategory';
-import { DbResource } from '../interfaces/db/Resource';
-import { DbRoadmap } from '../interfaces/db/Roadmap';
-
 function Dashboard() {
-	const [favorites, setFavorites] = useState<Array<(DbCategory | DbSubcategory | DbResource) & {uri: string}>>([]);
-	const [roadmaps, setRoadmaps] = useState<Array<DbRoadmap & { uri: string }>>([]);
-
 	const router = useRouter();
 	const { data: session, status } = useSession({
 		required: true,
@@ -28,104 +19,97 @@ function Dashboard() {
 		},
 	});
 
-	useEffect(() => {
-		if (status !== 'authenticated') return;
-
-		const newFavs: Array<(DbCategory | DbSubcategory | DbResource) & {uri: string}> = [];
-		const queries = [];
-
-		for (const fav of session.user.favorites) {
-			const split = fav.split('/');
-			const type =
-				split.length === 1
-					? 'category'
-					: split.length === 2
-					? 'subcategory'
-					: 'resource';
-			const uri = split[split.length - 1];
-
-			queries.push(
-				axios.get(`/api/library/${type}?uri=${uri}`).then((res) => {
-					newFavs.push({ ...res.data, uri: fav });
-				})
-			);
-		}
-
-		Promise.all(queries).then(() => {
-			setFavorites(newFavs);
-		});
-	}, [status, session?.user.favorites]);
-
-	useEffect(() => {
-		if (status !== 'authenticated') return;
-
-		const newRoadmaps: Array<DbRoadmap & { uri: string }> = [];
-		const queries = [];
-
-		for (const roadmap of session.user.roadmaps) {
-			const uri = roadmap;
-
-			queries.push(
-				axios.get(`/api/roadmaps/roadmap?uri=${uri}`).then((res) => {
-					newRoadmaps.push({ ...res.data, uri: roadmap });
-				})
-			);
-		}
-
-		Promise.all(queries).then(() => {
-			setRoadmaps(newRoadmaps);
-		});
-	}, [status, session?.user.roadmaps]);
-
 	if (status === 'loading') return <Loading />;
 
-	function listFavorites() {
-		return favorites.map((favorite) => (
-			<h3 key={favorite.uri}>
-				<Link href={`/library/${favorite.uri}`} className="link">
+	function listFavoriteResources() {
+		return session?.user.favoriteResources.map((uri) => (
+			<FavoriteResource key={uri} uri={uri} />
+		));
+	}
 
-                    {favorite.name}
-
-                </Link>
-			</h3>
+	function listFavoriteCategories() {
+		return session?.user.favoriteCategories.map((uri) => (
+			<FavoriteCategory key={uri} uri={uri} />
 		));
 	}
 
 	function listRoadmaps() {
-		return roadmaps.map((roadmap) => (
-			<h3 key={roadmap.uri}>
-				<Link href={`/roadmaps/${roadmap.uri}`} className="link">
-					{roadmap.name}
-				</Link>
-			</h3>
+		return session?.user.roadmaps.map((uri) => (
+			<Roadmap key={uri} uri={uri} />
 		));
 	}
 
 	return (
-        <main>
+		<main>
 			<section className="section1">
 				<h2>{session.user.name ?? session.user.email}</h2>
 				<Image
-                    className={styles.pfp}
-                    src={session.user.image || profile}
-                    alt="User Profile Picture"
-                    width={200}
-                    height={200}
-                    style={{
-                        maxWidth: "100%",
-                        height: "auto"
-                    }} />
+					className={styles.pfp}
+					src={session.user.image || profile}
+					alt="User Profile Picture"
+					width={200}
+					height={200}
+					style={{
+						maxWidth: "100%",
+						height: "auto"
+					}} />
 			</section>
 			<section className="section2">
 				<h2>Roadmaps</h2>
 				{listRoadmaps()}
 			</section>
 			<section className="section3">
-				<h2>Favorites</h2>
-				{listFavorites()}
+				<h2>Favorite Categories</h2>
+				{listFavoriteCategories()}
+				<h2>Favorite Resources</h2>
+				{listFavoriteResources()}
 			</section>
 		</main>
-    );
+	);
+}
+
+function FavoriteResource(props: { uri: string }) {
+	const resourceQuery = trpc.library.resource.useQuery({ uri: props.uri });
+	const fullPathQuery = trpc.library.getFullCategoryPath.useQuery({ uri: resourceQuery.data?.parentId ?? '' }, { enabled: !!resourceQuery.data });
+
+	if (!resourceQuery.data || !fullPathQuery.data) return null;
+
+	return (
+		<p>
+			<Link href={`/library/${fullPathQuery.data.join('/')}/${props.uri}`} className="link">
+				{resourceQuery.data.name}
+			</Link>
+		</p>
+	);
+}
+
+function FavoriteCategory(props: { uri: string }) {
+	const categoryQuery = trpc.library.category.useQuery({ uri: props.uri });
+	const fullPathQuery = trpc.library.getFullCategoryPath.useQuery({ uri: props.uri });
+
+	if (!categoryQuery.data || !fullPathQuery.data) return null;
+
+	return (
+		<p>
+			<Link href={`/library/${fullPathQuery.data.join('/')}`} className="link">
+				{categoryQuery.data.name}
+			</Link>
+		</p>
+	);
+}
+
+function Roadmap(props: { uri: string }) {
+	const roadmapQuery = trpc.roadmaps.roadmap.useQuery({ uri: props.uri });
+
+	if (!roadmapQuery.data) return null;
+
+	return (
+		<p>
+			<Link href={`/roadmaps/${props.uri}`} className="link">
+				{roadmapQuery.data.name}
+			</Link>
+		</p>
+	);
 }
 
 export default Dashboard;

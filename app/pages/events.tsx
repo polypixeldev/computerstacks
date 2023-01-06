@@ -1,21 +1,18 @@
 import prettyMs from 'pretty-ms';
+import { createProxySSGHelpers } from '@trpc/react-query/ssg';
+import superjson from 'superjson'
 
 import HeadStyles from '../styles/Head.module.css';
 import HomeStyles from '../styles/Home.module.css';
 
-import eventsFetch from '../functions/eventsFetch';
+import { appRouter } from '../server/routers/_app';
+import { trpc } from '../util/trpc';
 
-import Event from '../interfaces/db/Event';
+function Events() {
+	const fetchQuery = trpc.events.fetch.useQuery();
 
-interface EventsProps {
-	data: {
-		events: Event[]
-	}
-}
-
-function Events(props: EventsProps) {
 	function listEvents(rel: string) {
-		const events = props.data?.events.filter((event) => {
+		const events = fetchQuery.data?.events.filter((event) => {
 			const eventDate = new Date(event.date).getTime();
 			const now = Date.now();
 			return rel === 'current'
@@ -66,13 +63,22 @@ function Events(props: EventsProps) {
 }
 
 async function getStaticProps() {
-	const res = { revalidate: 43200, props: { data: {}, error: false } };
+	const ssg = await createProxySSGHelpers({
+		router: appRouter,
+		ctx: {
+			session: null
+		},
+		transformer: superjson
+	});
 
-	const data = await eventsFetch();
-	if (!data) res.props.error = true;
-	else res.props.data = data;
+	await ssg.events.fetch.prefetch();
 
-	return res;
+	return {
+		revalidate: 86400,
+		props: {
+			trpcState: ssg.dehydrate()
+		}
+	};
 }
 
 export { getStaticProps };

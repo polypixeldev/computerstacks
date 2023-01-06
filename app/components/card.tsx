@@ -1,10 +1,10 @@
-import axios from 'axios';
 import Link from 'next/link';
 import Image from "next/image";
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 
 import Share from './share';
+import { trpc } from '../util/trpc';
 
 import CardStyle from '../styles/Card.module.css';
 import HeadStyle from '../styles/Head.module.css';
@@ -17,9 +17,10 @@ interface CardProps {
 	key: string,
 	noFavorite?: boolean,
 	roadmap?: boolean,
+	category?: boolean,
+	resource?: boolean,
+	path?: string,
 	uri: string,
-	category?: string,
-	subcategory?: string,
 	name: string,
 	description: string
 };
@@ -28,6 +29,14 @@ function Card(props: CardProps) {
 	const [isFavorite, setIsFavorite] = useState(false);
 	const [isShare, setIsShare] = useState(false);
 	const { data: session, status } = useSession();
+
+	const favoriteCategoryMutation = trpc.user.favoriteCategory.useMutation();
+	const favoriteResourceMutation = trpc.user.favoriteResource.useMutation();
+	const roadmapMutation = trpc.user.roadmap.useMutation();
+
+	const resourceQuery = trpc.library.resource.useQuery({ uri: props.uri }, { enabled: props.resource === true && !props.path });
+	const categoryPathQuery = trpc.library.getFullCategoryPath.useQuery({ uri: props.uri }, { enabled: props.category === true && !props.path });
+	const resourcePathQuery = trpc.library.getFullCategoryPath.useQuery({ uri: resourceQuery.data?.parentId ?? '' }, { enabled: !!resourceQuery.data });
 
 	useEffect(() => {
 		if (status !== 'authenticated') return;
@@ -38,14 +47,12 @@ function Card(props: CardProps) {
 			if (session.user.roadmaps.includes(props.uri)) {
 				setIsFavorite(true);
 			}
+		} else if (props.category === true) {
+			if (session.user.favoriteCategories.includes(props.uri)) {
+				setIsFavorite(true);
+			}
 		} else {
-			if (
-				session.user.favorites.includes(
-					`${props.category ? `${props.category}/` : ''}${
-						props.subcategory ? `${props.subcategory}/` : ''
-					}${props.uri}`
-				)
-			) {
+			if (session.user.favoriteResources.includes(props.uri)) {
 				setIsFavorite(true);
 			}
 		}
@@ -53,7 +60,6 @@ function Card(props: CardProps) {
 		session?.user,
 		status,
 		props.category,
-		props.subcategory,
 		props.uri,
 		props.roadmap,
 		props.noFavorite,
@@ -66,48 +72,34 @@ function Card(props: CardProps) {
 		}
 
 		if (props.roadmap === true) {
-			const ROADMAP_URL = `/api/user/roadmap`;
-
 			if (isFavorite) {
-				axios
-					.post(ROADMAP_URL, {
-						uri: props.uri,
-					})
-					.then(() => {
-						setIsFavorite(false);
-					});
+				roadmapMutation.mutateAsync({ uri: props.uri }).then(() => {
+					setIsFavorite(false);
+				});
 			} else {
-				axios
-					.post(ROADMAP_URL, {
-						uri: props.uri,
-					})
-					.then(() => {
-						setIsFavorite(true);
-					});
+				roadmapMutation.mutateAsync({ uri: props.uri }).then(() => {
+					setIsFavorite(true);
+				});
+			}
+		} else if (props.category == true) {
+			if (isFavorite) {
+				favoriteCategoryMutation.mutateAsync({ uri: props.uri }).then(() => {
+					setIsFavorite(false);
+				});
+			} else {
+				favoriteCategoryMutation.mutateAsync({ uri: props.uri }).then(() => {
+					setIsFavorite(true);
+				});
 			}
 		} else {
-			const FAVORITE_URL = `/api/user/favorite`;
-
 			if (isFavorite) {
-				axios
-					.post(FAVORITE_URL, {
-						uri: `${props.category ? `${props.category}/` : ''}${
-							props.subcategory ? `${props.subcategory}/` : ''
-						}${props.uri}`,
-					})
-					.then(() => {
-						setIsFavorite(false);
-					});
+				favoriteResourceMutation.mutateAsync({ uri: props.uri }).then(() => {
+					setIsFavorite(false);
+				});
 			} else {
-				axios
-					.post(FAVORITE_URL, {
-						uri: `${props.category ? `${props.category}/` : ''}${
-							props.subcategory ? `${props.subcategory}/` : ''
-						}${props.uri}`,
-					})
-					.then(() => {
-						setIsFavorite(true);
-					});
+				favoriteResourceMutation.mutateAsync({ uri: props.uri }).then(() => {
+					setIsFavorite(true);
+				});
 			}
 		}
 	}
@@ -120,44 +112,42 @@ function Card(props: CardProps) {
 		}
 	}
 
+	const path = props.path ? props.path : props.resource ? `${resourcePathQuery.data?.join('/')}/${props.uri}` : categoryPathQuery.data?.join('/');
+
 	return (
-        <div className={CardStyle.card}>
+		<div className={CardStyle.card}>
 			<Link
-                href={
+				href={
 					props.roadmap
 						? `/roadmaps/${props.uri}`
-						: `/library/${props.category ? `${props.category}/` : ''}${
-								props.subcategory ? `${props.subcategory}/` : ''
-						  }${props.uri}`
+						: `/library/${path}`
 				}
-                className="link">
+				className="link">
 
-                <div>
-                    <p className={CardStyle.name}>{props.name}</p>
-                    <p className={CardStyle.desc}>{props.description}</p>
-                </div>
+				<div>
+					<p className={CardStyle.name}>{props.name}</p>
+					<p className={CardStyle.desc}>{props.description}</p>
+				</div>
 
-            </Link>
+			</Link>
 			<div className={`${HeadStyle.actionDiv} ${CardStyle.side}`}>
 				<div style={{ position: 'relative' }}>
 					<Image
-                        onClick={handleShare}
-                        src={shareIcon}
-                        alt="Share Icon"
-                        width={50}
-                        height={50}
-                        style={{
-                            maxWidth: "100%",
-                            height: "auto"
-                        }} />
+						onClick={handleShare}
+						src={shareIcon}
+						alt="Share Icon"
+						width={50}
+						height={50}
+						style={{
+							maxWidth: "100%",
+							height: "auto"
+						}} />
 					{isShare ? (
 						<Share
 							href={
 								props.roadmap
 									? `/roadmaps/${props.uri}`
-									: `/library/${props.category ? `${props.category}/` : ''}${
-											props.subcategory ? `${props.subcategory}/` : ''
-									  }${props.uri}`
+									: `/library/${path}`
 							}
 							name={props.name}
 							toggle={handleShare}
@@ -165,18 +155,18 @@ function Card(props: CardProps) {
 					) : null}
 				</div>
 				<Image
-                    onClick={handleFavorite}
-                    src={isFavorite ? favorite : notfavorite}
-                    alt="Favorite button"
-                    width={75}
-                    height={75}
-                    style={{
-                        maxWidth: "100%",
-                        height: "auto"
-                    }} />
+					onClick={handleFavorite}
+					src={isFavorite ? favorite : notfavorite}
+					alt="Favorite button"
+					width={75}
+					height={75}
+					style={{
+						maxWidth: "100%",
+						height: "auto"
+					}} />
 			</div>
 		</div>
-    );
+	);
 }
 
 export default Card;

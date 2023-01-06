@@ -1,24 +1,21 @@
+import { createProxySSGHelpers } from '@trpc/react-query/ssg';
+import superjson from 'superjson';
+
 import Card from '../components/card';
+import { appRouter } from '../server/routers/_app';
+import { trpc } from '../util/trpc';
+import { intoLevels } from '../util/intoLevels';
 
 import HeadStyle from '../styles/Head.module.css';
 
-import libraryMeta from '../functions/libraryMeta';
+function Library() {
+	const metaQuery = trpc.library.meta.useQuery();
+	const categoriesQuery = trpc.library.rootCategories.useQuery();
 
-import LibraryMeta from '../interfaces/api/LibraryMeta';
-
-interface LibraryProps {
-	data: LibraryMeta,
-	error: boolean
-}
-
-function Library(props: LibraryProps) {
 	function getLevel(level: number) {
-		if (props.error) {
-			return <code>ERROR</code>;
-		}
-
-		return props.data.subjects[level].map((subject) => (
-			<Card {...subject} key={subject.uri} />
+		const categoryLevels = intoLevels(categoriesQuery.data ?? []);
+		return categoryLevels[level].map((subject) => (
+			<Card {...subject} path={subject.uri} key={subject.uri} />
 		));
 	}
 
@@ -27,7 +24,7 @@ function Library(props: LibraryProps) {
 			<section className={HeadStyle.head} id="head">
 				<h2>Resource Library</h2>
 				<p>
-					Browse {props.data.numResources} resources in {props.data.numSubjects}{' '}
+					Browse {metaQuery.data?.numResources} resources in {metaQuery.data?.numCategories}{' '}
 					subjects
 				</p>
 			</section>
@@ -39,13 +36,23 @@ function Library(props: LibraryProps) {
 }
 
 async function getStaticProps() {
-	const res = { revalidate: 43200, props: { data: {}, error: false } };
+	const ssg = await createProxySSGHelpers({
+		router: appRouter,
+		ctx: {
+			session: null
+		},
+		transformer: superjson
+	});
 
-	const data = await libraryMeta();
-	if (!data) res.props.error = true;
-	else res.props.data = data;
+	await ssg.library.meta.prefetch();
+	await ssg.library.rootCategories.prefetch();
 
-	return res;
+	return {
+		revalidate: 86400,
+		props: {
+			trpcState: ssg.dehydrate()
+		}
+	};
 }
 
 export { getStaticProps };

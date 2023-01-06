@@ -2,25 +2,22 @@ import Link from 'next/link';
 import Image from "next/image";
 import LegacyImage from "next/legacy/image";
 import prettyMs from 'pretty-ms';
+import { createProxySSGHelpers } from '@trpc/react-query/ssg';
+import superjson from 'superjson';
 
 import styles from '../styles/Home.module.css';
 
 import Background from '../public/tech.png';
 import Icons from '../public/icons.png';
 
-import eventsFetch from '../functions/eventsFetch';
+import { trpc } from '../util/trpc';
+import { appRouter } from '../server/routers/_app';
 
-import Event from '../interfaces/db/Event';
+function Home() {
+	const fetchQuery = trpc.events.fetch.useQuery();
 
-interface HomeProps {
-	data: {
-		events: Event[]
-	}
-}
-
-function Home(props: HomeProps) {
 	function listEvents() {
-		const events = props.data?.events.filter((event) => {
+		const events = fetchQuery.data?.events.filter((event) => {
 			const eventDate = new Date(event.date).getTime();
 			const now = Date.now();
 			return now >= eventDate && now <= eventDate + event.duration;
@@ -29,7 +26,7 @@ function Home(props: HomeProps) {
 		if (!events || events?.length === 0)
 			return (
 				<div>
-					<p>No upcoming events right now... Check back later!</p>
+					<p>No events right now... Check back later!</p>
 				</div>
 			);
 
@@ -125,14 +122,22 @@ function Home(props: HomeProps) {
 }
 
 async function getStaticProps() {
-	const res = { revalidate: 43200, props: { data: {}, error: false } };
+	const ssg = await createProxySSGHelpers({
+		router: appRouter,
+		ctx: {
+			session: null
+		},
+		transformer: superjson
+	});
 
-	const data = await eventsFetch();
+	await ssg.events.fetch.prefetch();
 
-	if (!data) res.props.error = true;
-	else res.props.data = data;
-
-	return res;
+	return {
+		revalidate: 86400,
+		props: {
+			trpcState: ssg.dehydrate()
+		}
+	};
 }
 
 export { getStaticProps };

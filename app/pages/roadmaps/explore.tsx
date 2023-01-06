@@ -1,18 +1,24 @@
+import { createProxySSGHelpers } from '@trpc/react-query/ssg';
+import superjson from 'superjson';
+
 import Card from '../../components/card';
+import { appRouter } from '../../server/routers/_app';
+import { trpc } from '../../util/trpc';
+import { intoLevels } from '../../util/intoLevels';
 
 import HeadStyles from '../../styles/Head.module.css';
 
-import roadmapsMeta from '../../functions/roadmapsMeta';
+function Explore() {
+	const roadmapsMetaQuery = trpc.roadmaps.meta.useQuery();
 
-import RoadmapsMeta from '../../interfaces/api/RoadmapsMeta';
-
-interface ExploreProps {
-	data: RoadmapsMeta 
-}
-
-function Explore(props: ExploreProps) {
 	function getLevel(level: number) {
-		return props.data.roadmaps[level].map((item) => (
+		const roadmaps = roadmapsMetaQuery.data?.roadmaps;
+
+		if (!roadmaps) return [];
+
+		const roadmapLevels = intoLevels(roadmaps);
+
+		return roadmapLevels[level]?.map((item) => (
 			<Card {...item} key={item.uri} roadmap={true} />
 		));
 	}
@@ -21,7 +27,7 @@ function Explore(props: ExploreProps) {
 		<main>
 			<section className={HeadStyles.head}>
 				<h2>Explore Roadmaps</h2>
-				<p>Explore {props.data.numRoadmaps} roadmaps to get started!</p>
+				<p>Explore {roadmapsMetaQuery.data?.numRoadmaps} roadmaps to get started!</p>
 			</section>
 			<section className="section1">{getLevel(0)}</section>
 			<section className="section2">{getLevel(1)}</section>
@@ -31,14 +37,22 @@ function Explore(props: ExploreProps) {
 }
 
 async function getStaticProps() {
-	const res = { revalidate: 43200, props: { data: {}, error: false } };
+	const ssg = await createProxySSGHelpers({
+		router: appRouter,
+		ctx: {
+			session: null
+		},
+		transformer: superjson
+	});
 
-	const data = await roadmapsMeta();
+	await ssg.roadmaps.meta.prefetch();
 
-	if (!data) res.props.error = true;
-	else res.props.data = data;
-
-	return res;
+	return {
+		revalidate: 86400,
+		props: {
+			trpcState: ssg.dehydrate()
+		}
+	};
 }
 
 export { getStaticProps };
