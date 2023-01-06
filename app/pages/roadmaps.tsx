@@ -4,7 +4,7 @@ import HeadStyles from '../styles/Head.module.css';
 
 function Roadmaps() {
 	return (
-        <main>
+		<main>
 			<section className={HeadStyles.head}>
 				<h2>Roadmaps</h2>
 				<p>Your new helper for learning what you need to learn</p>
@@ -24,9 +24,7 @@ function Roadmaps() {
 				<p>
 					Browse our collection of roadmaps from{' '}
 					<Link href="https://roadmap.sh" className="link" target="_blank">
-						
-							roadmap.sh
-						
+						roadmap.sh
 					</Link>{' '}
 					by clicking the button below.
 				</p>
@@ -37,7 +35,7 @@ function Roadmaps() {
 				</button>
 			</section>
 		</main>
-    );
+	);
 }
 
 export default Roadmaps;

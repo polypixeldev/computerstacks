@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import Image from "next/image";
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 
@@ -34,9 +34,7 @@ function Dashboard() {
 	}
 
 	function listRoadmaps() {
-		return session?.user.roadmaps.map((uri) => (
-			<Roadmap key={uri} uri={uri} />
-		));
+		return session?.user.roadmaps.map((uri) => <Roadmap key={uri} uri={uri} />);
 	}
 
 	return (
@@ -50,9 +48,10 @@ function Dashboard() {
 					width={200}
 					height={200}
 					style={{
-						maxWidth: "100%",
-						height: "auto"
-					}} />
+						maxWidth: '100%',
+						height: 'auto',
+					}}
+				/>
 			</section>
 			<section className="section2">
 				<h2>Roadmaps</h2>
@@ -70,13 +69,19 @@ function Dashboard() {
 
 function FavoriteResource(props: { uri: string }) {
 	const resourceQuery = trpc.library.resource.useQuery({ uri: props.uri });
-	const fullPathQuery = trpc.library.getFullCategoryPath.useQuery({ uri: resourceQuery.data?.parentId ?? '' }, { enabled: !!resourceQuery.data });
+	const fullPathQuery = trpc.library.getFullCategoryPath.useQuery(
+		{ uri: resourceQuery.data?.parentId ?? '' },
+		{ enabled: !!resourceQuery.data }
+	);
 
 	if (!resourceQuery.data || !fullPathQuery.data) return null;
 
 	return (
 		<p>
-			<Link href={`/library/${fullPathQuery.data.join('/')}/${props.uri}`} className="link">
+			<Link
+				href={`/library/${fullPathQuery.data.join('/')}/${props.uri}`}
+				className="link"
+			>
 				{resourceQuery.data.name}
 			</Link>
 		</p>
@@ -85,7 +90,9 @@ function FavoriteResource(props: { uri: string }) {
 
 function FavoriteCategory(props: { uri: string }) {
 	const categoryQuery = trpc.library.category.useQuery({ uri: props.uri });
-	const fullPathQuery = trpc.library.getFullCategoryPath.useQuery({ uri: props.uri });
+	const fullPathQuery = trpc.library.getFullCategoryPath.useQuery({
+		uri: props.uri,
+	});
 
 	if (!categoryQuery.data || !fullPathQuery.data) return null;
 

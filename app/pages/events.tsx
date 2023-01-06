@@ -1,6 +1,6 @@
 import prettyMs from 'pretty-ms';
 import { createProxySSGHelpers } from '@trpc/react-query/ssg';
-import superjson from 'superjson'
+import superjson from 'superjson';
 
 import HeadStyles from '../styles/Head.module.css';
 import HomeStyles from '../styles/Home.module.css';
@@ -66,9 +66,9 @@ async function getStaticProps() {
 	const ssg = await createProxySSGHelpers({
 		router: appRouter,
 		ctx: {
-			session: null
+			session: null,
 		},
-		transformer: superjson
+		transformer: superjson,
 	});
 
 	await ssg.events.fetch.prefetch();
@@ -76,8 +76,8 @@ async function getStaticProps() {
 	return {
 		revalidate: 86400,
 		props: {
-			trpcState: ssg.dehydrate()
-		}
+			trpcState: ssg.dehydrate(),
+		},
 	};
 }
 

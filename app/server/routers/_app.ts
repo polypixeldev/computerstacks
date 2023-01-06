@@ -14,9 +14,11 @@ export const appRouter = router({
 	roadmaps: roadmapsRouter,
 	user: userRouter,
 	search: publicProcedure
-		.input(z.object({
-			query: z.string()
-		}))
+		.input(
+			z.object({
+				query: z.string(),
+			})
+		)
 		.query(async ({ input }) => {
 			const categoryQuery = prisma.category.findMany({
 				where: {
@@ -24,15 +26,15 @@ export const appRouter = router({
 						{
 							name: {
 								search: input.query,
-							}
+							},
 						},
 						{
 							description: {
 								search: input.query,
-							}
+							},
 						},
-					]
-				}
+					],
+				},
 			});
 
 			const resourceQuery = prisma.resource.findMany({
@@ -41,20 +43,20 @@ export const appRouter = router({
 						{
 							name: {
 								search: input.query,
-							}
+							},
 						},
 						{
 							description: {
 								search: input.query,
-							}
+							},
 						},
 						{
 							author: {
 								search: input.query,
-							}
+							},
 						},
-					]
-				}
+					],
+				},
 			});
 
 			const roadmapQuery = prisma.roadmap.findMany({
@@ -63,25 +65,29 @@ export const appRouter = router({
 						{
 							name: {
 								search: input.query,
-							}
+							},
 						},
 						{
 							description: {
 								search: input.query,
-							}
-						}
-					]
-				}
+							},
+						},
+					],
+				},
 			});
 
-			const [category, resource, roadmap] = await Promise.all([categoryQuery, resourceQuery, roadmapQuery]);
+			const [category, resource, roadmap] = await Promise.all([
+				categoryQuery,
+				resourceQuery,
+				roadmapQuery,
+			]);
 
 			return {
 				category,
 				resource,
 				roadmap,
 			};
-		})
+		}),
 });
 
 export type AppRouter = typeof appRouter;

@@ -24,8 +24,8 @@ function Library() {
 			<section className={HeadStyle.head} id="head">
 				<h2>Resource Library</h2>
 				<p>
-					Browse {metaQuery.data?.numResources} resources in {metaQuery.data?.numCategories}{' '}
-					subjects
+					Browse {metaQuery.data?.numResources} resources in{' '}
+					{metaQuery.data?.numCategories} subjects
 				</p>
 			</section>
 			<section className="section1">{getLevel(0)}</section>
@@ -39,9 +39,9 @@ async function getStaticProps() {
 	const ssg = await createProxySSGHelpers({
 		router: appRouter,
 		ctx: {
-			session: null
+			session: null,
 		},
-		transformer: superjson
+		transformer: superjson,
 	});
 
 	await ssg.library.meta.prefetch();
@@ -50,8 +50,8 @@ async function getStaticProps() {
 	return {
 		revalidate: 86400,
 		props: {
-			trpcState: ssg.dehydrate()
-		}
+			trpcState: ssg.dehydrate(),
+		},
 	};
 }
 

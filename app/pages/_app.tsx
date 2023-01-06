@@ -3,7 +3,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import { SessionProvider } from 'next-auth/react';
-import { Zilla_Slab, Open_Sans, Dosis } from '@next/font/google'
+import { Zilla_Slab, Open_Sans, Dosis } from '@next/font/google';
 
 import MenuScreen from '../components/menu';
 import Navbar from '../components/navbar';
@@ -15,21 +15,21 @@ import type { AppProps } from 'next/app';
 import type { Session } from 'next-auth';
 
 type PageProps = {
-	session?: Session
-}
+	session?: Session;
+};
 
 const zillaSlab = Zilla_Slab({
-	weight: "400",
-	subsets: ["latin"],
+	weight: '400',
+	subsets: ['latin'],
 	variable: '--font-zilla-slab',
 });
 const openSans = Open_Sans({
-	subsets: ["latin"],
+	subsets: ['latin'],
 	variable: '--font-open-sans',
 });
 const dosis = Dosis({
-	weight: "300",
-	subsets: ["latin"],
+	weight: '300',
+	subsets: ['latin'],
 	variable: '--font-dosis',
 });
 
@@ -45,7 +45,9 @@ function MyApp({ Component, pageProps }: AppProps<PageProps>) {
 	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 
 	return (
-		<div className={`${zillaSlab.className} ${openSans.className} ${dosis.className}`}>
+		<div
+			className={`${zillaSlab.className} ${openSans.className} ${dosis.className}`}
+		>
 			<SessionProvider session={pageProps.session}>
 				<Head>
 					<title>ComputerStacks</title>
@@ -59,19 +61,24 @@ function MyApp({ Component, pageProps }: AppProps<PageProps>) {
 						<p>
 							<strong>
 								Made by{' '}
-								<Link href="https://github.com/Poly-Pixel" className="link-underline">
+								<Link
+									href="https://github.com/Poly-Pixel"
+									className="link-underline"
+								>
 									Poly-Pixel
 								</Link>
 								,{' '}
 								<Link
 									href="https://github.com/Poly-Pixel/computerstacks/blob/main/LICENSE"
-									className="link-underline">
+									className="link-underline"
+								>
 									licensed under GPL-3.0
 								</Link>
 							</strong>
 						</p>
 						<p>
-							Favicon &ldquo;Computer&rdquo; by Erin Standley from NounProject.com
+							Favicon &ldquo;Computer&rdquo; by Erin Standley from
+							NounProject.com
 						</p>
 					</div>
 					<div>

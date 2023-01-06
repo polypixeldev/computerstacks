@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 
@@ -17,7 +17,10 @@ function Search() {
 
 	const [query, setQuery] = useState('');
 
-	const searchQuery = trpc.search.useQuery({ query: typeof router.query.query === 'string' ? router.query.query : '' }, { enabled: !!router.query.query });
+	const searchQuery = trpc.search.useQuery(
+		{ query: typeof router.query.query === 'string' ? router.query.query : '' },
+		{ enabled: !!router.query.query }
+	);
 
 	useEffect(() => {
 		if (!router.query.query) return;
@@ -50,17 +53,17 @@ function Search() {
 				const isCategory = type === 'category';
 				const isRoadmap = type === 'roadmap';
 
-
-
-				return <Card
-					key={result.name}
-					uri={result.uri}
-					name={result.name}
-					description={result.description}
-					resource={isResource}
-					category={isCategory}
-					roadmap={isRoadmap}
-				/>;
+				return (
+					<Card
+						key={result.name}
+						uri={result.uri}
+						name={result.name}
+						description={result.description}
+						resource={isResource}
+						category={isCategory}
+						roadmap={isRoadmap}
+					/>
+				);
 			});
 		}
 	}
@@ -89,9 +92,10 @@ function Search() {
 								alt="search"
 								className="searchIcon"
 								style={{
-									maxWidth: "100%",
-									height: "auto"
-								}} />
+									maxWidth: '100%',
+									height: 'auto',
+								}}
+							/>
 						</div>
 					</div>
 				</div>

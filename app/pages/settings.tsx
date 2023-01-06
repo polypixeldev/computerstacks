@@ -13,7 +13,7 @@ function Settings() {
 	const router = useRouter();
 
 	const exportQuery = trpc.data.export.useQuery(undefined, {
-		enabled: runExport
+		enabled: runExport,
 	});
 
 	const deleteMutation = trpc.data.delete.useMutation();

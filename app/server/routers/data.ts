@@ -1,4 +1,4 @@
-import { protectedProcedure, router } from "../trpc";
+import { protectedProcedure, router } from '../trpc';
 import prisma from '../../db/prisma';
 
 export const dataRouter = router({
@@ -26,5 +26,5 @@ export const dataRouter = router({
 		});
 
 		return data;
-	})
+	}),
 });

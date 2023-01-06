@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import Image from "next/image";
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 
@@ -17,9 +17,13 @@ import shareIcon from '../public/share.png';
 import type { Category, Resource } from '@prisma/client';
 
 interface CategoryPageProps {
-	fullURI: string,
-	categoryURI: string,
-	data: Category & { categoryChildren: Category[], resourceChildren: Resource[], parent: Category | null }
+	fullURI: string;
+	categoryURI: string;
+	data: Category & {
+		categoryChildren: Category[];
+		resourceChildren: Resource[];
+		parent: Category | null;
+	};
 }
 
 function CategoryPage(props: CategoryPageProps) {
@@ -32,9 +36,7 @@ function CategoryPage(props: CategoryPageProps) {
 	useEffect(() => {
 		if (status !== 'authenticated') return;
 
-		if (
-			session.user.favoriteCategories.includes(props.categoryURI)
-		)
+		if (session.user.favoriteCategories.includes(props.categoryURI))
 			setIsFavorite(true);
 	}, [props, session?.user.favoriteCategories, status]);
 
@@ -116,14 +118,12 @@ function CategoryPage(props: CategoryPageProps) {
 							width={50}
 							height={50}
 							style={{
-								maxWidth: "100%",
-								height: "auto"
-							}} />
+								maxWidth: '100%',
+								height: 'auto',
+							}}
+						/>
 						{isShare ? (
-							<Share
-								name={props.data.name}
-								toggle={handleShare}
-							/>
+							<Share name={props.data.name} toggle={handleShare} />
 						) : null}
 					</div>
 					<Image
@@ -133,9 +133,10 @@ function CategoryPage(props: CategoryPageProps) {
 						width={75}
 						height={75}
 						style={{
-							maxWidth: "100%",
-							height: "auto"
-						}} />
+							maxWidth: '100%',
+							height: 'auto',
+						}}
+					/>
 				</div>
 			</section>
 			<section className="section1">{getLevel(0)}</section>

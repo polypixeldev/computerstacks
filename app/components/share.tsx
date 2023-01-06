@@ -14,10 +14,10 @@ import {
 import ShareStyle from '../styles/Share.module.css';
 
 interface ShareProps {
-	href?: string,
-	name: string,
-	toggle: () => void
-};
+	href?: string;
+	name: string;
+	toggle: () => void;
+}
 
 function Share(props: ShareProps) {
 	let href = props.href;

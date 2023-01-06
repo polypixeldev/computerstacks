@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from 'next/image';
 import { ChangeEvent } from 'react';
 import { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
@@ -26,7 +26,8 @@ function Roadmap() {
 	const router = useRouter();
 	const { data: session, status } = useSession();
 
-	const uri = typeof router.query.roadmap !== 'string' ? '' : router.query.roadmap
+	const uri =
+		typeof router.query.roadmap !== 'string' ? '' : router.query.roadmap;
 
 	const roadmapsQuery = trpc.roadmaps.roadmap.useQuery({ uri });
 	const commentMutation = trpc.roadmaps.comment.useMutation();
@@ -85,7 +86,12 @@ function Roadmap() {
 			return;
 		}
 
-		commentMutation.mutateAsync({ uri: typeof router.query.roadmap !== 'string' ? '' : router.query.roadmap, content: comment })
+		commentMutation
+			.mutateAsync({
+				uri:
+					typeof router.query.roadmap !== 'string' ? '' : router.query.roadmap,
+				content: comment,
+			})
 			.then(reloadComments);
 
 		setComment('');
@@ -101,8 +107,7 @@ function Roadmap() {
 		if (!comments) return null;
 		return comments.map((comment) => (
 			<Comment key={comment.id} data={comment} />
-		)
-		);
+		));
 	}
 
 	function handleShare() {
@@ -127,11 +132,15 @@ function Roadmap() {
 							width={50}
 							height={50}
 							style={{
-								maxWidth: "100%",
-								height: "auto"
-							}} />
+								maxWidth: '100%',
+								height: 'auto',
+							}}
+						/>
 						{isShare ? (
-							<Share name={roadmapsQuery.data?.name ?? ''} toggle={handleShare} />
+							<Share
+								name={roadmapsQuery.data?.name ?? ''}
+								toggle={handleShare}
+							/>
 						) : null}
 					</div>
 					<Image
@@ -141,9 +150,10 @@ function Roadmap() {
 						width={75}
 						height={75}
 						style={{
-							maxWidth: "100%",
-							height: "auto"
-						}} />
+							maxWidth: '100%',
+							height: 'auto',
+						}}
+					/>
 				</div>
 			</section>
 			<section className="section1">
@@ -154,9 +164,10 @@ function Roadmap() {
 					height={1000}
 					alt="The roadmap"
 					style={{
-						maxWidth: "100%",
-						height: "auto"
-					}} />
+						maxWidth: '100%',
+						height: 'auto',
+					}}
+				/>
 			</section>
 			<section className="section2">
 				<h2>Comments</h2>
@@ -168,9 +179,10 @@ function Roadmap() {
 						height={40}
 						alt="Profile picture"
 						style={{
-							maxWidth: "100%",
-							height: "auto"
-						}} />
+							maxWidth: '100%',
+							height: 'auto',
+						}}
+					/>
 					<textarea name="comment" value={comment} onChange={handleChange} />
 					<button onClick={handleComment}>Comment</button>
 				</div>
@@ -181,7 +193,10 @@ function Roadmap() {
 }
 
 async function getStaticPaths() {
-	const res = { paths: new Array<{ params: { roadmap: string } }>(), fallback: true };
+	const res = {
+		paths: new Array<{ params: { roadmap: string } }>(),
+		fallback: true,
+	};
 
 	const caller = appRouter.createCaller({ session: null });
 
@@ -201,7 +216,7 @@ async function getStaticPaths() {
 
 const getStaticProps: GetStaticProps = async ({ params }) => {
 	if (!params) {
-		throw Error("Category page parameters not found");
+		throw Error('Category page parameters not found');
 	}
 
 	if (!params.roadmap || typeof params.roadmap === 'object') {
@@ -211,9 +226,9 @@ const getStaticProps: GetStaticProps = async ({ params }) => {
 	const ssg = await createProxySSGHelpers({
 		router: appRouter,
 		ctx: {
-			session: null
+			session: null,
 		},
-		transformer: superjson
+		transformer: superjson,
 	});
 
 	await ssg.roadmaps.roadmap.prefetch({ uri: params.roadmap });
@@ -221,10 +236,10 @@ const getStaticProps: GetStaticProps = async ({ params }) => {
 	return {
 		revalidate: 86400,
 		props: {
-			trpcState: ssg.dehydrate()
-		}
+			trpcState: ssg.dehydrate(),
+		},
 	};
-}
+};
 
 export { getStaticPaths, getStaticProps };
 

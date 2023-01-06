@@ -5,7 +5,7 @@ function Menu() {
 	const { status } = useSession();
 
 	return (
-        <main>
+		<main>
 			<section className="section1">
 				<h2>
 					<Link href="/" className="link">
@@ -39,12 +39,11 @@ function Menu() {
 				</h2>
 				<h2>
 					<Link
-                        href={status === 'authenticated' ? '/dashboard' : '/login'}
-                        className="link">
-
-                        {status === 'authenticated' ? 'Dashboard' : 'Login'}
-
-                    </Link>
+						href={status === 'authenticated' ? '/dashboard' : '/login'}
+						className="link"
+					>
+						{status === 'authenticated' ? 'Dashboard' : 'Login'}
+					</Link>
 				</h2>
 				{status === 'authenticated' ? null : (
 					<h2>
@@ -65,7 +64,7 @@ function Menu() {
 				) : null}
 			</section>
 		</main>
-    );
+	);
 }
 
 export default Menu;

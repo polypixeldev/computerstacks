@@ -1,6 +1,6 @@
 import NextAuth from 'next-auth';
 import nodemailer from 'nodemailer';
-import { withSentry } from "@sentry/nextjs";
+import { withSentry } from '@sentry/nextjs';
 import EmailProvider from 'next-auth/providers/email';
 import GoogleProvider from 'next-auth/providers/google';
 import GitHubProvider from 'next-auth/providers/github';
@@ -26,16 +26,18 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 			EmailProvider({
 				server: process.env.EMAIL_SERVER,
 				from: process.env.EMAIL_FROM,
-				async sendVerificationRequest({ identifier: email, url}) {
-					const transport = nodemailer.createTransport(process.env.EMAIL_SERVER)
+				async sendVerificationRequest({ identifier: email, url }) {
+					const transport = nodemailer.createTransport(
+						process.env.EMAIL_SERVER
+					);
 					await transport.sendMail({
-					  to: email,
-					  from: process.env.EMAIL_FROM,
-					  subject: `Sign in to ComputerStacks`,
-					  text: 'Sign in to ComputerStacks',
-					  html: html({ url, email }),
-					})
-				}
+						to: email,
+						from: process.env.EMAIL_FROM,
+						subject: `Sign in to ComputerStacks`,
+						text: 'Sign in to ComputerStacks',
+						html: html({ url, email }),
+					});
+				},
 			}),
 		],
 		adapter: adapter,
@@ -44,7 +46,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 		},
 		pages: {
 			signIn: '/login',
-			verifyRequest: '/checkemail'
+			verifyRequest: '/checkemail',
 		},
 		secret: process.env.NEXTAUTH_SECRET,
 		callbacks: {
@@ -76,29 +78,33 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 					select: {
 						favoriteCategories: {
 							select: {
-								uri: true
-							}
+								uri: true,
+							},
 						},
 						favoriteResources: {
 							select: {
-								uri: true
-							}
+								uri: true,
+							},
 						},
 						roadmaps: {
 							select: {
-								uri: true
-							}
+								uri: true,
+							},
 						},
 					},
 				});
 
 				if (!dbUser) {
-					throw new Error("Unable to fetch session user document");
+					throw new Error('Unable to fetch session user document');
 				}
 
 				session.user.id = token.id;
-				session.user.favoriteCategories = dbUser.favoriteCategories.map((category) => category.uri);
-				session.user.favoriteResources = dbUser.favoriteResources.map((resource) => resource.uri);
+				session.user.favoriteCategories = dbUser.favoriteCategories.map(
+					(category) => category.uri
+				);
+				session.user.favoriteResources = dbUser.favoriteResources.map(
+					(resource) => resource.uri
+				);
 				session.user.roadmaps = dbUser.roadmaps.map((roadmap) => roadmap.uri);
 
 				return session;
@@ -108,19 +114,19 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 	});
 }
 
-function html({ url, email }: { url: string, email: string}) {
+function html({ url, email }: { url: string; email: string }) {
 	// Insert invisible space into domains and email address to prevent both the
 	// email address and the domain from being turned into a hyperlink by email
 	// clients like Outlook and Apple mail, as this is confusing because it seems
 	// like they are supposed to click on their email address to sign in.
-	const escapedEmail = `${email.replace(/\./g, "&#8203;.")}`
+	const escapedEmail = `${email.replace(/\./g, '&#8203;.')}`;
 
-	const backgroundColor = "#454554"
-	const textColor = "#ffffff"
-	const mainBackgroundColor = "#4c4c63"
-	const buttonBackgroundColor = "#346df1"
-	const buttonBorderColor = "#346df1"
-	const buttonTextColor = "#ffffff"
+	const backgroundColor = '#454554';
+	const textColor = '#ffffff';
+	const mainBackgroundColor = '#4c4c63';
+	const buttonBackgroundColor = '#346df1';
+	const buttonBorderColor = '#346df1';
+	const buttonTextColor = '#ffffff';
 
 	return `
 		<body style="background: ${backgroundColor};">
@@ -153,7 +159,7 @@ function html({ url, email }: { url: string, email: string}) {
 				</tr>
 			</table>
 		</body>
-	`
+	`;
 }
 
 export default withSentry(handler);

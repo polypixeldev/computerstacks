@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import Image from "next/image";
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 
@@ -23,8 +23,8 @@ import type { Resource } from '@prisma/client';
 interface ResourcePageProps {
 	fullCategoryURI: string[];
 	resourceURI: string;
-	data: Resource
-};
+	data: Resource;
+}
 
 function ResourcePage(props: ResourcePageProps) {
 	const [isFavorite, setIsFavorite] = useState(false);
@@ -34,21 +34,19 @@ function ResourcePage(props: ResourcePageProps) {
 
 	const favoriteMutation = trpc.user.favoriteResource.useMutation();
 	const commentMutation = trpc.library.comment.useMutation();
-	const getCommentsQuery = trpc.library.resourceComments.useQuery({ uri: props.resourceURI });
-	const parentCategoryQuery = trpc.library.category.useQuery({ uri: props.fullCategoryURI[props.fullCategoryURI.length - 1] });
+	const getCommentsQuery = trpc.library.resourceComments.useQuery({
+		uri: props.resourceURI,
+	});
+	const parentCategoryQuery = trpc.library.category.useQuery({
+		uri: props.fullCategoryURI[props.fullCategoryURI.length - 1],
+	});
 
 	useEffect(() => {
 		if (status !== 'authenticated') return;
 
-		if (
-			session.user.favoriteResources.includes(props.resourceURI)
-		)
+		if (session.user.favoriteResources.includes(props.resourceURI))
 			setIsFavorite(true);
-	}, [
-		session?.user.favoriteResources,
-		status,
-		props.resourceURI,
-	]);
+	}, [session?.user.favoriteResources, status, props.resourceURI]);
 
 	function handleFavorite() {
 		if (status !== 'authenticated') {
@@ -81,10 +79,12 @@ function ResourcePage(props: ResourcePageProps) {
 			return;
 		}
 
-		commentMutation.mutateAsync({ uri: props.resourceURI, content: comment }).then(() => {
-			setComment('');
-			getCommentsQuery.refetch();
-		})
+		commentMutation
+			.mutateAsync({ uri: props.resourceURI, content: comment })
+			.then(() => {
+				setComment('');
+				getCommentsQuery.refetch();
+			});
 	}
 
 	function listComments() {
@@ -108,13 +108,17 @@ function ResourcePage(props: ResourcePageProps) {
 				<h3>
 					<Link
 						href={`/library/${props.fullCategoryURI.join('/')}`}
-						className={`link ${styles.subcategory}`}>
+						className={`link ${styles.subcategory}`}
+					>
 						{parentCategoryQuery.data?.name}
 					</Link>
 				</h3>
 				<h2>
-					<Link href={props.data.link} className={`link ${styles.linkA}`} target="_blank">
-
+					<Link
+						href={props.data.link}
+						className={`link ${styles.linkA}`}
+						target="_blank"
+					>
 						{props.data.name}
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
@@ -159,7 +163,6 @@ function ResourcePage(props: ResourcePageProps) {
 								/>
 							</g>
 						</svg>
-
 					</Link>
 				</h2>
 				<p>{props.data.description}</p>
@@ -172,9 +175,10 @@ function ResourcePage(props: ResourcePageProps) {
 							width={50}
 							height={50}
 							style={{
-								maxWidth: "100%",
-								height: "auto"
-							}} />
+								maxWidth: '100%',
+								height: 'auto',
+							}}
+						/>
 						{isShare ? (
 							<Share name={props.data.name} toggle={handleShare} />
 						) : null}
@@ -186,9 +190,10 @@ function ResourcePage(props: ResourcePageProps) {
 						width={75}
 						height={75}
 						style={{
-							maxWidth: "100%",
-							height: "auto"
-						}} />
+							maxWidth: '100%',
+							height: 'auto',
+						}}
+					/>
 				</div>
 			</section>
 			<section className="section1">
@@ -201,9 +206,10 @@ function ResourcePage(props: ResourcePageProps) {
 						height={40}
 						alt="Profile picture"
 						style={{
-							maxWidth: "100%",
-							height: "auto"
-						}} />
+							maxWidth: '100%',
+							height: 'auto',
+						}}
+					/>
 					<textarea name="comment" value={comment} onChange={handleChange} />
 					<button onClick={handleComment}>Comment</button>
 				</div>

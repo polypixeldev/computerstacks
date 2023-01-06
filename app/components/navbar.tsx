@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import Image from "next/image";
+import Image from 'next/image';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
@@ -7,12 +7,18 @@ import { useSession } from 'next-auth/react';
 import OpenMenu from '../public/openMenu.png';
 import CloseMenu from '../public/closeMenu.png';
 
-import { ChangeEvent, MouseEvent, KeyboardEvent, Dispatch, SetStateAction } from 'react';
+import {
+	ChangeEvent,
+	MouseEvent,
+	KeyboardEvent,
+	Dispatch,
+	SetStateAction,
+} from 'react';
 
 interface NavbarProps {
-	menuOpen: boolean,
-	setMenuOpen: Dispatch<SetStateAction<boolean>>
-};
+	menuOpen: boolean;
+	setMenuOpen: Dispatch<SetStateAction<boolean>>;
+}
 
 function Navbar(props: NavbarProps) {
 	const [query, setQuery] = useState('');
@@ -39,17 +45,18 @@ function Navbar(props: NavbarProps) {
 	}
 
 	return (
-        <nav>
+		<nav>
 			<div className="imageWrap" onClick={toggleMenu}>
 				<Image
-                    src={props.menuOpen ? CloseMenu : OpenMenu}
-                    alt="menu button"
-                    fill
-                    sizes="100vw"
-                    style={{
-                        objectFit: "contain",
-                        objectPosition: "25% 50%"
-                    }} />
+					src={props.menuOpen ? CloseMenu : OpenMenu}
+					alt="menu button"
+					fill
+					sizes="100vw"
+					style={{
+						objectFit: 'contain',
+						objectPosition: '25% 50%',
+					}}
+				/>
 			</div>
 			<div className="search">
 				<svg
@@ -70,10 +77,8 @@ function Navbar(props: NavbarProps) {
 				/>
 			</div>
 			<Link href="/" className="link">
-
-                <h1>ComputerStacks</h1>
-
-            </Link>
+				<h1>ComputerStacks</h1>
+			</Link>
 			{status !== 'authenticated' ? (
 				<button
 					className="button-small"
@@ -92,7 +97,7 @@ function Navbar(props: NavbarProps) {
 				</button>
 			)}
 		</nav>
-    );
+	);
 }
 
 export default Navbar;

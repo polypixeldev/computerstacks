@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import Image from "next/image";
-import LegacyImage from "next/legacy/image";
+import Image from 'next/image';
+import LegacyImage from 'next/legacy/image';
 import prettyMs from 'pretty-ms';
 import { createProxySSGHelpers } from '@trpc/react-query/ssg';
 import superjson from 'superjson';
@@ -42,21 +42,23 @@ function Home() {
 	}
 
 	return (
-        <main>
+		<main>
 			<section className="top">
 				<Image
-                    priority={true}
-                    src={Background}
-                    alt="background"
-                    fill
-                    sizes="100vw"
-                    style={{
-                        objectFit: "fill"
-                    }} />
+					priority={true}
+					src={Background}
+					alt="background"
+					fill
+					sizes="100vw"
+					style={{
+						objectFit: 'fill',
+					}}
+				/>
 				<LegacyImage
-                    src={Icons}
-                    alt="Computer Icons"
-                    className={styles.icons} />
+					src={Icons}
+					alt="Computer Icons"
+					className={styles.icons}
+				/>
 				<p className={styles.blurb}>
 					<strong>
 						<em>The universal collection of computer-related resources</em>
@@ -91,12 +93,11 @@ function Home() {
 					<p>
 						Visit the{' '}
 						<Link
-                            href="https://github.com/Poly-Pixel/computerstacks"
-                            className="link-underline"
-                            target="_blank">
-							
-								ComputerStacks GitHub repository
-							
+							href="https://github.com/Poly-Pixel/computerstacks"
+							className="link-underline"
+							target="_blank"
+						>
+							ComputerStacks GitHub repository
 						</Link>{' '}
 						to learn more about the code powering this website
 					</p>
@@ -105,12 +106,11 @@ function Home() {
 					<p>
 						Fill out{' '}
 						<Link
-                            href="https://forms.office.com/r/jbPz5Y5fJW"
-                            className="link-underline"
-                            target="_blank">
-							
-								this quick survey
-							
+							href="https://forms.office.com/r/jbPz5Y5fJW"
+							className="link-underline"
+							target="_blank"
+						>
+							this quick survey
 						</Link>{' '}
 						to help improve ComputerStacks!
 					</p>
@@ -118,16 +118,16 @@ function Home() {
 				{/* Card Carousel? */}
 			</section>
 		</main>
-    );
+	);
 }
 
 async function getStaticProps() {
 	const ssg = await createProxySSGHelpers({
 		router: appRouter,
 		ctx: {
-			session: null
+			session: null,
 		},
-		transformer: superjson
+		transformer: superjson,
 	});
 
 	await ssg.events.fetch.prefetch();
@@ -135,8 +135,8 @@ async function getStaticProps() {
 	return {
 		revalidate: 86400,
 		props: {
-			trpcState: ssg.dehydrate()
-		}
+			trpcState: ssg.dehydrate(),
+		},
 	};
 }
 

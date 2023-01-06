@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import Image from "next/image";
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 
@@ -14,16 +14,16 @@ import notfavorite from '../public/notfavorite.svg';
 import shareIcon from '../public/share.png';
 
 interface CardProps {
-	key: string,
-	noFavorite?: boolean,
-	roadmap?: boolean,
-	category?: boolean,
-	resource?: boolean,
-	path?: string,
-	uri: string,
-	name: string,
-	description: string
-};
+	key: string;
+	noFavorite?: boolean;
+	roadmap?: boolean;
+	category?: boolean;
+	resource?: boolean;
+	path?: string;
+	uri: string;
+	name: string;
+	description: string;
+}
 
 function Card(props: CardProps) {
 	const [isFavorite, setIsFavorite] = useState(false);
@@ -34,9 +34,18 @@ function Card(props: CardProps) {
 	const favoriteResourceMutation = trpc.user.favoriteResource.useMutation();
 	const roadmapMutation = trpc.user.roadmap.useMutation();
 
-	const resourceQuery = trpc.library.resource.useQuery({ uri: props.uri }, { enabled: props.resource === true && !props.path });
-	const categoryPathQuery = trpc.library.getFullCategoryPath.useQuery({ uri: props.uri }, { enabled: props.category === true && !props.path });
-	const resourcePathQuery = trpc.library.getFullCategoryPath.useQuery({ uri: resourceQuery.data?.parentId ?? '' }, { enabled: !!resourceQuery.data });
+	const resourceQuery = trpc.library.resource.useQuery(
+		{ uri: props.uri },
+		{ enabled: props.resource === true && !props.path }
+	);
+	const categoryPathQuery = trpc.library.getFullCategoryPath.useQuery(
+		{ uri: props.uri },
+		{ enabled: props.category === true && !props.path }
+	);
+	const resourcePathQuery = trpc.library.getFullCategoryPath.useQuery(
+		{ uri: resourceQuery.data?.parentId ?? '' },
+		{ enabled: !!resourceQuery.data }
+	);
 
 	useEffect(() => {
 		if (status !== 'authenticated') return;
@@ -112,23 +121,22 @@ function Card(props: CardProps) {
 		}
 	}
 
-	const path = props.path ? props.path : props.resource ? `${resourcePathQuery.data?.join('/')}/${props.uri}` : categoryPathQuery.data?.join('/');
+	const path = props.path
+		? props.path
+		: props.resource
+		? `${resourcePathQuery.data?.join('/')}/${props.uri}`
+		: categoryPathQuery.data?.join('/');
 
 	return (
 		<div className={CardStyle.card}>
 			<Link
-				href={
-					props.roadmap
-						? `/roadmaps/${props.uri}`
-						: `/library/${path}`
-				}
-				className="link">
-
+				href={props.roadmap ? `/roadmaps/${props.uri}` : `/library/${path}`}
+				className="link"
+			>
 				<div>
 					<p className={CardStyle.name}>{props.name}</p>
 					<p className={CardStyle.desc}>{props.description}</p>
 				</div>
-
 			</Link>
 			<div className={`${HeadStyle.actionDiv} ${CardStyle.side}`}>
 				<div style={{ position: 'relative' }}>
@@ -139,15 +147,14 @@ function Card(props: CardProps) {
 						width={50}
 						height={50}
 						style={{
-							maxWidth: "100%",
-							height: "auto"
-						}} />
+							maxWidth: '100%',
+							height: 'auto',
+						}}
+					/>
 					{isShare ? (
 						<Share
 							href={
-								props.roadmap
-									? `/roadmaps/${props.uri}`
-									: `/library/${path}`
+								props.roadmap ? `/roadmaps/${props.uri}` : `/library/${path}`
 							}
 							name={props.name}
 							toggle={handleShare}
@@ -161,9 +168,10 @@ function Card(props: CardProps) {
 					width={75}
 					height={75}
 					style={{
-						maxWidth: "100%",
-						height: "auto"
-					}} />
+						maxWidth: '100%',
+						height: 'auto',
+					}}
+				/>
 			</div>
 		</div>
 	);

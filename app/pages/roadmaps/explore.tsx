@@ -27,7 +27,9 @@ function Explore() {
 		<main>
 			<section className={HeadStyles.head}>
 				<h2>Explore Roadmaps</h2>
-				<p>Explore {roadmapsMetaQuery.data?.numRoadmaps} roadmaps to get started!</p>
+				<p>
+					Explore {roadmapsMetaQuery.data?.numRoadmaps} roadmaps to get started!
+				</p>
 			</section>
 			<section className="section1">{getLevel(0)}</section>
 			<section className="section2">{getLevel(1)}</section>
@@ -40,9 +42,9 @@ async function getStaticProps() {
 	const ssg = await createProxySSGHelpers({
 		router: appRouter,
 		ctx: {
-			session: null
+			session: null,
 		},
-		transformer: superjson
+		transformer: superjson,
 	});
 
 	await ssg.roadmaps.meta.prefetch();
@@ -50,8 +52,8 @@ async function getStaticProps() {
 	return {
 		revalidate: 86400,
 		props: {
-			trpcState: ssg.dehydrate()
-		}
+			trpcState: ssg.dehydrate(),
+		},
 	};
 }
 
