@@ -70,12 +70,13 @@ function Dashboard() {
 
 function FavoriteResource(props: { uri: string }) {
 	const resourceQuery = trpc.library.resource.useQuery({ uri: props.uri });
+	const fullPathQuery = trpc.library.getFullCategoryPath.useQuery({ uri: resourceQuery.data?.parentId ?? '' }, { enabled: !!resourceQuery.data });
 
-	if (!resourceQuery.data) return null;
+	if (!resourceQuery.data || !fullPathQuery.data) return null;
 
 	return (
 		<p>
-			<Link href={`/library/${props.uri}`} className="link">
+			<Link href={`/library/${fullPathQuery.data.join('/')}/${props.uri}`} className="link">
 				{resourceQuery.data.name}
 			</Link>
 		</p>
@@ -84,12 +85,13 @@ function FavoriteResource(props: { uri: string }) {
 
 function FavoriteCategory(props: { uri: string }) {
 	const categoryQuery = trpc.library.category.useQuery({ uri: props.uri });
+	const fullPathQuery = trpc.library.getFullCategoryPath.useQuery({ uri: props.uri });
 
-	if (!categoryQuery.data) return null;
+	if (!categoryQuery.data || !fullPathQuery.data) return null;
 
 	return (
 		<p>
-			<Link href={`/library/${props.uri}`} className="link">
+			<Link href={`/library/${fullPathQuery.data.join('/')}`} className="link">
 				{categoryQuery.data.name}
 			</Link>
 		</p>
@@ -103,7 +105,7 @@ function Roadmap(props: { uri: string }) {
 
 	return (
 		<p>
-			<Link href={`/library/${props.uri}`} className="link">
+			<Link href={`/roadmaps/${props.uri}`} className="link">
 				{roadmapQuery.data.name}
 			</Link>
 		</p>

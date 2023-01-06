@@ -20,6 +20,7 @@ interface CardProps {
 	category?: boolean,
 	resource?: boolean,
 	path: string,
+	uri: string,
 	name: string,
 	description: string
 };
@@ -39,15 +40,15 @@ function Card(props: CardProps) {
 		if (!session.user) return;
 
 		if (props.roadmap === true) {
-			if (session.user.roadmaps.includes(props.path)) {
+			if (session.user.roadmaps.includes(props.uri)) {
 				setIsFavorite(true);
 			}
 		} else if (props.category === true) {
-			if (session.user.favoriteCategories.includes(props.path)) {
+			if (session.user.favoriteCategories.includes(props.uri)) {
 				setIsFavorite(true);
 			}
 		} else {
-			if (session.user.favoriteResources.includes(props.path)) {
+			if (session.user.favoriteResources.includes(props.uri)) {
 				setIsFavorite(true);
 			}
 		}
@@ -55,7 +56,7 @@ function Card(props: CardProps) {
 		session?.user,
 		status,
 		props.category,
-		props.path,
+		props.uri,
 		props.roadmap,
 		props.noFavorite,
 	]);
@@ -68,31 +69,31 @@ function Card(props: CardProps) {
 
 		if (props.roadmap === true) {
 			if (isFavorite) {
-				roadmapMutation.mutateAsync({ uri: props.path }).then(() => {
+				roadmapMutation.mutateAsync({ uri: props.uri }).then(() => {
 					setIsFavorite(false);
 				});
 			} else {
-				roadmapMutation.mutateAsync({ uri: props.path }).then(() => {
+				roadmapMutation.mutateAsync({ uri: props.uri }).then(() => {
 					setIsFavorite(true);
 				});
 			}
 		} else if (props.category == true) {
 			if (isFavorite) {
-				favoriteCategoryMutation.mutateAsync({ uri: props.path }).then(() => {
+				favoriteCategoryMutation.mutateAsync({ uri: props.uri }).then(() => {
 					setIsFavorite(false);
 				});
 			} else {
-				favoriteCategoryMutation.mutateAsync({ uri: props.path }).then(() => {
+				favoriteCategoryMutation.mutateAsync({ uri: props.uri }).then(() => {
 					setIsFavorite(true);
 				});
 			}
 		} else {
 			if (isFavorite) {
-				favoriteResourceMutation.mutateAsync({ uri: props.path }).then(() => {
+				favoriteResourceMutation.mutateAsync({ uri: props.uri }).then(() => {
 					setIsFavorite(false);
 				});
 			} else {
-				favoriteResourceMutation.mutateAsync({ uri: props.path }).then(() => {
+				favoriteResourceMutation.mutateAsync({ uri: props.uri }).then(() => {
 					setIsFavorite(true);
 				});
 			}
@@ -112,8 +113,8 @@ function Card(props: CardProps) {
 			<Link
 				href={
 					props.roadmap
-						? `/roadmaps/${props.path}`
-						: `/library/${props.path}`
+						? `/roadmaps/${props.uri}`
+						: `/library/${props.uri}`
 				}
 				className="link">
 
@@ -139,8 +140,8 @@ function Card(props: CardProps) {
 						<Share
 							href={
 								props.roadmap
-									? `/roadmaps/${props.path}`
-									: `/library/${props.path}`
+									? `/roadmaps/${props.uri}`
+									: `/library/${props.uri}`
 							}
 							name={props.name}
 							toggle={handleShare}
