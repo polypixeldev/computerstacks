@@ -20,7 +20,6 @@
 		"@trpc/next": "^10.0.0-rc.5",
 		"@trpc/react-query": "^10.0.0-rc.5",
 		"@trpc/server": "^10.0.0-rc.5",
-		"axios": "^1.1.3",
 		"bcryptjs": "^2.4.3",
 		"next": "13.0.2",
 		"next-auth": "4.16.4",
