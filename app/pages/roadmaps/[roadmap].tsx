@@ -1,4 +1,3 @@
-import axios from 'axios';
 import Image from "next/image";
 import { ChangeEvent } from 'react';
 import { GetStaticProps } from 'next';
@@ -27,8 +26,11 @@ function Roadmap() {
 	const router = useRouter();
 	const { data: session, status } = useSession();
 
-	const roadmapsQuery = trpc.roadmaps.roadmap.useQuery({ uri: typeof router.query.roadmap !== 'string' ? '' : router.query.roadmap });
+	const uri = typeof router.query.roadmap !== 'string' ? '' : router.query.roadmap
+
+	const roadmapsQuery = trpc.roadmaps.roadmap.useQuery({ uri });
 	const commentMutation = trpc.roadmaps.comment.useMutation();
+	const roadmapMutation = trpc.user.roadmap.useMutation();
 
 	const [isRoadmap, setIsRoadmap] = useState(false);
 	const [comment, setComment] = useState('');
@@ -38,7 +40,7 @@ function Roadmap() {
 	useEffect(() => {
 		if (status !== 'authenticated') return;
 
-		if(!router.query.roadmap || typeof router.query.roadmap === 'object') {
+		if (!router.query.roadmap || typeof router.query.roadmap === 'object') {
 			throw new Error(`Invalid roadmap URI ${router.query.roadmap}`);
 		}
 
@@ -54,27 +56,18 @@ function Roadmap() {
 
 	function handleRoadmap() {
 		if (status !== 'authenticated') {
-			alert('You must be logged in to favorite something');
+			alert('You must be logged in to add a roadmap');
 			return;
 		}
-		const ROADMAP_URL = `/api/user/roadmap`;
 
 		if (isRoadmap) {
-			axios
-				.post(ROADMAP_URL, {
-					uri: router.query.roadmap,
-				})
-				.then(() => {
-					setIsRoadmap(false);
-				});
+			roadmapMutation.mutateAsync({ uri }).then(() => {
+				setIsRoadmap(false);
+			});
 		} else {
-			axios
-				.post(ROADMAP_URL, {
-					uri: router.query.roadmap,
-				})
-				.then(() => {
-					setIsRoadmap(true);
-				});
+			roadmapMutation.mutateAsync({ uri }).then(() => {
+				setIsRoadmap(true);
+			});
 		}
 	}
 
@@ -93,7 +86,7 @@ function Roadmap() {
 		}
 
 		commentMutation.mutateAsync({ uri: typeof router.query.roadmap !== 'string' ? '' : router.query.roadmap, content: comment })
-		.then(reloadComments);
+			.then(reloadComments);
 
 		setComment('');
 	}
@@ -107,8 +100,8 @@ function Roadmap() {
 	function listComments() {
 		if (!comments) return null;
 		return comments.map((comment) => (
-				<Comment key={comment.id} data={comment} />
-			)
+			<Comment key={comment.id} data={comment} />
+		)
 		);
 	}
 
@@ -121,74 +114,74 @@ function Roadmap() {
 	}
 
 	return (
-        <main>
+		<main>
 			<section className={HeadStyles.head}>
 				<h2>{roadmapsQuery.data?.name}</h2>
 				<p>{roadmapsQuery.data?.description}</p>
 				<div className={HeadStyles.actionDiv}>
 					<div style={{ position: 'relative' }}>
 						<Image
-                            onClick={handleShare}
-                            src={shareIcon}
-                            alt="Share Icon"
-                            width={50}
-                            height={50}
-                            style={{
-                                maxWidth: "100%",
-                                height: "auto"
-                            }} />
+							onClick={handleShare}
+							src={shareIcon}
+							alt="Share Icon"
+							width={50}
+							height={50}
+							style={{
+								maxWidth: "100%",
+								height: "auto"
+							}} />
 						{isShare ? (
 							<Share name={roadmapsQuery.data?.name ?? ''} toggle={handleShare} />
 						) : null}
 					</div>
 					<Image
-                        onClick={handleRoadmap}
-                        src={isRoadmap ? roadmap : notroadmap}
-                        alt="Favorite button"
-                        width={75}
-                        height={75}
-                        style={{
-                            maxWidth: "100%",
-                            height: "auto"
-                        }} />
+						onClick={handleRoadmap}
+						src={isRoadmap ? roadmap : notroadmap}
+						alt="Favorite button"
+						width={75}
+						height={75}
+						style={{
+							maxWidth: "100%",
+							height: "auto"
+						}} />
 				</div>
 			</section>
 			<section className="section1">
 				<h2>Roadmap</h2>
 				<Image
-                    src={roadmapsQuery.data?.image ?? ''}
+					src={roadmapsQuery.data?.image ?? ''}
 					width={1000}
 					height={1000}
-                    alt="The roadmap"
-                    style={{
-                        maxWidth: "100%",
-                        height: "auto"
-                    }} />
+					alt="The roadmap"
+					style={{
+						maxWidth: "100%",
+						height: "auto"
+					}} />
 			</section>
 			<section className="section2">
 				<h2>Comments</h2>
 				<div className={CommentStyle.newCommentBox}>
 					<Image
-                        src={session?.user?.image || profile}
-                        className={CommentStyle.authorImg}
-                        width={40}
-                        height={40}
-                        alt="Profile picture"
-                        style={{
-                            maxWidth: "100%",
-                            height: "auto"
-                        }} />
+						src={session?.user?.image || profile}
+						className={CommentStyle.authorImg}
+						width={40}
+						height={40}
+						alt="Profile picture"
+						style={{
+							maxWidth: "100%",
+							height: "auto"
+						}} />
 					<textarea name="comment" value={comment} onChange={handleChange} />
 					<button onClick={handleComment}>Comment</button>
 				</div>
 				<div className={CommentStyle.commentDiv}>{listComments()}</div>
 			</section>
 		</main>
-    );
+	);
 }
 
 async function getStaticPaths() {
-	const res = { paths: new Array<{ params: { roadmap: string }}>(), fallback: true };
+	const res = { paths: new Array<{ params: { roadmap: string } }>(), fallback: true };
 
 	const caller = appRouter.createCaller({ session: null });
 
@@ -207,11 +200,11 @@ async function getStaticPaths() {
 }
 
 const getStaticProps: GetStaticProps = async ({ params }) => {
-	if(!params) {
+	if (!params) {
 		throw Error("Category page parameters not found");
 	}
 
-	if(!params.roadmap || typeof params.roadmap === 'object') {
+	if (!params.roadmap || typeof params.roadmap === 'object') {
 		throw Error(`Invalid roadmap URI ${params.roadmap}`);
 	}
 
