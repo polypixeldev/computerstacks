@@ -131,7 +131,7 @@ export const libraryRouter = router({
 			})
 		)
 		.query(async ({ input }) => {
-			let data = await prisma.resource.findUnique({
+			const data = await prisma.resource.findUnique({
 				where: {
 					uri: input.uri,
 				},

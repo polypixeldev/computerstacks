@@ -55,7 +55,7 @@ export const roadmapsRouter = router({
 			})
 		)
 		.query(async ({ input }) => {
-			let data = await prisma.roadmap.findUnique({
+			const data = await prisma.roadmap.findUnique({
 				where: {
 					uri: input.uri,
 				},

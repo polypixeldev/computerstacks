@@ -25,6 +25,7 @@ function Search() {
 	useEffect(() => {
 		if (!router.query.query) return;
 		searchQuery.refetch();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [router.query.query]);
 
 	function handleChange(event: ChangeEvent<HTMLInputElement>) {
