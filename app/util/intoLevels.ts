@@ -4,8 +4,8 @@ interface LevelArr {
 
 export function intoLevels<T extends LevelArr>(arr: T[]) {
 	return [
+		arr.filter((item) => item.level === 0),
 		arr.filter((item) => item.level === 1),
 		arr.filter((item) => item.level === 2),
-		arr.filter((item) => item.level === 3),
 	];
 }

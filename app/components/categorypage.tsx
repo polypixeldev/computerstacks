@@ -47,7 +47,7 @@ function CategoryPage(props: CategoryPageProps) {
 				{...item}
 				key={item.uri}
 				category={true}
-				uri={`${props.fullURI}/${item.uri}`}
+				path={`${props.fullURI}/${item.uri}`}
 				resource={false}
 				description={item.description}
 				name={item.name}
@@ -59,7 +59,7 @@ function CategoryPage(props: CategoryPageProps) {
 				{...item}
 				key={item.uri}
 				category={false}
-				uri={`${props.fullURI}/${item.uri}`}
+				path={`${props.fullURI}/${item.uri}`}
 				resource={true}
 				description={item.description}
 				name={item.name}

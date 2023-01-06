@@ -1,22 +1,16 @@
-import axios from 'axios';
 import Link from 'next/link';
 import Image from "next/image";
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 
 import Loading from '../components/loading';
+import { trpc } from '../util/trpc';
 
 import styles from '../styles/Dashboard.module.css';
 
 import profile from '../public/profile.png';
 
-import type { Category, Resource, Roadmap } from '@prisma/client';
-
 function Dashboard() {
-	const [favorites, setFavorites] = useState<Array<(Category | Resource) & { uri: string }>>([]);
-	const [roadmaps, setRoadmaps] = useState<Array<Roadmap & { uri: string }>>([]);
-
 	const router = useRouter();
 	const { data: session, status } = useSession({
 		required: true,
@@ -25,81 +19,23 @@ function Dashboard() {
 		},
 	});
 
-	useEffect(() => {
-		if (status !== 'authenticated') return;
-
-		const newFavs: Array<(Category | Resource) & { uri: string }> = [];
-		const queries = [];
-
-		for (const fav of session.user.favoriteCategories) {
-			const split = fav.split('/');
-			const uri = split[split.length - 1];
-
-			queries.push(
-				axios.get(`/api/library/category?uri=${uri}`).then((res) => {
-					newFavs.push({ ...res.data, uri: fav });
-				})
-			);
-		}
-
-		for (const fav of session.user.favoriteResources) {
-			const split = fav.split('/');
-			const uri = split[split.length - 1];
-
-			queries.push(
-				axios.get(`/api/library/resource?uri=${uri}`).then((res) => {
-					newFavs.push({ ...res.data, uri: fav });
-				})
-			);
-		}
-
-		Promise.all(queries).then(() => {
-			setFavorites(newFavs);
-		});
-	}, [status, session?.user.favoriteCategories, session?.user.favoriteResources]);
-
-	useEffect(() => {
-		if (status !== 'authenticated') return;
-
-		const newRoadmaps: Array<Roadmap & { uri: string }> = [];
-		const queries = [];
-
-		for (const roadmap of session.user.roadmaps) {
-			const uri = roadmap;
-
-			queries.push(
-				axios.get(`/api/roadmaps/roadmap?uri=${uri}`).then((res) => {
-					newRoadmaps.push({ ...res.data, uri: roadmap });
-				})
-			);
-		}
-
-		Promise.all(queries).then(() => {
-			setRoadmaps(newRoadmaps);
-		});
-	}, [status, session?.user.roadmaps]);
-
 	if (status === 'loading') return <Loading />;
 
-	function listFavorites() {
-		return favorites.map((favorite) => (
-			<h3 key={favorite.uri}>
-				<Link href={`/library/${favorite.uri}`} className="link">
+	function listFavoriteResources() {
+		return session?.user.favoriteResources.map((uri) => (
+			<FavoriteResource key={uri} uri={uri} />
+		));
+	}
 
-					{favorite.name}
-
-				</Link>
-			</h3>
+	function listFavoriteCategories() {
+		return session?.user.favoriteCategories.map((uri) => (
+			<FavoriteCategory key={uri} uri={uri} />
 		));
 	}
 
 	function listRoadmaps() {
-		return roadmaps.map((roadmap) => (
-			<h3 key={roadmap.uri}>
-				<Link href={`/roadmaps/${roadmap.uri}`} className="link">
-					{roadmap.name}
-				</Link>
-			</h3>
+		return session?.user.roadmaps.map((uri) => (
+			<Roadmap key={uri} uri={uri} />
 		));
 	}
 
@@ -123,10 +59,54 @@ function Dashboard() {
 				{listRoadmaps()}
 			</section>
 			<section className="section3">
-				<h2>Favorites</h2>
-				{listFavorites()}
+				<h2>Favorite Categories</h2>
+				{listFavoriteCategories()}
+				<h2>Favorite Resources</h2>
+				{listFavoriteResources()}
 			</section>
 		</main>
+	);
+}
+
+function FavoriteResource(props: { uri: string }) {
+	const resourceQuery = trpc.library.resource.useQuery({ uri: props.uri });
+
+	if (!resourceQuery.data) return null;
+
+	return (
+		<p>
+			<Link href={`/library/${props.uri}`} className="link">
+				{resourceQuery.data.name}
+			</Link>
+		</p>
+	);
+}
+
+function FavoriteCategory(props: { uri: string }) {
+	const categoryQuery = trpc.library.category.useQuery({ uri: props.uri });
+
+	if (!categoryQuery.data) return null;
+
+	return (
+		<p>
+			<Link href={`/library/${props.uri}`} className="link">
+				{categoryQuery.data.name}
+			</Link>
+		</p>
+	);
+}
+
+function Roadmap(props: { uri: string }) {
+	const roadmapQuery = trpc.roadmaps.roadmap.useQuery({ uri: props.uri });
+
+	if (!roadmapQuery.data) return null;
+
+	return (
+		<p>
+			<Link href={`/library/${props.uri}`} className="link">
+				{roadmapQuery.data.name}
+			</Link>
+		</p>
 	);
 }
 

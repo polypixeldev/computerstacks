@@ -15,7 +15,7 @@ function Library() {
 	function getLevel(level: number) {
 		const categoryLevels = intoLevels(categoriesQuery.data ?? []);
 		return categoryLevels[level].map((subject) => (
-			<Card {...subject} key={subject.uri} />
+			<Card {...subject} path={subject.uri} key={subject.uri} />
 		));
 	}
 

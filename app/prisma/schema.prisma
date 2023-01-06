@@ -18,8 +18,8 @@ model Account {
   type               String
   provider           String
   providerAccountId  String
-  refresh_token      String?
-  access_token       String?
+  refresh_token      String? @db.Text
+  access_token       String? @db.Text
   expires_at         Int?
   token_type         String?
   scope              String?
@@ -30,6 +30,7 @@ model Account {
   user               User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+  @@index([userId])
 }
 
 model User {
@@ -53,6 +54,8 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model Category {
@@ -65,6 +68,8 @@ model Category {
   parent           Category?  @relation(name: "categories", fields: [parentId], references: [uri], onDelete: NoAction, onUpdate: NoAction)
   categoryChildren Category[] @relation("categories")
   resourceChildren Resource[]
+
+  @@index([parentId])
 }
 
 model Resource {
@@ -79,6 +84,8 @@ model Resource {
   parentId    String
   parent      Category          @relation(fields: [parentId], references: [uri])
   comments    ResourceComment[]
+
+  @@index([parentId])
 }
 
 model Roadmap {
@@ -107,6 +114,9 @@ model ResourceComment {
   parent     Resource @relation(fields: [resourceId], references: [uri])
   userId     String
   resourceId String
+
+  @@index([userId])
+  @@index([resourceId])
 }
 
 model RoadmapComment {
@@ -117,6 +127,9 @@ model RoadmapComment {
   parent    Roadmap  @relation(fields: [roadmapId], references: [uri])
   userId    String
   roadmapId String
+
+  @@index([userId])
+  @@index([roadmapId])
 }
 
 model VerificationToken {
