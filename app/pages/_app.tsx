@@ -76,10 +76,6 @@ function MyApp({ Component, pageProps }: AppProps<PageProps>) {
 								</Link>
 							</strong>
 						</p>
-						<p>
-							Favicon &ldquo;Computer&rdquo; by Erin Standley from
-							NounProject.com
-						</p>
 					</div>
 					<div>
 						<h3>Library</h3>
