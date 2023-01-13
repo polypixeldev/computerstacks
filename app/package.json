@@ -16,7 +16,7 @@
 		"@prisma/client": "^4.8.1",
 		"@react-spring/web": "^9.6.1",
 		"@sentry/nextjs": "^7.29.0",
-		"@tanstack/react-query": "^4.20.9",
+		"@tanstack/react-query": "^4.22.0",
 		"@trpc/client": "^10.0.0-rc.5",
 		"@trpc/next": "^10.8.1",
 		"@trpc/react-query": "^10.0.0-rc.5",
