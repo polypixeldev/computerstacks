@@ -11,7 +11,7 @@ import {
 	EmailIcon,
 } from 'next-share';
 
-import ShareStyle from '../styles/Share.module.css';
+import Button from './button';
 
 interface ShareProps {
 	href?: string;
@@ -24,20 +24,16 @@ function Share(props: ShareProps) {
 	if (!href) {
 		if (typeof window === 'undefined') {
 			href = '';
-			return (
-				<div className={ShareStyle.card}>
-					<p>Loading...</p>
-				</div>
-			);
+			return null;
 		} else {
 			href = window.location.href;
 		}
 	}
 
 	return (
-		<div className={ShareStyle.card}>
+		<div className="absolute right-3 z-10 flex w-96 flex-col items-center justify-center rounded-sm bg-share shadow-sm shadow-gray-3">
 			<p>Share this page!</p>
-			<div>
+			<div className="flex w-full flex-row items-center justify-around">
 				<FacebookShareButton
 					url={href}
 					quote={`Check out ${props.name} on ComputerStacks!`}
@@ -72,9 +68,7 @@ function Share(props: ShareProps) {
 					<EmailIcon size={25} round />
 				</EmailShareButton>
 			</div>
-			<button className="button-small" onClick={props.toggle}>
-				Close
-			</button>
+			<Button onClick={props.toggle}>Close</Button>
 		</div>
 	);
 }

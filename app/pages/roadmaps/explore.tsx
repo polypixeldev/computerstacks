@@ -6,8 +6,6 @@ import { appRouter } from '../../server/routers/_app';
 import { trpc } from '../../util/trpc';
 import { intoLevels } from '../../util/intoLevels';
 
-import HeadStyles from '../../styles/Head.module.css';
-
 function Explore() {
 	const roadmapsMetaQuery = trpc.roadmaps.meta.useQuery();
 
@@ -25,15 +23,16 @@ function Explore() {
 
 	return (
 		<main>
-			<section className={HeadStyles.head}>
-				<h2>Explore Roadmaps</h2>
-				<p>
-					Explore {roadmapsMetaQuery.data?.numRoadmaps} roadmaps to get started!
+			<section className="bg-head-3">
+				<h2 className="text-5xl">Explore Roadmaps</h2>
+				<p className="text-3xl">
+					Explore {roadmapsMetaQuery.data?.numRoadmaps} roadmap
+					{roadmapsMetaQuery.data?.numRoadmaps === 1 ? '' : 's'} to get started!
 				</p>
 			</section>
-			<section className="section1">{getLevel(0)}</section>
-			<section className="section2">{getLevel(1)}</section>
-			<section className="section3">{getLevel(2)}</section>
+			<section className="bg-gray-1">{getLevel(0)}</section>
+			<section className="bg-gray-2">{getLevel(1)}</section>
+			<section className="bg-gray-3">{getLevel(2)}</section>
 		</main>
 	);
 }

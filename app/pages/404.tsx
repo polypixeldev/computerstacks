@@ -1,8 +1,8 @@
 function error404() {
 	return (
-		<main>
-			<section className="top section1">
-				<code className="bigCode">404 Not Found</code>
+		<main className="h-full">
+			<section className="centered h-full w-screen bg-gray-1">
+				<code className="text-5xl">404 Not Found</code>
 			</section>
 		</main>
 	);

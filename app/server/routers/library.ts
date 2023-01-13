@@ -55,7 +55,7 @@ export const libraryRouter = router({
 					parent: {
 						connect: { uri: target.uri },
 					},
-					timestamp: Date(),
+					timestamp: new Date(),
 				},
 			});
 		}),
@@ -164,7 +164,7 @@ export const libraryRouter = router({
 			})
 		)
 		.query(async ({ input }) => {
-			let data = await prisma.resource.findUnique({
+			const data = await prisma.resource.findUnique({
 				where: {
 					uri: input.uri,
 				},
@@ -181,30 +181,8 @@ export const libraryRouter = router({
 				throw new Error(`Resource URI ${input.uri} does not exist`);
 			}
 
-			data = computeISOTimestamp(data);
-			data.comments = data.comments.map((comment) =>
-				computeISOTimestamp(comment)
-			);
-
 			data.comments.reverse();
 
 			return data.comments;
 		}),
 });
-
-type DateTimestamp = {
-	timestamp: Date;
-};
-
-type WithISOTimestamp<T> = T & {
-	timestamp: string;
-};
-
-function computeISOTimestamp<Resource extends DateTimestamp>(
-	resource: Resource
-): WithISOTimestamp<Resource> {
-	return {
-		...resource,
-		timestamp: resource.timestamp.toISOString(),
-	};
-}

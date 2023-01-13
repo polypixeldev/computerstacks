@@ -2,10 +2,9 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { signOut } from 'next-auth/react';
 
-import { trpc } from '../util/trpc';
+import Button from '../components/button';
 
-import HeadStyles from '../styles/Head.module.css';
-import SettingsStyles from '../styles/Settings.module.css';
+import { trpc } from '../util/trpc';
 
 function Settings() {
 	const [modal, setModal] = useState(false);
@@ -43,34 +42,28 @@ function Settings() {
 
 	return (
 		<main>
-			<section className={HeadStyles.head}>
-				<h2>Settings</h2>
+			<section className="bg-head-3">
+				<h2 className="text-5xl">Settings</h2>
 			</section>
-			<section className="section2">
-				<h2>Data</h2>
-				<button className="button-small" onClick={handleDataExport}>
-					Export Data
-				</button>
-				<br />
-				<button className="button-small" onClick={handleModal}>
-					Delete Data
-				</button>
+			<section className="bg-gray-2">
+				<h2 className="text-2xl">Data</h2>
+				<div className="flex flex-row items-center justify-center">
+					<Button onClick={handleDataExport}>Export Data</Button>
+					<br />
+					<Button onClick={handleModal}>Delete Data</Button>
+				</div>
 			</section>
 			<div
-				className={SettingsStyles.modal}
+				className="fixed top-1/3 left-1/4 right-1/4 bottom-1/3 h-1/3 w-1/2 flex-col items-center justify-center rounded-sm border-2 border-gray-2 bg-gray-3"
 				style={{ display: modal ? 'flex' : 'none' }}
 			>
-				<p>
+				<p className="text-2xl">
 					Are you sure you want to delete all of your data?{' '}
-					<strong>This is irreversible!</strong>
+					<strong className="font-bold">This is irreversible!</strong>
 				</p>
-				<div>
-					<button className="button-small" onClick={handleDataDelete}>
-						Yes, DELETE my data.
-					</button>
-					<button className="button-small" onClick={handleModal}>
-						No, save my data!
-					</button>
+				<div className="flex flex-row items-center justify-between">
+					<Button onClick={handleDataDelete}>Yes, DELETE my data.</Button>
+					<Button onClick={handleModal}>No, save my data!</Button>
 				</div>
 			</div>
 		</main>

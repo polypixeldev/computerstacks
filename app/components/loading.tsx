@@ -1,7 +1,7 @@
 function Loading() {
 	return (
 		<main>
-			<section className="section1">
+			<section className="bg-gray-1">
 				<h2>Loading...</h2>
 			</section>
 		</main>

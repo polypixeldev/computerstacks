@@ -13,9 +13,8 @@ import { appRouter } from '../../server/routers/_app';
 import { intoLevels } from '../../util/intoLevels';
 import { trpc } from '../../util/trpc';
 
-import HeadStyles from '../../styles/Head.module.css';
-import CommentStyle from '../../styles/Comment.module.css';
 import Comment from '../../components/comment';
+import Button from '../../components/button';
 
 import notroadmap from '../../public/notfavorite.svg';
 import profile from '../../public/profile.png';
@@ -120,21 +119,18 @@ function Roadmap() {
 
 	return (
 		<main>
-			<section className={HeadStyles.head}>
-				<h2>{roadmapsQuery.data?.name}</h2>
-				<p>{roadmapsQuery.data?.description}</p>
-				<div className={HeadStyles.actionDiv}>
-					<div style={{ position: 'relative' }}>
+			<section className="bg-head-3">
+				<h2 className="text-5xl">{roadmapsQuery.data?.name}</h2>
+				<p className="text-3xl">{roadmapsQuery.data?.description}</p>
+				<div className="flex flex-row items-center justify-center">
+					<div className="relative">
 						<Image
 							onClick={handleShare}
 							src={shareIcon}
 							alt="Share Icon"
 							width={50}
 							height={50}
-							style={{
-								maxWidth: '100%',
-								height: 'auto',
-							}}
+							className="h-auto max-w-full"
 						/>
 						{isShare ? (
 							<Share
@@ -149,44 +145,42 @@ function Roadmap() {
 						alt="Favorite button"
 						width={75}
 						height={75}
-						style={{
-							maxWidth: '100%',
-							height: 'auto',
-						}}
+						className="h-auto max-w-full"
 					/>
 				</div>
 			</section>
-			<section className="section1">
-				<h2>Roadmap</h2>
+			<section className="bg-gray-1">
 				<Image
 					src={roadmapsQuery.data?.image ?? ''}
 					width={1000}
 					height={1000}
 					alt="The roadmap"
-					style={{
-						maxWidth: '100%',
-						height: 'auto',
-					}}
+					className="h-auto max-w-full"
 				/>
 			</section>
-			<section className="section2">
-				<h2>Comments</h2>
-				<div className={CommentStyle.newCommentBox}>
-					<Image
-						src={session?.user?.image || profile}
-						className={CommentStyle.authorImg}
-						width={40}
-						height={40}
-						alt="Profile picture"
-						style={{
-							maxWidth: '100%',
-							height: 'auto',
-						}}
-					/>
-					<textarea name="comment" value={comment} onChange={handleChange} />
-					<button onClick={handleComment}>Comment</button>
+			<section className="bg-gray-2">
+				<h2 className="m-2 text-4xl">Comments</h2>
+				<div className="w-1/2">
+					<div className="relative flex w-full flex-row items-center justify-start rounded-md bg-gray-4 p-3">
+						<Image
+							src={session?.user?.image || profile}
+							width={40}
+							height={40}
+							alt="Profile picture"
+							className="h-auto max-w-full rounded-full bg-gray-400"
+						/>
+						<textarea
+							className="m-2 h-16 w-full resize-none rounded-md p-3 text-black"
+							name="comment"
+							value={comment}
+							onChange={handleChange}
+						/>
+						<Button onClick={handleComment}>Comment</Button>
+					</div>
+					<div className="flex w-full flex-col items-center justify-center">
+						{listComments()}
+					</div>
 				</div>
-				<div className={CommentStyle.commentDiv}>{listComments()}</div>
 			</section>
 		</main>
 	);

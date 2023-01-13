@@ -7,7 +7,7 @@ class MyDocument extends Document {
 			<Html lang="en">
 				<Head>
 					<meta name="application-name" content="ComputerStacks" />
-					<meta name="author" content="Poly-Pixel" />
+					<meta name="author" content="polypixeldev" />
 					<meta
 						name="description"
 						content="A digital collection of computer-related resources and support"

@@ -8,8 +8,6 @@ import Share from './share';
 import { intoLevels } from '../util/intoLevels';
 import { trpc } from '../util/trpc';
 
-import HeadStyle from '../styles/Head.module.css';
-
 import favorite from '../public/favorite.svg';
 import notfavorite from '../public/notfavorite.svg';
 import shareIcon from '../public/share.png';
@@ -99,17 +97,18 @@ function CategoryPage(props: CategoryPageProps) {
 
 	return (
 		<main>
-			<section className={HeadStyle.head} id="head">
+			<section className="bg-head-3" id="head">
 				{props.data.parent ? (
-					<h3>
-						<Link href={`/library/${props.data.parent.uri}`} className="link">
-							{props.data.parent.name}
-						</Link>
-					</h3>
+					<Link
+						href={`/library/${props.data.parent.uri}`}
+						className="mb-1 font-dosis text-3xl text-gray-300 no-underline"
+					>
+						Category: {props.data.parent.name}
+					</Link>
 				) : null}
-				<h2>{props.data.name}</h2>
-				<p>{props.data.description}</p>
-				<div className={HeadStyle.actionDiv}>
+				<h2 className="mb-1 text-5xl">{props.data.name}</h2>
+				<p className="text-2xl">{props.data.description}</p>
+				<div className="flex flex-row items-center justify-center">
 					<div style={{ position: 'relative' }}>
 						<Image
 							onClick={handleShare}
@@ -139,9 +138,9 @@ function CategoryPage(props: CategoryPageProps) {
 					/>
 				</div>
 			</section>
-			<section className="section1">{getLevel(0)}</section>
-			<section className="section2">{getLevel(1)}</section>
-			<section className="section3">{getLevel(2)}</section>
+			<section className="bg-gray-1">{getLevel(0)}</section>
+			<section className="bg-gray-2">{getLevel(1)}</section>
+			<section className="bg-gray-3">{getLevel(2)}</section>
 		</main>
 	);
 }

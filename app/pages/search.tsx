@@ -5,9 +5,6 @@ import { useState, useEffect } from 'react';
 import Card from '../components/card';
 import { trpc } from '../util/trpc';
 
-import HeadStyle from '../styles/Head.module.css';
-import SearchStyle from '../styles/Search.module.css';
-
 import SearchIcon from '../public/search.png';
 
 import { ChangeEvent, MouseEvent, KeyboardEvent } from 'react';
@@ -42,14 +39,39 @@ function Search() {
 		router.push(`/search?query=${query}`);
 	}
 
-	function listResults(type: 'resource' | 'category' | 'roadmap') {
-		if (!searchQuery.data) {
-			return <p>Loading....</p>;
+	function listResultSections() {
+		let component;
+
+		if (!router.query.query) {
+			return null;
+		} else if (!searchQuery.data) {
+			component = <p className="text-4xl">Loading....</p>;
 		} else if (searchQuery.isError) {
-			return <p>There was an error fetching the results.</p>;
+			component = (
+				<p className="text-4xl">There was an error fetching the results.</p>
+			);
 		} else {
-			console.log(searchQuery.data);
-			return searchQuery.data[type]?.map((result) => {
+			component = (
+				<>
+					{listResults('resource')}
+					{listResults('category')}
+					{listResults('roadmap')}
+				</>
+			);
+		}
+
+		return <section className="bg-gray-1">{component}</section>;
+	}
+
+	function listResults(type: 'resource' | 'category' | 'roadmap') {
+		if (
+			!searchQuery.data ||
+			!searchQuery.data[type] ||
+			searchQuery.data[type].length === 0
+		) {
+			return null;
+		} else {
+			const results = searchQuery.data[type]?.map((result) => {
 				const isResource = type === 'resource';
 				const isCategory = type === 'category';
 				const isRoadmap = type === 'roadmap';
@@ -66,14 +88,36 @@ function Search() {
 					/>
 				);
 			});
+
+			return (
+				<div className="w-full">
+					<h3 className="text-4xl">{`${type[0].toUpperCase()}${type.slice(
+						1,
+						type.length
+					)}`}</h3>
+					<div className="ml-5 mr-5 flex w-full flex-col items-center justify-start">
+						{results}
+					</div>
+				</div>
+			);
 		}
 	}
 
 	return (
 		<main>
-			<section className={HeadStyle.head}>
-				<h2>Search {router.query.query ? 'Results' : null}</h2>
-				<div className={SearchStyle.searchBar}>
+			<section className="bg-head-3">
+				<h2 className="mb-2 text-5xl">
+					Search {router.query.query ? 'Results' : null}
+				</h2>
+				<div className="flex h-min w-2/3 flex-row gap-2 rounded-sm border-2 border-head-4 bg-head-2 p-4 outline-none">
+					<Image
+						onClick={handleSearch}
+						height={36}
+						width={36}
+						src={SearchIcon}
+						alt="search"
+						className="searchIcon"
+					/>
 					<input
 						type="search"
 						autoComplete="on"
@@ -82,38 +126,11 @@ function Search() {
 						value={query}
 						onChange={handleChange}
 						onKeyDown={handleSearch}
+						className="min-h-min w-full rounded-sm border-none bg-head-1 pl-2 font-zilla-slab text-xl text-black placeholder:text-gray-800"
 					/>
-					<div>
-						<div>
-							<Image
-								onClick={handleSearch}
-								height={36}
-								width={36}
-								src={SearchIcon}
-								alt="search"
-								className="searchIcon"
-								style={{
-									maxWidth: '100%',
-									height: 'auto',
-								}}
-							/>
-						</div>
-					</div>
 				</div>
 			</section>
-			<section className={`section1`}>
-				<h3>Resources</h3>
-				<hr />
-				<div className={SearchStyle.results}>{listResults('resource')}</div>
-				<br />
-				<h3>Roadmaps</h3>
-				<hr />
-				<div className={SearchStyle.results}>{listResults('roadmap')}</div>
-				<br />
-				<h3>Categories</h3>
-				<hr />
-				<div className={SearchStyle.results}>{listResults('category')}</div>
-			</section>
+			{listResultSections()}
 		</main>
 	);
 }

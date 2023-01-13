@@ -1,30 +1,47 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
+import { useSpring, animated, config } from '@react-spring/web';
+
+import Button from './button';
+import Menu from './menu';
 
 import OpenMenu from '../public/openMenu.png';
 import CloseMenu from '../public/closeMenu.png';
+import SearchIcon from '../public/search-white.png';
 
-import {
-	ChangeEvent,
-	MouseEvent,
-	KeyboardEvent,
-	Dispatch,
-	SetStateAction,
-} from 'react';
+import { ChangeEvent, MouseEvent, KeyboardEvent } from 'react';
 
-interface NavbarProps {
-	menuOpen: boolean;
-	setMenuOpen: Dispatch<SetStateAction<boolean>>;
-}
-
-function Navbar(props: NavbarProps) {
+function Navbar() {
 	const [query, setQuery] = useState('');
+	const [menuOpen, setMenuOpen] = useState(false);
 
 	const { status } = useSession();
 	const router = useRouter();
+
+	const [springs, api] = useSpring(() => ({
+		from: {
+			opacity: 0,
+		},
+		to: {
+			opacity: 1,
+		},
+		config: {
+			duration: 90,
+		},
+	}));
+
+	useEffect(() => {
+		menuOpen ? api.start({ opacity: 1 }) : api.start({ opacity: 0 });
+	}, [menuOpen]);
+
+	useEffect(() => {
+		router.events.on('routeChangeStart', () => setMenuOpen(false));
+		return () =>
+			router.events.off('routeChangeStart', () => setMenuOpen(false));
+	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 
 	function handleChange(event: ChangeEvent<HTMLInputElement>) {
 		const target = event.target;
@@ -41,31 +58,33 @@ function Navbar(props: NavbarProps) {
 	}
 
 	function toggleMenu() {
-		props.menuOpen ? props.setMenuOpen(false) : props.setMenuOpen(true);
+		menuOpen ? setMenuOpen(false) : setMenuOpen(true);
 	}
 
 	return (
-		<nav>
-			<div className="imageWrap" onClick={toggleMenu}>
-				<Image
-					src={props.menuOpen ? CloseMenu : OpenMenu}
-					alt="menu button"
-					fill
-					sizes="100vw"
-					style={{
-						objectFit: 'contain',
-						objectPosition: '25% 50%',
-					}}
-				/>
+		<nav className="nav-grid-cols sticky top-0 z-20 grid h-min w-screen auto-rows-[0] grid-rows-1 items-center gap-1 bg-gray-4 p-3 opacity-95">
+			<div>
+				<div onClick={toggleMenu}>
+					<Image
+						src={menuOpen ? CloseMenu : OpenMenu}
+						alt="menu button"
+						height={40}
+						width={40}
+					/>
+				</div>
+				<animated.div className="relative" style={springs}>
+					<Menu />
+				</animated.div>
 			</div>
-			<div className="search">
-				<svg
+			<div className="relative hidden h-min flex-row items-center justify-between gap-2 rounded-sm border-2 border-gray-4 bg-gray-3 p-3 outline-0 md:flex">
+				<Image
 					onClick={handleSearch}
-					xmlns="http://www.w3.org/2000/svg"
-					viewBox="0 0 40 40"
-				>
-					<path d="M26.804 29.01c-2.832 2.34-6.465 3.746-10.426 3.746C7.333 32.756 0 25.424 0 16.378 0 7.333 7.333 0 16.378 0c9.046 0 16.378 7.333 16.378 16.378 0 3.96-1.406 7.594-3.746 10.426l10.534 10.534c.607.607.61 1.59-.004 2.202-.61.61-1.597.61-2.202.004L26.804 29.01zm-10.426.627c7.323 0 13.26-5.936 13.26-13.26 0-7.32-5.937-13.257-13.26-13.257C9.056 3.12 3.12 9.056 3.12 16.378c0 7.323 5.936 13.26 13.258 13.26z"></path>
-				</svg>
+					height={25}
+					width={25}
+					src={SearchIcon}
+					alt="search"
+					className="searchIcon"
+				/>
 				<input
 					type="search"
 					autoComplete="on"
@@ -74,28 +93,21 @@ function Navbar(props: NavbarProps) {
 					value={query}
 					onChange={handleChange}
 					onKeyDown={handleSearch}
+					className="text-md h-full w-full rounded-sm border-none bg-gray-1 p-2 font-zilla-slab text-white placeholder:text-gray-400"
 				/>
 			</div>
-			<Link href="/" className="link">
-				<h1>ComputerStacks</h1>
+			<Link href="/">
+				<h1 className="font-zilla-slab text-3xl">ComputerStacks</h1>
 			</Link>
-			{status !== 'authenticated' ? (
-				<button
-					className="button-small"
-					id="login"
-					onClick={() => router.push('/login')}
-				>
-					Login
-				</button>
-			) : (
-				<button
-					className="button-small"
-					id="login"
-					onClick={() => router.push('/dashboard')}
-				>
-					Dashboard
-				</button>
-			)}
+			<div className="hidden w-full sm:flex">
+				{status !== 'authenticated' ? (
+					<Button onClick={() => router.push('/login')}>Login</Button>
+				) : (
+					<Button onClick={() => router.push('/dashboard')}>
+						<p className="text-xl">Dashboard</p>
+					</Button>
+				)}
+			</div>
 		</nav>
 	);
 }
