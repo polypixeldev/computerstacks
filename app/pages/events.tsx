@@ -2,16 +2,13 @@ import prettyMs from 'pretty-ms';
 import { createProxySSGHelpers } from '@trpc/react-query/ssg';
 import superjson from 'superjson';
 
-import HeadStyles from '../styles/Head.module.css';
-import HomeStyles from '../styles/Home.module.css';
-
 import { appRouter } from '../server/routers/_app';
 import { trpc } from '../util/trpc';
 
 function Events() {
 	const fetchQuery = trpc.events.fetch.useQuery();
 
-	function listEvents(rel: string) {
+	function listEvents(rel: 'current' | 'future' | 'past') {
 		const events = fetchQuery.data?.events.filter((event) => {
 			const eventDate = new Date(event.date).getTime();
 			const now = Date.now();
@@ -25,16 +22,29 @@ function Events() {
 		if (!events || events?.length === 0)
 			return (
 				<div>
-					<p>No {rel} events right now... Check back later!</p>
+					<p className="text-2xl">
+						No {rel} events right now... Check back later!
+					</p>
 				</div>
 			);
 
 		return events.map((event) => (
-			<div key={event.name} className={HomeStyles.eventCard}>
-				<h3>{event.name}</h3>
-				<p>{prettyMs(event.duration, { verbose: true })}</p>
+			<div
+				key={event.name}
+				className="mx-1/5 mb-6 flex max-w-screen-md flex-row items-center justify-between gap-5 rounded-lg border-2 border-black bg-card p-3 shadow-sm shadow-black"
+			>
 				<div>
-					<p>{event.description}</p>
+					<h3 className="text-3xl font-bold">{event.name}</h3>
+					<p className="text-2xl">{event.description}</p>
+				</div>
+				<div>
+					<p className="text-xl font-bold">
+						{rel === 'future' ? 'Starting' : 'Started'} on{' '}
+						{new Date(event.date).toLocaleString()}
+					</p>
+					<p className="text-xl font-bold">
+						{prettyMs(event.duration, { verbose: true })}
+					</p>
 				</div>
 			</div>
 		));
@@ -42,20 +52,20 @@ function Events() {
 
 	return (
 		<main>
-			<section className={HeadStyles.head}>
-				<h2>Event Calendar</h2>
-				<p>Check out our upcoming events!</p>
+			<section className="bg-head-3">
+				<h2 className="text-5xl">Event Calendar</h2>
+				<p className="text-3xl">Check out our upcoming events!</p>
 			</section>
-			<section className="section1">
-				<h2>Ongoing</h2>
+			<section className="bg-gray-1">
+				<h2 className="m-2 text-4xl">Ongoing</h2>
 				{listEvents('current')}
 			</section>
-			<section className="section2">
-				<h2>Upcoming</h2>
+			<section className="bg-gray-2">
+				<h2 className="m-2 text-4xl">Upcoming</h2>
 				{listEvents('future')}
 			</section>
-			<section className="section3">
-				<h2>Past</h2>
+			<section className="bg-gray-3">
+				<h2 className="m-2 text-4xl">Past</h2>
 				{listEvents('past')}
 			</section>
 		</main>

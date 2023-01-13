@@ -6,15 +6,12 @@ import { useSession } from 'next-auth/react';
 import Share from './share';
 import { trpc } from '../util/trpc';
 
-import CardStyle from '../styles/Card.module.css';
-import HeadStyle from '../styles/Head.module.css';
-
 import favorite from '../public/favorite.svg';
 import notfavorite from '../public/notfavorite.svg';
 import shareIcon from '../public/share.png';
 
 interface CardProps {
-	key: string;
+	key?: string;
 	noFavorite?: boolean;
 	roadmap?: boolean;
 	category?: boolean;
@@ -128,28 +125,23 @@ function Card(props: CardProps) {
 		: categoryPathQuery.data?.join('/');
 
 	return (
-		<div className={CardStyle.card}>
+		<div className="card-grid-cols m-2 grid h-1/5 w-3/5 items-center gap-1 overflow-x-clip overflow-y-scroll rounded-md border-2 border-black bg-card p-3 shadow-md shadow-black">
 			<Link
 				href={props.roadmap ? `/roadmaps/${props.uri}` : `/library/${path}`}
-				className="link"
 			>
 				<div>
-					<p className={CardStyle.name}>{props.name}</p>
-					<p className={CardStyle.desc}>{props.description}</p>
+					<p className="font-dosis text-3xl">{props.name}</p>
+					<p className="font-dosis text-2xl">{props.description}</p>
 				</div>
 			</Link>
-			<div className={`${HeadStyle.actionDiv} ${CardStyle.side}`}>
-				<div style={{ position: 'relative' }}>
+			<div className="flex flex-row items-center justify-center p-3">
+				<div className="relative">
 					<Image
 						onClick={handleShare}
 						src={shareIcon}
 						alt="Share Icon"
 						width={50}
 						height={50}
-						style={{
-							maxWidth: '100%',
-							height: 'auto',
-						}}
 					/>
 					{isShare ? (
 						<Share

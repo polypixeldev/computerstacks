@@ -2,9 +2,7 @@ import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import { signIn, getSession } from 'next-auth/react';
 
-import FormStyle from '../styles/Form.module.css';
-import HeadStyles from '../styles/Head.module.css';
-import LoginStyles from '../styles/Login.module.css';
+import Button from '../components/button';
 
 import { MouseEvent, ChangeEvent, FormEvent } from 'react';
 
@@ -47,28 +45,18 @@ function Login() {
 
 	return (
 		<main>
-			<section className="section1">
-				<h2>Login</h2>
-				<button
-					onClick={google}
-					className={`button ${LoginStyles.providerButton}`}
-				>
-					Sign in with Google
-				</button>
-				<button
-					onClick={github}
-					className={`button ${LoginStyles.providerButton}`}
-				>
-					Sign in with GitHub
-				</button>
-				<div className={HeadStyles.actionDiv}>
-					<hr />
-					<p>OR</p>
-					<hr />
+			<section className="bg-gray-1">
+				<h2 className="text-4xl">Login</h2>
+				<div className="flex flex-row items-center justify-center">
+					<Button onClick={google}>Sign in with Google</Button>
+					<Button onClick={github}>Sign in with GitHub</Button>
 				</div>
-				<h3>Sign in with email</h3>
-				<form className={FormStyle.form} onSubmit={email}>
-					<label className={FormStyle.label}>
+				<div className="flex flex-row items-center justify-center">
+					<p className="text-2xl">OR</p>
+				</div>
+				<h3 className="text-3xl">Sign in with email</h3>
+				<form className="flex flex-col items-center justify-center">
+					<label className="flex flex-col items-start justify-center text-xl">
 						Email
 						<input
 							type="email"
@@ -76,10 +64,11 @@ function Login() {
 							name="email"
 							value={userEmail}
 							onChange={handleChange}
+							className="h-12 w-96 rounded-md border-none bg-input-light p-5 text-lg text-black"
 						/>
 					</label>
 
-					<button className={`button-small ${FormStyle.submit}`}>Login</button>
+					<Button onClick={email}>Login</Button>
 				</form>
 			</section>
 		</main>

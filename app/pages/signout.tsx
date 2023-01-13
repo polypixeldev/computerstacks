@@ -17,7 +17,7 @@ function Signout() {
 
 	return (
 		<main>
-			<section className="section1">
+			<section className="bg-gray-1">
 				{signedOut ? <h2>See you back soon!</h2> : <h2>Signing you out...</h2>}
 			</section>
 		</main>

@@ -4,9 +4,8 @@ import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 
 import Loading from '../components/loading';
+import Card from '../components/card';
 import { trpc } from '../util/trpc';
-
-import styles from '../styles/Dashboard.module.css';
 
 import profile from '../public/profile.png';
 
@@ -39,29 +38,32 @@ function Dashboard() {
 
 	return (
 		<main>
-			<section className="section1">
-				<h2>{session.user.name ?? session.user.email}</h2>
+			<section className="bg-gray-1">
+				<h2 className="mb-2 text-5xl">
+					{session.user.name ?? session.user.email}
+				</h2>
 				<Image
-					className={styles.pfp}
+					className="h-72 w-72 max-w-full rounded-full bg-gray-400"
 					src={session.user.image || profile}
 					alt="User Profile Picture"
 					width={200}
 					height={200}
-					style={{
-						maxWidth: '100%',
-						height: 'auto',
-					}}
 				/>
 			</section>
-			<section className="section2">
-				<h2>Roadmaps</h2>
+			<section className="bg-gray-2">
+				<h2 className="text-4xl">Roadmaps</h2>
 				{listRoadmaps()}
 			</section>
-			<section className="section3">
-				<h2>Favorite Categories</h2>
-				{listFavoriteCategories()}
-				<h2>Favorite Resources</h2>
-				{listFavoriteResources()}
+			<section className="bg-gray-3">
+				<h2 className="text-4xl">Favorite Categories</h2>
+				<div className="align-center flex w-full flex-row flex-wrap justify-center">
+					{listFavoriteCategories()}
+				</div>
+
+				<h2 className="text-4xl">Favorite Resources</h2>
+				<div className="align-center flex w-full flex-row flex-wrap justify-center">
+					{listFavoriteResources()}
+				</div>
 			</section>
 		</main>
 	);
@@ -77,14 +79,12 @@ function FavoriteResource(props: { uri: string }) {
 	if (!resourceQuery.data || !fullPathQuery.data) return null;
 
 	return (
-		<p>
-			<Link
-				href={`/library/${fullPathQuery.data.join('/')}/${props.uri}`}
-				className="link"
-			>
-				{resourceQuery.data.name}
-			</Link>
-		</p>
+		<Card
+			resource={true}
+			uri={props.uri}
+			name={resourceQuery.data.name}
+			description=""
+		/>
 	);
 }
 
@@ -97,11 +97,12 @@ function FavoriteCategory(props: { uri: string }) {
 	if (!categoryQuery.data || !fullPathQuery.data) return null;
 
 	return (
-		<p>
-			<Link href={`/library/${fullPathQuery.data.join('/')}`} className="link">
-				{categoryQuery.data.name}
-			</Link>
-		</p>
+		<Card
+			category={true}
+			uri={props.uri}
+			name={categoryQuery.data.name}
+			description=""
+		/>
 	);
 }
 
@@ -112,7 +113,7 @@ function Roadmap(props: { uri: string }) {
 
 	return (
 		<p>
-			<Link href={`/roadmaps/${props.uri}`} className="link">
+			<Link href={`/roadmaps/${props.uri}`} className="text-white no-underline">
 				{roadmapQuery.data.name}
 			</Link>
 		</p>

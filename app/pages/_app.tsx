@@ -35,44 +35,34 @@ const dosis = Dosis({
 });
 
 function MyApp({ Component, pageProps }: AppProps<PageProps>) {
-	const router = useRouter();
-
-	const [menuOpen, setMenuOpen] = useState(false);
-
-	useEffect(() => {
-		router.events.on('routeChangeStart', () => setMenuOpen(false));
-		return () =>
-			router.events.off('routeChangeStart', () => setMenuOpen(false));
-	}, []); // eslint-disable-line react-hooks/exhaustive-deps
-
 	return (
 		<>
 			<div
-				className={`${zillaSlab.className} ${openSans.className} ${dosis.className}`}
+				className={`${zillaSlab.className} ${openSans.className} ${dosis.className} h-screen`}
 			>
 				<SessionProvider session={pageProps.session}>
 					<Head>
 						<title>ComputerStacks</title>
 						<link rel="icon" href="/favicon.ico" />
 					</Head>
-					<Navbar menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
-					{menuOpen ? <MenuScreen /> : <Component {...pageProps} />}
-					<footer>
+					<Navbar />
+					<Component {...pageProps} />
+					<footer className="align-center flex h-min flex-row justify-evenly bg-gray-4 py-5 text-left font-zilla-slab text-2xl">
 						<div>
-							<h2>ComputerStacks</h2>
+							<h3 className="text-3xl">ComputerStacks</h3>
 							<p>
 								<strong>
 									Made by{' '}
 									<Link
-										href="https://github.com/Poly-Pixel"
-										className="link-underline"
+										href="https://github.com/polypixeldev"
+										className="underline"
 									>
-										Poly-Pixel
+										polypixeldev
 									</Link>
 									,{' '}
 									<Link
-										href="https://github.com/Poly-Pixel/computerstacks/blob/main/LICENSE"
-										className="link-underline"
+										href="https://github.com/polypixeldev/computerstacks/blob/main/LICENSE"
+										className="underline"
 									>
 										licensed under GPL-3.0
 									</Link>
@@ -80,39 +70,27 @@ function MyApp({ Component, pageProps }: AppProps<PageProps>) {
 							</p>
 						</div>
 						<div>
-							<h3>Library</h3>
+							<h3 className="text-3xl">Library</h3>
 							<div>
-								<Link href="/library" className="link">
-									The Library
-								</Link>
+								<Link href="/library">The Library</Link>
 							</div>
 						</div>
 						<div>
-							<h3>Roadmaps</h3>
+							<h3 className="text-3xl">Roadmaps</h3>
 							<div>
-								<Link href="/roadmaps" className="link">
-									Roadmaps Home Page
-								</Link>
+								<Link href="/roadmaps">Roadmaps Home Page</Link>
 								<br />
-								<Link href="/roadmaps/explore" className="link">
-									Explore Roadmaps
-								</Link>
+								<Link href="/roadmaps/explore">Explore Roadmaps</Link>
 								<br />
-								<Link href="/roadmaps/discover" className="link">
-									Discover Roadmaps
-								</Link>
+								<Link href="/roadmaps/discover">Discover Roadmaps</Link>
 							</div>
 						</div>
 						<div>
-							<h3>Account</h3>
+							<h3 className="text-3xl">Account</h3>
 							<div>
-								<Link href="/settings" className="link">
-									Account Settings
-								</Link>
+								<Link href="/settings">Account Settings</Link>
 								<br />
-								<Link href="/login" className="link">
-									Login
-								</Link>
+								<Link href="/login">Login</Link>
 							</div>
 						</div>
 					</footer>

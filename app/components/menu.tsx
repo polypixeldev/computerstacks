@@ -4,64 +4,30 @@ import { useSession } from 'next-auth/react';
 function Menu() {
 	const { status } = useSession();
 
+	const baseLinks = ['Library', 'Roadmaps', 'Search', 'Events', 'Settings'];
+
 	return (
 		<main>
-			<section className="section1">
-				<h2>
-					<Link href="/" className="link">
-						Home
+			<section className="color-white absolute left-3 top-3 z-30 flex w-min flex-col items-center justify-start gap-3 rounded-sm border-2 border-black bg-card p-5 text-3xl no-underline shadow-sm shadow-black">
+				<Link href="/">Home</Link>
+
+				{baseLinks.map((link) => (
+					<Link href={`/${link.toLowerCase()}`} key={link}>
+						{link}
 					</Link>
-				</h2>
-				<h2>
-					<Link href="/library" className="link">
-						Library
-					</Link>
-				</h2>
-				<h2>
-					<Link href="/roadmaps" className="link">
-						Roadmaps
-					</Link>
-				</h2>
-				<h2>
-					<Link href="/search" className="link">
-						Search
-					</Link>
-				</h2>
-				<h2>
-					<Link href="/events" className="link">
-						Events
-					</Link>
-				</h2>
-				<h2>
-					<Link href="/settings" className="link">
-						Settings
-					</Link>
-				</h2>
-				<h2>
-					<Link
-						href={status === 'authenticated' ? '/dashboard' : '/login'}
-						className="link"
-					>
-						{status === 'authenticated' ? 'Dashboard' : 'Login'}
-					</Link>
-				</h2>
-				{status === 'authenticated' ? null : (
-					<h2>
-						<Link href="/signup" className="link">
-							Sign Up
-						</Link>
-					</h2>
-				)}
+				))}
+
+				<hr className="w-20" />
+
+				<Link href={status === 'authenticated' ? '/dashboard' : '/login'}>
+					{status === 'authenticated' ? 'Dashboard' : 'Login'}
+				</Link>
+
 				{status === 'authenticated' ? (
-					<>
-						<hr />
-						<h2>
-							<Link href="/signout" className="link">
-								Sign out
-							</Link>
-						</h2>
-					</>
-				) : null}
+					<Link href="/signout">Sign out</Link>
+				) : (
+					<Link href="/signup">Sign Up</Link>
+				)}
 			</section>
 		</main>
 	);
