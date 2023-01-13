@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+import prisma from '../../db/prisma';
 import { router, publicProcedure } from '../trpc';
 import { dataRouter } from './data';
 import { eventsRouter } from './events';
