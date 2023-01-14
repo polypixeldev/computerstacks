@@ -13,11 +13,10 @@ import { appRouter } from '../../server/routers/_app';
 import { intoLevels } from '../../util/intoLevels';
 import { trpc } from '../../util/trpc';
 
-import Comment from '../../components/comment';
-import Button from '../../components/button';
+import CommentSection from '../../components/commentsection';
 
 import notroadmap from '../../public/notfavorite.svg';
-import profile from '../../public/profile.png';
+
 import roadmap from '../../public/favorite.svg';
 import shareIcon from '../../public/share.png';
 
@@ -33,7 +32,7 @@ function Roadmap() {
 	const roadmapMutation = trpc.user.roadmap.useMutation();
 
 	const [isRoadmap, setIsRoadmap] = useState(false);
-	const [comment, setComment] = useState('');
+
 	const [comments, setComments] = useState(roadmapsQuery?.data?.comments);
 	const [isShare, setIsShare] = useState(false);
 
@@ -71,15 +70,13 @@ function Roadmap() {
 		}
 	}
 
-	function handleChange(event: ChangeEvent<HTMLTextAreaElement>) {
-		const target = event.target;
-		const value = target.value;
-		const name = target.name;
+	async function reloadComments() {
+		await roadmapsQuery.refetch();
 
-		if (name === 'comment') setComment(value);
+		setComments(roadmapsQuery?.data?.comments);
 	}
 
-	function handleComment() {
+	function addComment(comment: string) {
 		if (status !== 'authenticated') {
 			alert('You must be logged in to comment');
 			return;
@@ -92,21 +89,6 @@ function Roadmap() {
 				content: comment,
 			})
 			.then(reloadComments);
-
-		setComment('');
-	}
-
-	async function reloadComments() {
-		await roadmapsQuery.refetch();
-
-		setComments(roadmapsQuery?.data?.comments);
-	}
-
-	function listComments() {
-		if (!comments) return null;
-		return comments.map((comment) => (
-			<Comment key={comment.id} data={comment} />
-		));
 	}
 
 	function handleShare() {
@@ -149,39 +131,16 @@ function Roadmap() {
 					/>
 				</div>
 			</section>
-			<section className="bg-gray-1">
-				<Image
-					src={roadmapsQuery.data?.image ?? ''}
-					width={1000}
-					height={1000}
-					alt="The roadmap"
-					className="h-auto max-w-full"
-				/>
-			</section>
-			<section className="bg-gray-2">
-				<h2 className="m-2 text-4xl">Comments</h2>
-				<div className="w-1/2">
-					<div className="relative flex w-full flex-row items-center justify-start rounded-md bg-gray-4 p-3">
-						<Image
-							src={session?.user?.image || profile}
-							width={40}
-							height={40}
-							alt="Profile picture"
-							className="h-auto max-w-full rounded-full bg-gray-400"
-						/>
-						<textarea
-							className="m-2 h-16 w-full resize-none rounded-md p-3 text-black"
-							name="comment"
-							value={comment}
-							onChange={handleChange}
-						/>
-						<Button onClick={handleComment}>Comment</Button>
-					</div>
-					<div className="flex w-full flex-col items-center justify-center">
-						{listComments()}
-					</div>
+			<section className="h-screen w-full bg-gray-1 p-5">
+				<div className="relative h-full w-full">
+					<Image src={roadmapsQuery.data?.image ?? ''} fill alt="The roadmap" />
 				</div>
 			</section>
+			<CommentSection
+				comments={comments}
+				userImage={session?.user.image}
+				addComment={addComment}
+			/>
 		</main>
 	);
 }

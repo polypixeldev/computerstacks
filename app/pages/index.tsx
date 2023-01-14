@@ -30,7 +30,7 @@ function Home() {
 		return events.map((event) => (
 			<div
 				key={event.name}
-				className="mx-1/5 mb-6 flex max-w-screen-md flex-row items-center justify-between gap-5 rounded-lg border-2 border-black bg-card p-3 shadow-sm shadow-black"
+				className="mx-1/5 mx-3 mb-6 flex max-w-screen-md flex-row items-center justify-between gap-5 rounded-lg border-2 border-black bg-card p-3 shadow-sm shadow-black"
 			>
 				<div>
 					<h3 className="text-3xl font-bold">{event.name}</h3>
@@ -61,7 +61,7 @@ function Home() {
 				</p>
 			</section>
 			<section className="bg-gray-1" id="main-desc">
-				<p className="px-36 font-open-sans text-3xl">
+				<p className="px-5 font-open-sans text-2xl md:px-36 md:text-3xl">
 					ComputerStacks is a free, open-source online collection of resources
 					related to computers to help you learn about computers in this digital
 					world. Click the button below to browse the library, or enter a query

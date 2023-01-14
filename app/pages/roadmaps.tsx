@@ -7,7 +7,7 @@ function Roadmaps() {
 		<main>
 			<section className="bg-head-3">
 				<h2 className="text-5xl">Roadmaps</h2>
-				<p className="text-2xl">
+				<p className="m-2 text-2xl">
 					Your new helper for learning what you need to learn
 				</p>
 			</section>
