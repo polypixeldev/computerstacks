@@ -57,11 +57,11 @@ function Settings() {
 				className="fixed top-1/3 left-1/4 right-1/4 bottom-1/3 h-1/3 w-1/2 flex-col items-center justify-center rounded-sm border-2 border-gray-2 bg-gray-3"
 				style={{ display: modal ? 'flex' : 'none' }}
 			>
-				<p className="text-2xl">
+				<p className="text-xl md:text-2xl">
 					Are you sure you want to delete all of your data?{' '}
 					<strong className="font-bold">This is irreversible!</strong>
 				</p>
-				<div className="flex flex-row items-center justify-between">
+				<div className="flex flex-row flex-wrap items-center justify-between md:flex-nowrap">
 					<Button onClick={handleDataDelete}>Yes, DELETE my data.</Button>
 					<Button onClick={handleModal}>No, save my data!</Button>
 				</div>

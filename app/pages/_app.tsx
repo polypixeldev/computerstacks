@@ -47,7 +47,7 @@ function MyApp({ Component, pageProps }: AppProps<PageProps>) {
 					</Head>
 					<Navbar />
 					<Component {...pageProps} />
-					<footer className="align-center flex h-min flex-row justify-evenly bg-gray-4 py-5 text-left font-zilla-slab text-2xl">
+					<footer className="align-center flex h-min flex-row flex-wrap justify-start gap-x-96 gap-y-5 bg-gray-4 py-5 pl-10 text-left font-zilla-slab text-2xl md:justify-evenly md:gap-0 md:pl-0">
 						<div>
 							<h3 className="text-3xl">ComputerStacks</h3>
 							<p>
