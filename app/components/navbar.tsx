@@ -72,9 +72,11 @@ function Navbar() {
 						width={40}
 					/>
 				</div>
-				<animated.div className="relative" style={springs}>
-					<Menu />
-				</animated.div>
+				<div style={{ display: menuOpen ? 'inline' : 'none' }}>
+					<animated.div className="relative" style={springs}>
+						<Menu />
+					</animated.div>
+				</div>
 			</div>
 			<div className="relative hidden h-min flex-row items-center justify-between gap-2 rounded-sm border-2 border-gray-4 bg-gray-3 p-3 outline-0 md:flex">
 				<Image
