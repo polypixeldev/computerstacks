@@ -15,7 +15,7 @@
 		"@next/font": "^13.1.6",
 		"@prisma/client": "^4.10.0",
 		"@react-spring/web": "^9.6.1",
-		"@sentry/nextjs": "^7.36.0",
+		"@sentry/nextjs": "^7.37.0",
 		"@tanstack/react-query": "^4.24.4",
 		"@trpc/client": "^10.9.1",
 		"@trpc/next": "^10.9.1",
