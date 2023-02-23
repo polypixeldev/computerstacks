@@ -18,7 +18,7 @@
 		"@sentry/nextjs": "^7.38.0",
 		"@tanstack/react-query": "^4.24.10",
 		"@trpc/client": "^10.11.1",
-		"@trpc/next": "^10.11.1",
+		"@trpc/next": "^10.12.0",
 		"@trpc/react-query": "^10.11.1",
 		"@trpc/server": "^10.11.1",
 		"@vercel/analytics": "^0.1.10",
