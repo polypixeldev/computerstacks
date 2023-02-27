@@ -23,7 +23,7 @@
 		"@trpc/server": "^10.12.0",
 		"@vercel/analytics": "^0.1.10",
 		"bcryptjs": "^2.4.3",
-		"next": "13.1.6",
+		"next": "13.2.1",
 		"next-auth": "4.19.2",
 		"next-share": "^0.19.0",
 		"nodemailer": "^6.9.1",
