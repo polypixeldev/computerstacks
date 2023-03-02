@@ -24,7 +24,7 @@
 		"@vercel/analytics": "^0.1.11",
 		"bcryptjs": "^2.4.3",
 		"next": "13.2.1",
-		"next-auth": "4.19.2",
+		"next-auth": "4.20.0",
 		"next-share": "^0.19.0",
 		"nodemailer": "^6.9.1",
 		"pretty-ms": "^8.0.0",
