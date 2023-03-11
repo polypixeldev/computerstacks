@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import { ChangeEvent } from 'react';
 import { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';

@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
-import { useSpring, animated, config } from '@react-spring/web';
+import { useSpring, animated } from '@react-spring/web';
 
 import Button from './button';
 import Menu from './menu';
@@ -35,7 +35,7 @@ function Navbar() {
 
 	useEffect(() => {
 		menuOpen ? api.start({ opacity: 1 }) : api.start({ opacity: 0 });
-	}, [menuOpen]);
+	}, [menuOpen]); // eslint-disable-line react-hooks/exhaustive-deps
 
 	useEffect(() => {
 		router.events.on('routeChangeStart', () => setMenuOpen(false));
