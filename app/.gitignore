@@ -33,12 +33,5 @@ yarn-error.log*
 # vercel
 .vercel
 
-# Ignore (and don't ignore) for dotenv.
-.env
-.env.me
-!.env.project
 # Sentry
 .sentryclirc
-
-.env*
-!.env.vault
