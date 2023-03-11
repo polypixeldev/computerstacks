@@ -33,6 +33,12 @@ const moduleExports = {
 	},
 };
 
+if (process.env.BUILD_ENV != 'local') {
+	moduleExports.sentry = {
+		hideSourceMaps: false,
+	};
+}
+
 const sentryWebpackPluginOptions = {
 	// Additional config options for the Sentry Webpack plugin. Keep in mind that
 	// the following options are set automatically, and overriding them is not
@@ -41,7 +47,6 @@ const sentryWebpackPluginOptions = {
 	//   urlPrefix, include, ignore
 
 	silent: true, // Suppresses all logs
-	hideSourceMaps: false,
 
 	// For all available options, see:
 	// https://github.com/getsentry/sentry-webpack-plugin#options.
