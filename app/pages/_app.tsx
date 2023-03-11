@@ -3,7 +3,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import { SessionProvider } from 'next-auth/react';
-import { Zilla_Slab, Open_Sans, Dosis } from '@next/font/google';
+import { Zilla_Slab, Open_Sans, Dosis } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/react';
 
 import MenuScreen from '../components/menu';
