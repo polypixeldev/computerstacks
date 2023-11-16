@@ -1,5 +1,4 @@
 const environmentVariables = [
-	'NEXTAUTH_URL',
 	'GOOGLE_ID',
 	'GOOGLE_SECRET',
 	'GITHUB_ID',
