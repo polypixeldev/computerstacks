@@ -9,3 +9,8 @@ updates:
     directory: "/app/" # Location of package manifests
     schedule:
       interval: "daily"
+
+groups:
+  trpc:
+    patterns:
+      - "@trpc/*"
