@@ -10,8 +10,9 @@ const environmentVariables = [
 	'JWT_SIGNING_PRIVATE_KEY',
 	'NEXTAUTH_SECRET',
 	'JWT_ENCRYPTION_KEY',
-	'SENTRY_DSN',
 ];
+
+const prodEnvironmentVariables = ['SENTRY_DSN'];
 
 function checkEnvironment() {
 	if (process.env.NODE_ENV === 'test') {
@@ -23,6 +24,14 @@ function checkEnvironment() {
 	for (const variable of environmentVariables) {
 		if (!process.env[variable]) {
 			missing.push(variable);
+		}
+	}
+
+	if (process.env.NODE_ENV === 'production') {
+		for (const variable of prodEnvironmentVariables) {
+			if (!process.env[variable]) {
+				missing.push(variable);
+			}
 		}
 	}
 
