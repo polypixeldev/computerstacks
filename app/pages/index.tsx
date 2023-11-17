@@ -100,7 +100,7 @@ function Home() {
 					<p className="font-dosis text-2xl">
 						Fill out{' '}
 						<Link
-							href="https://forms.office.com/r/jbPz5Y5fJW"
+							href="https://tally.so/r/mRDD2J"
 							className="text-white underline"
 							target="_blank"
 						>
