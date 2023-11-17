@@ -78,7 +78,7 @@ function Navbar() {
 					</animated.div>
 				</div>
 			</div>
-			<div className="relative hidden h-min flex-row items-center justify-between gap-2 rounded-sm border-2 border-gray-4 bg-gray-3 p-3 outline-0 md:flex">
+			<div className="relative hidden h-min flex-row items-center justify-between gap-2 rounded-sm border-2 border-gray-4 bg-gray-3 p-2 outline-0 md:flex">
 				<Image
 					onClick={handleSearch}
 					height={25}
@@ -95,7 +95,7 @@ function Navbar() {
 					value={query}
 					onChange={handleChange}
 					onKeyDown={handleSearch}
-					className="text-md h-full w-full rounded-sm border-none bg-gray-1 p-2 font-zilla-slab text-white placeholder:text-gray-400"
+					className="h-full w-full rounded-sm border-none bg-gray-1 p-2 font-zilla-slab text-lg text-white placeholder:text-gray-400"
 				/>
 			</div>
 			<Link href="/">
