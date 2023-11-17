@@ -1,4 +1,4 @@
-import { createProxySSGHelpers } from '@trpc/react-query/ssg';
+import { createServerSideHelpers } from '@trpc/react-query/server';
 import superjson from 'superjson';
 
 import Card from '../components/card';
@@ -34,7 +34,7 @@ function Library() {
 }
 
 async function getStaticProps() {
-	const ssg = await createProxySSGHelpers({
+	const ssg = await createServerSideHelpers({
 		router: appRouter,
 		ctx: {
 			session: null,

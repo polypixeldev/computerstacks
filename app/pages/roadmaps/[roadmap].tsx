@@ -3,7 +3,7 @@ import { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
-import { createProxySSGHelpers } from '@trpc/react-query/ssg';
+import { createServerSideHelpers } from '@trpc/react-query/server';
 import superjson from 'superjson';
 
 import Loading from '../../components/loading';
@@ -175,7 +175,7 @@ const getStaticProps: GetStaticProps = async ({ params }) => {
 		throw Error(`Invalid roadmap URI ${params.roadmap}`);
 	}
 
-	const ssg = await createProxySSGHelpers({
+	const ssg = await createServerSideHelpers({
 		router: appRouter,
 		ctx: {
 			session: null,

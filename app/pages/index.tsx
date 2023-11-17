@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import LegacyImage from 'next/legacy/image';
 import prettyMs from 'pretty-ms';
-import { createProxySSGHelpers } from '@trpc/react-query/ssg';
+import { createServerSideHelpers } from '@trpc/react-query/server';
 import superjson from 'superjson';
 
 import Icons from '../public/icons.png';
@@ -115,7 +115,7 @@ function Home() {
 }
 
 async function getStaticProps() {
-	const ssg = await createProxySSGHelpers({
+	const ssg = await createServerSideHelpers({
 		router: appRouter,
 		ctx: {
 			session: null,
