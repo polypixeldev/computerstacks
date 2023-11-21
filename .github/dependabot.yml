@@ -13,3 +13,6 @@ updates:
       trpc:
         patterns:
           - "@trpc/*"
+      ts-eslint:
+        patterns:
+          - "@typescript-eslint/*"
