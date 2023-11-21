@@ -91,6 +91,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 								uri: true,
 							},
 						},
+						isAdmin: true,
 					},
 				});
 
@@ -106,6 +107,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 					(resource) => resource.uri
 				);
 				session.user.roadmaps = dbUser.roadmaps.map((roadmap) => roadmap.uri);
+				session.user.isAdmin = dbUser.isAdmin;
 
 				return session;
 			},

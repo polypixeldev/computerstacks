@@ -1,6 +1,11 @@
 import { z } from 'zod';
 
-import { publicProcedure, protectedProcedure, router } from '../trpc';
+import {
+	publicProcedure,
+	protectedProcedure,
+	adminProcedure,
+	router,
+} from '../trpc';
 import prisma from '../../db/prisma';
 
 export const libraryRouter = router({
@@ -184,5 +189,74 @@ export const libraryRouter = router({
 			data.comments.reverse();
 
 			return data.comments;
+		}),
+	addCategory: adminProcedure
+		.input(
+			z.object({
+				name: z.string(),
+				uri: z.string(),
+				description: z.string(),
+				parentUri: z.string().optional(),
+				level: z.number(),
+			})
+		)
+		.mutation(async ({ input }) => {
+			const parentCategory = input.parentUri
+				? await prisma.category.findUnique({
+						where: {
+							uri: input.parentUri,
+						},
+				  })
+				: null;
+
+			if (parentCategory === null && input.parentUri !== undefined)
+				throw new Error(`Invalid parent category URI ${input.parentUri}`);
+
+			await prisma.category.create({
+				data: {
+					name: input.name,
+					uri: input.uri,
+					description: input.description,
+					parentId: input.parentUri,
+					level: input.level,
+				},
+			});
+		}),
+	addResource: adminProcedure
+		.input(
+			z.object({
+				name: z.string(),
+				uri: z.string(),
+				description: z.string(),
+				parentUri: z.string(),
+				level: z.number(),
+				link: z.string(),
+				author: z.string(),
+			})
+		)
+		.mutation(async ({ input }) => {
+			const parentCategory = input.parentUri
+				? await prisma.category.findUnique({
+						where: {
+							uri: input.parentUri,
+						},
+				  })
+				: null;
+
+			if (parentCategory === null && input.parentUri !== undefined)
+				throw new Error(`Invalid parent category URI ${input.parentUri}`);
+
+			await prisma.resource.create({
+				data: {
+					name: input.name,
+					uri: input.uri,
+					description: input.description,
+					parentId: input.parentUri,
+					level: input.level,
+					author: input.author,
+					link: input.link,
+					timestamp: new Date(),
+				},
+			});
 		}),
 });
