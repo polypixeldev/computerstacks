@@ -39,7 +39,7 @@ function Editor() {
 	return (
 		<main>
 			<section className="centered flex w-screen flex-col items-center justify-start gap-10 bg-gray-1 px-10">
-				<h2 className="text-5xl">Resource Editor</h2>
+				<h2 className="text-5xl">Library Editor</h2>
 				<div className=" flex w-full flex-col items-center justify-start gap-4 rounded-md bg-gray-2 p-4">
 					<p className="text-3xl">Category</p>
 					<div className="flex w-full flex-row items-center justify-center gap-3 text-2xl">
