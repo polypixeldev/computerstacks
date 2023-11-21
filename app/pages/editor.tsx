@@ -42,7 +42,7 @@ function Editor() {
 				<h2 className="text-5xl">Library Editor</h2>
 				<div className=" flex w-full flex-col items-center justify-start gap-4 rounded-md bg-gray-2 p-4">
 					<p className="text-3xl">Category</p>
-					<div className="flex w-full flex-row items-center justify-center gap-3 text-2xl">
+					<div className="flex w-full flex-row flex-wrap items-center justify-center gap-3 text-2xl">
 						<p>/</p>
 						{path.map((p) => (
 							<div
@@ -87,8 +87,8 @@ function Editor() {
 						</div>
 					</div>
 				</div>
-				<div className="flex w-full flex-row items-start justify-center gap-10">
-					<div className="flex flex-grow flex-col items-center justify-start gap-5 rounded-md bg-gray-2 p-4">
+				<div className="flex w-full flex-col items-center justify-start gap-10 md:flex-row md:items-start md:justify-center">
+					<div className="flex w-full flex-grow flex-col items-center justify-start gap-5 rounded-md bg-gray-2 p-4 md:w-auto">
 						<p className="text-3xl">Add Category</p>
 						<div className="flex w-3/4 flex-col items-start justify-start">
 							<label className="text-lg">Name</label>
@@ -158,7 +158,7 @@ function Editor() {
 							Add
 						</button>
 					</div>
-					<div className="flex flex-grow flex-col items-center justify-start gap-5 rounded-md bg-gray-2 p-4">
+					<div className="flex w-full flex-grow flex-col items-center justify-start gap-5 rounded-md bg-gray-2 p-4 md:w-auto">
 						<p className="text-3xl">Add Resource</p>
 						<div className="flex w-3/4 flex-col items-start justify-start">
 							<label className="text-lg">Name</label>
