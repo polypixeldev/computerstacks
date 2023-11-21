@@ -222,6 +222,27 @@ export const libraryRouter = router({
 				},
 			});
 		}),
+	updateCategory: adminProcedure
+		.input(
+			z.object({
+				name: z.string(),
+				uri: z.string(),
+				description: z.string(),
+				level: z.number(),
+			})
+		)
+		.mutation(async ({ input }) => {
+			await prisma.category.update({
+				where: {
+					uri: input.uri,
+				},
+				data: {
+					name: input.name,
+					description: input.description,
+					level: input.level,
+				},
+			});
+		}),
 	addResource: adminProcedure
 		.input(
 			z.object({
@@ -256,6 +277,31 @@ export const libraryRouter = router({
 					author: input.author,
 					link: input.link,
 					timestamp: new Date(),
+				},
+			});
+		}),
+	updateResource: adminProcedure
+		.input(
+			z.object({
+				name: z.string(),
+				uri: z.string(),
+				description: z.string(),
+				level: z.number(),
+				link: z.string(),
+				author: z.string(),
+			})
+		)
+		.mutation(async ({ input }) => {
+			await prisma.resource.update({
+				where: {
+					uri: input.uri,
+				},
+				data: {
+					name: input.name,
+					description: input.description,
+					level: input.level,
+					author: input.author,
+					link: input.link,
 				},
 			});
 		}),
