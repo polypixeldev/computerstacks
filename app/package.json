@@ -8,7 +8,8 @@
 		"start": "next start",
 		"lint": "next lint",
 		"format": "prettier --write .",
-		"prepare": "cd ../ && husky install ./app/.husky"
+		"prepare": "cd ../ && husky install ./app/.husky",
+		"postinstall": "prisma generate"
 	},
 	"dependencies": {
 		"@next-auth/prisma-adapter": "^1.0.7",
