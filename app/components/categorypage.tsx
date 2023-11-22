@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
 
 import Card from './card';
 import Share from './share';
@@ -11,6 +12,7 @@ import { trpc } from '../util/trpc';
 import favorite from '../public/favorite.svg';
 import notfavorite from '../public/notfavorite.svg';
 import shareIcon from '../public/share.png';
+import editIcon from '../public/edit.svg';
 
 import type { Category, Resource } from '@prisma/client';
 
@@ -28,6 +30,8 @@ function CategoryPage(props: CategoryPageProps) {
 	const [isFavorite, setIsFavorite] = useState(false);
 	const [isShare, setIsShare] = useState(false);
 	const { data: session, status } = useSession();
+
+	const router = useRouter();
 
 	const favoriteMutation = trpc.user.favoriteCategory.useMutation();
 
@@ -116,10 +120,7 @@ function CategoryPage(props: CategoryPageProps) {
 							alt="Share Icon"
 							width={50}
 							height={50}
-							style={{
-								maxWidth: '100%',
-								height: 'auto',
-							}}
+							className="h-auto max-w-full cursor-pointer"
 						/>
 						{isShare ? (
 							<Share name={props.data.name} toggle={handleShare} />
@@ -131,11 +132,20 @@ function CategoryPage(props: CategoryPageProps) {
 						alt="Favorite button"
 						width={75}
 						height={75}
-						style={{
-							maxWidth: '100%',
-							height: 'auto',
-						}}
+						className="h-auto max-w-full cursor-pointer"
 					/>
+					{session?.user?.isAdmin && (
+						<Image
+							onClick={() => {
+								router.push(`/editor?path=${props.fullURI}`);
+							}}
+							src={editIcon}
+							alt="Edit Icon"
+							width={50}
+							height={50}
+							className="h-auto max-w-full cursor-pointer"
+						/>
+					)}
 				</div>
 			</section>
 			<section className="bg-gray-1">{getLevel(0)}</section>

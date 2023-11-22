@@ -1,10 +1,18 @@
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 import { trpc } from '../util/trpc';
 
 function Editor() {
+	const router = useRouter();
+
+	const queryPath = router.query.path;
+	const queryResource = router.query.resource;
+
 	const [category, setCategory] = useState('');
-	const [path, setPath] = useState<string[]>([]);
+	const [path, setPath] = useState<string[]>(
+		typeof queryPath === 'string' ? queryPath.split('/') : []
+	);
 
 	const [newCategoryName, setNewCategoryName] = useState('');
 	const [newCategoryUri, setNewCategoryUri] = useState('');
@@ -23,7 +31,9 @@ function Editor() {
 	const [newResourceLevel, setNewResourceLevel] = useState(0);
 
 	const [resourceName, setResourceName] = useState('');
-	const [resourceUri, setResourceUri] = useState('CHOOSE');
+	const [resourceUri, setResourceUri] = useState(
+		typeof queryResource === 'string' ? queryResource : 'CHOOSE'
+	);
 	const [resourceDesc, setResourceDesc] = useState('');
 	const [resourceLink, setResourceLink] = useState('');
 	const [resourceAuthor, setResourceAuthor] = useState('');
