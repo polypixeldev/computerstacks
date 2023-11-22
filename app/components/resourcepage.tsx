@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
 
 import Share from './share';
 import CommentSection from './commentsection';
@@ -11,6 +12,7 @@ import { trpc } from '../util/trpc';
 import shareIcon from '../public/share.png';
 import favorite from '../public/favorite.svg';
 import notfavorite from '../public/notfavorite.svg';
+import editIcon from '../public/edit.svg';
 
 import type { Resource } from '@prisma/client';
 
@@ -21,6 +23,8 @@ interface ResourcePageProps {
 }
 
 function ResourcePage(props: ResourcePageProps) {
+	const router = useRouter();
+
 	const [isFavorite, setIsFavorite] = useState(false);
 	const [isShare, setIsShare] = useState(false);
 	const { data: session, status } = useSession();
@@ -135,6 +139,20 @@ function ResourcePage(props: ResourcePageProps) {
 						height={75}
 						className="h-auto max-w-full"
 					/>
+					{session?.user?.isAdmin && (
+						<Image
+							onClick={() => {
+								router.push(
+									`/editor?path=${props.fullCategoryURI}&resource=${props.resourceURI}`
+								);
+							}}
+							src={editIcon}
+							alt="Edit Icon"
+							width={50}
+							height={50}
+							className="h-auto max-w-full cursor-pointer"
+						/>
+					)}
 				</div>
 			</section>
 			<CommentSection

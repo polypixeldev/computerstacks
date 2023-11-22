@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react';
 
 import Loading from '../components/loading';
 import Card from '../components/card';
+import Button from '../components/button';
 import { trpc } from '../util/trpc';
 
 import profile from '../public/profile.png';
@@ -49,6 +50,15 @@ function Dashboard() {
 					width={200}
 					height={200}
 				/>
+				{session.user.isAdmin && (
+					<Button
+						onClick={() => {
+							router.push('/editor');
+						}}
+					>
+						Resource Editor
+					</Button>
+				)}
 			</section>
 			<section className="bg-gray-2">
 				<h2 className="text-4xl">Roadmaps</h2>

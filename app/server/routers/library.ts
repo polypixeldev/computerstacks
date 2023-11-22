@@ -1,6 +1,11 @@
 import { z } from 'zod';
 
-import { publicProcedure, protectedProcedure, router } from '../trpc';
+import {
+	publicProcedure,
+	protectedProcedure,
+	adminProcedure,
+	router,
+} from '../trpc';
 import prisma from '../../db/prisma';
 
 export const libraryRouter = router({
@@ -184,5 +189,178 @@ export const libraryRouter = router({
 			data.comments.reverse();
 
 			return data.comments;
+		}),
+	addCategory: adminProcedure
+		.input(
+			z.object({
+				name: z.string(),
+				uri: z.string(),
+				description: z.string(),
+				parentUri: z.string().optional(),
+				level: z.number(),
+			})
+		)
+		.mutation(async ({ input }) => {
+			const parentCategory = input.parentUri
+				? await prisma.category.findUnique({
+						where: {
+							uri: input.parentUri,
+						},
+				  })
+				: null;
+
+			if (parentCategory === null && input.parentUri !== undefined)
+				throw new Error(`Invalid parent category URI ${input.parentUri}`);
+
+			await prisma.category.create({
+				data: {
+					name: input.name,
+					uri: input.uri,
+					description: input.description,
+					parentId: input.parentUri,
+					level: input.level,
+				},
+			});
+		}),
+	updateCategory: adminProcedure
+		.input(
+			z.object({
+				name: z.string(),
+				uri: z.string(),
+				description: z.string(),
+				level: z.number(),
+			})
+		)
+		.mutation(async ({ input }) => {
+			await prisma.category.update({
+				where: {
+					uri: input.uri,
+				},
+				data: {
+					name: input.name,
+					description: input.description,
+					level: input.level,
+				},
+			});
+		}),
+	deleteCategory: adminProcedure
+		.input(
+			z.object({
+				uri: z.string(),
+			})
+		)
+		.mutation(async ({ input }) => {
+			async function deleteCategoryWithChildren(uri: string) {
+				const categoryChildren = await prisma.category.findMany({
+					where: {
+						parent: {
+							uri,
+						},
+					},
+				});
+
+				for (const child of categoryChildren) {
+					await deleteCategoryWithChildren(child.uri);
+				}
+
+				const resourceChildren = await prisma.resource.findMany({
+					where: {
+						parent: {
+							uri,
+						},
+					},
+				});
+
+				for (const child of resourceChildren) {
+					await prisma.resource.delete({
+						where: {
+							uri: child.uri,
+						},
+					});
+				}
+
+				await prisma.category.delete({
+					where: {
+						uri,
+					},
+				});
+			}
+
+			await deleteCategoryWithChildren(input.uri);
+		}),
+	addResource: adminProcedure
+		.input(
+			z.object({
+				name: z.string(),
+				uri: z.string(),
+				description: z.string(),
+				parentUri: z.string(),
+				level: z.number(),
+				link: z.string(),
+				author: z.string(),
+			})
+		)
+		.mutation(async ({ input }) => {
+			const parentCategory = input.parentUri
+				? await prisma.category.findUnique({
+						where: {
+							uri: input.parentUri,
+						},
+				  })
+				: null;
+
+			if (parentCategory === null && input.parentUri !== undefined)
+				throw new Error(`Invalid parent category URI ${input.parentUri}`);
+
+			await prisma.resource.create({
+				data: {
+					name: input.name,
+					uri: input.uri,
+					description: input.description,
+					parentId: input.parentUri,
+					level: input.level,
+					author: input.author,
+					link: input.link,
+					timestamp: new Date(),
+				},
+			});
+		}),
+	updateResource: adminProcedure
+		.input(
+			z.object({
+				name: z.string(),
+				uri: z.string(),
+				description: z.string(),
+				level: z.number(),
+				link: z.string(),
+				author: z.string(),
+			})
+		)
+		.mutation(async ({ input }) => {
+			await prisma.resource.update({
+				where: {
+					uri: input.uri,
+				},
+				data: {
+					name: input.name,
+					description: input.description,
+					level: input.level,
+					author: input.author,
+					link: input.link,
+				},
+			});
+		}),
+	deleteResource: adminProcedure
+		.input(
+			z.object({
+				uri: z.string(),
+			})
+		)
+		.mutation(async ({ input }) => {
+			await prisma.resource.delete({
+				where: {
+					uri: input.uri,
+				},
+			});
 		}),
 });

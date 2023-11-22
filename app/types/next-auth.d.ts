@@ -7,6 +7,7 @@ declare module 'next-auth' {
 			favoriteCategories: string[];
 			favoriteResources: string[];
 			roadmaps: string[];
+			isAdmin: boolean;
 		} & DefaultSession['user'];
 	}
 }

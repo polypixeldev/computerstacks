@@ -6,6 +6,7 @@ interface User {
 	image: string;
 	favorites: string[];
 	roadmaps: string[];
+	isAdmin: boolean;
 }
 
 export default User;
