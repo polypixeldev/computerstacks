@@ -72,8 +72,10 @@ function Editor() {
 
 	const addCategoryMutation = trpc.library.addCategory.useMutation();
 	const updateCategoryMutation = trpc.library.updateCategory.useMutation();
+	const deleteCategoryMutation = trpc.library.deleteCategory.useMutation();
 	const addResourceMutation = trpc.library.addResource.useMutation();
 	const updateResourceMutation = trpc.library.updateResource.useMutation();
+	const deleteResourceMutation = trpc.library.deleteResource.useMutation();
 
 	return (
 		<main>
@@ -159,30 +161,54 @@ function Editor() {
 										className="w-full rounded-md p-2 text-lg text-black"
 									/>
 								</div>
-								<button
-									className="rounded-md bg-blue-700 py-2 px-5 text-2xl"
-									onClick={() => {
-										if (categoryName && categoryDesc) {
-											updateCategoryMutation
-												.mutateAsync({
-													name: categoryName,
-													uri: path[path.length - 1],
-													description: categoryDesc,
-													level: categoryLevel,
-												})
-												.then(() => {
-													rootQuery.refetch();
-													catQuery.refetch();
-												});
+								<div className="flex flex-row items-center justify-center gap-5">
+									<button
+										className="rounded-md bg-blue-700 py-2 px-5 text-2xl"
+										onClick={() => {
+											if (categoryName && categoryDesc) {
+												updateCategoryMutation
+													.mutateAsync({
+														name: categoryName,
+														uri: path[path.length - 1],
+														description: categoryDesc,
+														level: categoryLevel,
+													})
+													.then(() => {
+														rootQuery.refetch();
+														catQuery.refetch();
+													});
 
-											setCategoryName('');
-											setCategoryDesc('');
-											setCategoryLevel(0);
-										}
-									}}
-								>
-									Add
-								</button>
+												setCategoryName('');
+												setCategoryDesc('');
+												setCategoryLevel(0);
+											}
+										}}
+									>
+										Edit
+									</button>
+									<button
+										className="rounded-md bg-red-700 py-2 px-5 text-2xl"
+										onClick={() => {
+											if (path[path.length - 1]) {
+												deleteCategoryMutation
+													.mutateAsync({
+														uri: path[path.length - 1],
+													})
+													.then(() => {
+														rootQuery.refetch();
+														catQuery.refetch();
+														setPath((p) => p.slice(0, p.length - 1));
+													});
+
+												setCategoryName('');
+												setCategoryDesc('');
+												setCategoryLevel(0);
+											}
+										}}
+									>
+										Delete
+									</button>
+								</div>
 							</div>
 						)}
 						<div className="flex w-full flex-col items-center justify-start gap-5 rounded-md bg-gray-2 p-4">
@@ -320,42 +346,68 @@ function Editor() {
 									className="w-full rounded-md p-2 text-lg text-black"
 								/>
 							</div>
-							<button
-								className="rounded-md bg-blue-700 py-2 px-5 text-2xl"
-								onClick={() => {
-									if (
-										resourceName &&
-										resourceUri &&
-										resourceDesc &&
-										resourceLink &&
-										resourceAuthor &&
-										path[path.length - 1]
-									) {
-										updateResourceMutation
-											.mutateAsync({
-												name: resourceName,
-												uri: resourceUri,
-												description: resourceDesc,
-												link: resourceLink,
-												author: resourceAuthor,
-												level: resourceLevel,
-											})
-											.then(() => {
-												rootQuery.refetch();
-												catQuery.refetch();
-											});
+							<div className="flex flex-row items-center justify-center gap-5">
+								<button
+									className="rounded-md bg-blue-700 py-2 px-5 text-2xl"
+									onClick={() => {
+										if (
+											resourceName &&
+											resourceUri &&
+											resourceDesc &&
+											resourceLink.startsWith('https://') &&
+											resourceAuthor &&
+											path[path.length - 1]
+										) {
+											updateResourceMutation
+												.mutateAsync({
+													name: resourceName,
+													uri: resourceUri,
+													description: resourceDesc,
+													link: resourceLink,
+													author: resourceAuthor,
+													level: resourceLevel,
+												})
+												.then(() => {
+													rootQuery.refetch();
+													catQuery.refetch();
+												});
 
-										setResourceName('');
-										setResourceUri('CHOOSE');
-										setResourceDesc('');
-										setResourceLink('');
-										setResourceAuthor('');
-										setResourceLevel(0);
-									}
-								}}
-							>
-								Add
-							</button>
+											setResourceName('');
+											setResourceUri('CHOOSE');
+											setResourceDesc('');
+											setResourceLink('');
+											setResourceAuthor('');
+											setResourceLevel(0);
+										}
+									}}
+								>
+									Edit
+								</button>
+								<button
+									className="rounded-md bg-red-700 py-2 px-5 text-2xl"
+									onClick={() => {
+										if (resourceUri && path[path.length - 1]) {
+											deleteResourceMutation
+												.mutateAsync({
+													uri: resourceUri,
+												})
+												.then(() => {
+													rootQuery.refetch();
+													catQuery.refetch();
+												});
+
+											setResourceName('');
+											setResourceUri('CHOOSE');
+											setResourceDesc('');
+											setResourceLink('');
+											setResourceAuthor('');
+											setResourceLevel(0);
+										}
+									}}
+								>
+									Delete
+								</button>
+							</div>
 						</div>
 						<div className="flex w-full flex-col items-center justify-start gap-5 rounded-md bg-gray-2 p-4">
 							<p className="text-3xl">Add Resource</p>
@@ -425,7 +477,7 @@ function Editor() {
 										newResourceName &&
 										newResourceUri &&
 										newResourceDesc &&
-										newResourceLink &&
+										newResourceLink.startsWith('https://') &&
 										newResourceAuthor &&
 										path[path.length - 1]
 									) {

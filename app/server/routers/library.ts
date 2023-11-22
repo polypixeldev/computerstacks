@@ -243,6 +243,51 @@ export const libraryRouter = router({
 				},
 			});
 		}),
+	deleteCategory: adminProcedure
+		.input(
+			z.object({
+				uri: z.string(),
+			})
+		)
+		.mutation(async ({ input }) => {
+			async function deleteCategoryWithChildren(uri: string) {
+				const categoryChildren = await prisma.category.findMany({
+					where: {
+						parent: {
+							uri,
+						},
+					},
+				});
+
+				for (const child of categoryChildren) {
+					await deleteCategoryWithChildren(child.uri);
+				}
+
+				const resourceChildren = await prisma.resource.findMany({
+					where: {
+						parent: {
+							uri,
+						},
+					},
+				});
+
+				for (const child of resourceChildren) {
+					await prisma.resource.delete({
+						where: {
+							uri: child.uri,
+						},
+					});
+				}
+
+				await prisma.category.delete({
+					where: {
+						uri,
+					},
+				});
+			}
+
+			await deleteCategoryWithChildren(input.uri);
+		}),
 	addResource: adminProcedure
 		.input(
 			z.object({
@@ -302,6 +347,19 @@ export const libraryRouter = router({
 					level: input.level,
 					author: input.author,
 					link: input.link,
+				},
+			});
+		}),
+	deleteResource: adminProcedure
+		.input(
+			z.object({
+				uri: z.string(),
+			})
+		)
+		.mutation(async ({ input }) => {
+			await prisma.resource.delete({
+				where: {
+					uri: input.uri,
 				},
 			});
 		}),
