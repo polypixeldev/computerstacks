@@ -1,6 +1,5 @@
 import NextAuth from 'next-auth';
 import nodemailer from 'nodemailer';
-import { withSentry } from '@sentry/nextjs';
 import EmailProvider from 'next-auth/providers/email';
 import GoogleProvider from 'next-auth/providers/google';
 import GitHubProvider from 'next-auth/providers/github';
@@ -9,111 +8,112 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import prisma from '../../../db/prisma';
 
 import type { NextApiRequest, NextApiResponse } from 'next';
+import type { AuthOptions } from 'next-auth';
+
+const adapter = PrismaAdapter(prisma);
+
+const authOptions: AuthOptions = {
+	providers: [
+		GoogleProvider({
+			clientId: process.env.GOOGLE_ID ?? '',
+			clientSecret: process.env.GOOGLE_SECRET ?? '',
+		}),
+		GitHubProvider({
+			clientId: process.env.GITHUB_ID ?? '',
+			clientSecret: process.env.GITHUB_SECRET ?? '',
+		}),
+		EmailProvider({
+			server: process.env.EMAIL_SERVER,
+			from: process.env.EMAIL_FROM,
+			async sendVerificationRequest({ identifier: email, url }) {
+				const transport = nodemailer.createTransport(process.env.EMAIL_SERVER);
+				await transport.sendMail({
+					to: email,
+					from: process.env.EMAIL_FROM,
+					subject: `Sign in to ComputerStacks`,
+					text: 'Sign in to ComputerStacks',
+					html: html({ url, email }),
+				});
+			},
+		}),
+	],
+	adapter: adapter,
+	session: {
+		strategy: 'jwt',
+	},
+	pages: {
+		signIn: '/login',
+		verifyRequest: '/checkemail',
+	},
+	secret: process.env.NEXTAUTH_SECRET,
+	callbacks: {
+		async jwt({ token, user, isNewUser }) {
+			if (user) {
+				token.id = user.id;
+			}
+
+			if (isNewUser && user) {
+				if (!user.email) {
+					await prisma.user.update({
+						where: {
+							id: user.id,
+						},
+						data: {
+							email: null,
+						},
+					});
+				}
+			}
+
+			return token;
+		},
+		async session({ session, token }) {
+			const dbUser = await prisma.user.findUnique({
+				where: {
+					id: token.id,
+				},
+				select: {
+					favoriteCategories: {
+						select: {
+							uri: true,
+						},
+					},
+					favoriteResources: {
+						select: {
+							uri: true,
+						},
+					},
+					roadmaps: {
+						select: {
+							uri: true,
+						},
+					},
+					isAdmin: true,
+				},
+			});
+
+			if (!dbUser) {
+				throw new Error('Unable to fetch session user document');
+			}
+
+			session.user.id = token.id;
+			session.user.favoriteCategories = dbUser.favoriteCategories.map(
+				(category) => category.uri,
+			);
+			session.user.favoriteResources = dbUser.favoriteResources.map(
+				(resource) => resource.uri,
+			);
+			session.user.roadmaps = dbUser.roadmaps.map((roadmap) => roadmap.uri);
+			session.user.isAdmin = dbUser.isAdmin;
+
+			return session;
+		},
+	},
+	debug: false,
+};
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
-	const adapter = PrismaAdapter(prisma);
-
-	return await NextAuth(req, res, {
-		providers: [
-			GoogleProvider({
-				clientId: process.env.GOOGLE_ID ?? '',
-				clientSecret: process.env.GOOGLE_SECRET ?? '',
-			}),
-			GitHubProvider({
-				clientId: process.env.GITHUB_ID ?? '',
-				clientSecret: process.env.GITHUB_SECRET ?? '',
-			}),
-			EmailProvider({
-				server: process.env.EMAIL_SERVER,
-				from: process.env.EMAIL_FROM,
-				async sendVerificationRequest({ identifier: email, url }) {
-					const transport = nodemailer.createTransport(
-						process.env.EMAIL_SERVER
-					);
-					await transport.sendMail({
-						to: email,
-						from: process.env.EMAIL_FROM,
-						subject: `Sign in to ComputerStacks`,
-						text: 'Sign in to ComputerStacks',
-						html: html({ url, email }),
-					});
-				},
-			}),
-		],
-		adapter: adapter,
-		session: {
-			strategy: 'jwt',
-		},
-		pages: {
-			signIn: '/login',
-			verifyRequest: '/checkemail',
-		},
-		secret: process.env.NEXTAUTH_SECRET,
-		callbacks: {
-			async jwt({ token, user, isNewUser }) {
-				if (user) {
-					token.id = user.id;
-				}
-
-				if (isNewUser && user) {
-					if (!user.email) {
-						await prisma.user.update({
-							where: {
-								id: user.id,
-							},
-							data: {
-								email: null,
-							},
-						});
-					}
-				}
-
-				return token;
-			},
-			async session({ session, token }) {
-				const dbUser = await prisma.user.findUnique({
-					where: {
-						id: token.id,
-					},
-					select: {
-						favoriteCategories: {
-							select: {
-								uri: true,
-							},
-						},
-						favoriteResources: {
-							select: {
-								uri: true,
-							},
-						},
-						roadmaps: {
-							select: {
-								uri: true,
-							},
-						},
-						isAdmin: true,
-					},
-				});
-
-				if (!dbUser) {
-					throw new Error('Unable to fetch session user document');
-				}
-
-				session.user.id = token.id;
-				session.user.favoriteCategories = dbUser.favoriteCategories.map(
-					(category) => category.uri
-				);
-				session.user.favoriteResources = dbUser.favoriteResources.map(
-					(resource) => resource.uri
-				);
-				session.user.roadmaps = dbUser.roadmaps.map((roadmap) => roadmap.uri);
-				session.user.isAdmin = dbUser.isAdmin;
-
-				return session;
-			},
-		},
-		debug: false,
-	});
+	return await NextAuth(req, res, authOptions);
 }
 
 function html({ url, email }: { url: string; email: string }) {
@@ -164,4 +164,5 @@ function html({ url, email }: { url: string; email: string }) {
 	`;
 }
 
-export default withSentry(handler);
+export default handler;
+export { authOptions };
