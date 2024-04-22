@@ -7,7 +7,7 @@ generator client {
 }
 
 datasource db {
-  provider     = "mysql"
+  provider     = "postgresql"
   url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
@@ -66,12 +66,11 @@ model Category {
   level            Int
   parentId         String?
   favoriteUsers    User[]
-  parent           Category?  @relation(name: "categories", fields: [parentId], references: [uri], onDelete: NoAction, onUpdate: NoAction)
+  parent           Category?  @relation(name: "categories", fields: [parentId], references: [uri], onDelete: Restrict, onUpdate: Restrict)
   categoryChildren Category[] @relation("categories")
   resourceChildren Resource[]
 
   @@index([parentId])
-  @@fulltext([name, description])
 }
 
 model Resource {
@@ -88,7 +87,6 @@ model Resource {
   comments    ResourceComment[]
 
   @@index([parentId])
-  @@fulltext([name, description, author])
 }
 
 model Roadmap {
@@ -99,8 +97,6 @@ model Roadmap {
   image       String           @db.Text
   users       User[]
   comments    RoadmapComment[]
-
-  @@fulltext([name, description])
 }
 
 model Event {
