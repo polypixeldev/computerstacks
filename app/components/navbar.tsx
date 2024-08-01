@@ -34,7 +34,11 @@ function Navbar() {
 	}));
 
 	useEffect(() => {
-		menuOpen ? api.start({ opacity: 1 }) : api.start({ opacity: 0 });
+		if (menuOpen) {
+			api.start({ opacity: 1 });
+		} else {
+			api.start({ opacity: 0 });
+		}
 	}, [menuOpen]); // eslint-disable-line react-hooks/exhaustive-deps
 
 	useEffect(() => {
@@ -58,7 +62,11 @@ function Navbar() {
 	}
 
 	function toggleMenu() {
-		menuOpen ? setMenuOpen(false) : setMenuOpen(true);
+		if (menuOpen) {
+			setMenuOpen(false);
+		} else {
+			setMenuOpen(true);
+		}
 	}
 
 	return (
