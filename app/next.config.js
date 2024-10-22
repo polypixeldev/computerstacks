@@ -12,7 +12,7 @@ const checkEnvironment = require('./functions/checkEnvironment.js');
 const missingEnvVars = checkEnvironment();
 if (missingEnvVars.length !== 0) {
 	throw new Error(
-		`Environment variables \` ${missingEnvVars.join('`, `')} missing`
+		`Environment variables \` ${missingEnvVars.join('`, `')} missing`,
 	);
 }
 
@@ -33,13 +33,7 @@ const moduleExports = {
 	},
 };
 
-if (process.env.BUILD_ENV != 'local') {
-	moduleExports.sentry = {
-		hideSourceMaps: false,
-	};
-}
-
-const sentryWebpackPluginOptions = {
+const sentryBuildOptions = {
 	// Additional config options for the Sentry Webpack plugin. Keep in mind that
 	// the following options are set automatically, and overriding them is not
 	// recommended:
@@ -47,6 +41,7 @@ const sentryWebpackPluginOptions = {
 	//   urlPrefix, include, ignore
 
 	silent: true, // Suppresses all logs
+	hideSourceMaps: process.env.BUILD_ENV === 'local',
 
 	// For all available options, see:
 	// https://github.com/getsentry/sentry-webpack-plugin#options.
@@ -57,4 +52,4 @@ const sentryWebpackPluginOptions = {
 module.exports =
 	process.env.BUILD_ENV == 'local'
 		? moduleExports
-		: withSentryConfig(moduleExports, sentryWebpackPluginOptions);
+		: withSentryConfig(moduleExports, sentryBuildOptions);
